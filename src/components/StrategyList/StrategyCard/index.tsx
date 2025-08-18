@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { base, mainnet } from "viem/chains";
 
 import { useState, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Tooltip } from "@/components/Tooltip";
+import { DynamicChainDisplayWithTooltip } from "@/components/DynamicChainDisplay";
 
 import InvestModal from "./InvestModal";
 import { getRiskColor } from "@/utils";
@@ -24,7 +26,7 @@ function getRiskLevelLabel(risk: RiskLevel) {
 }
 
 export default function StrategyCard(strategy: StrategyMetadata) {
-  const { title, id, apy, risk, description, tokens, chainId, protocol } =
+  const { title, id, apy, risk, description, tokens, chainId, protocol, status } =
     strategy;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,10 +37,15 @@ export default function StrategyCard(strategy: StrategyMetadata) {
   const { openChat, setMessages } = useChat();
   const router = useRouter();
 
+  // Check if strategy is coming soon
+  // Allow both Base and Ethereum as active networks
+  const isComingSoon = status === 'coming_soon' || (chainId !== base.id && chainId !== mainnet.id);
+  const isDisabled = isComingSoon;
+
   const handleCardClick = (e: MouseEvent) => {
-    // Don't navigate if clicking on a link or button
+    // Don't navigate if clicking on a link or button, or if disabled
     const target = e.target as HTMLElement;
-    if (target.closest('a, button, [role="button"]')) {
+    if (target.closest('a, button, [role="button"]') || isDisabled) {
       e.stopPropagation();
       return;
     }
@@ -46,7 +53,7 @@ export default function StrategyCard(strategy: StrategyMetadata) {
   };
 
   const handleBotClick = async () => {
-    // const prompt = `Hello. Can you explain the ${title} in 50 words?`;
+    if (isDisabled) return;
 
     const botMessage: Message = {
       id: (Date.now() + 1).toString(),
@@ -60,42 +67,82 @@ export default function StrategyCard(strategy: StrategyMetadata) {
     openChat();
   };
 
+  const getChainName = (chainId: number) => {
+    switch (chainId) {
+      case base.id: return "Base";
+      case mainnet.id: return "Ethereum";
+      case 42161: return "Arbitrum";
+      case 56: return "BSC";
+      case 137: return "Polygon";
+      case 42220: return "Celo";
+      case 545: return "Flow";
+      default: return "Unknown";
+    }
+  };
+
   return (
     <>
       <div
         onClick={handleCardClick}
-        className="tracking-wide flex flex-col items-center p-5 bg-white rounded-2xl shadow-[0px_21px_27px_-10px_rgba(71,114,234,0.65)] h-full cursor-pointer hover:bg-gray-100 transition-colors"
+        className={`tracking-wide flex flex-col items-center p-5 bg-white rounded-2xl shadow-[0px_21px_27px_-10px_rgba(71,114,234,0.65)] h-full relative transition-all duration-200 ${
+          isDisabled 
+            ? 'opacity-60 cursor-not-allowed grayscale-[50%]' 
+            : 'cursor-pointer hover:bg-gray-100'
+        }`}
       >
+        {/* Coming Soon Badge */}
+        {isComingSoon && (
+          <div className="absolute top-3 right-3 z-10">
+            <div className="bg-gradient-to-r from-orange-400 to-orange-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-lg">
+              Coming Soon
+            </div>
+          </div>
+        )}
+
         {/* Header Section */}
         <div className="flex justify-between md:justify-around items-center w-full">
-          <Image
-            src={`/crypto-icons/chains/${chainId}.svg`}
-            alt={title}
-            width={60}
-            height={60}
-            className="rounded-lg object-cover"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsModalOpen(true);
-            }}
-          />
+          <div className="relative">
+            <div
+              className="cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isDisabled) setIsModalOpen(true);
+              }}
+            >
+              <DynamicChainDisplayWithTooltip
+                strategy={strategy}
+                size={60}
+                className="rounded-lg"
+              />
+            </div>
+            {isComingSoon && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-lg">
+                <span className="text-white text-xs font-semibold">Soon</span>
+              </div>
+            )}
+          </div>
           <div className="ml-4 flex flex-col justify-center gap-2.5 w-[224px]">
             <div className="flex gap-[3px] self-stretch">
-              <h3 className="text-[18px] font-semibold text-[#17181C]">
+              <h3 className={`text-[18px] font-semibold ${isDisabled ? 'text-gray-500' : 'text-[#17181C]'}`}>
                 {title}
+                {isComingSoon && chainId !== base.id && (
+                  <span className="text-sm text-gray-400 block">
+                    ({getChainName(chainId)})
+                  </span>
+                )}
               </h3>
             </div>
             <div className="flex items-center gap-3">
-              <span className="font-medium text-base text-[#17181C]">
-                APY {apy} %
+              <span className={`font-medium text-base ${isDisabled ? 'text-gray-400' : 'text-[#17181C]'}`}>
+                {isComingSoon ? 'APY TBA' : `APY ${apy}%`}
               </span>
               <div
                 className="flex justify-center items-center px-2 py-1 rounded-lg"
-                style={{ backgroundColor: getRiskColor(risk).bg }}
+                style={{ backgroundColor: isDisabled ? '#f3f4f6' : getRiskColor(risk).bg }}
               >
                 <span
                   className="text-xs font-medium"
-                  style={{ color: getRiskColor(risk).text }}
+                  style={{ color: isDisabled ? '#9ca3af' : getRiskColor(risk).text }}
                 >
                   {getRiskLevelLabel(risk)}
                 </span>
@@ -103,22 +150,23 @@ export default function StrategyCard(strategy: StrategyMetadata) {
             </div>
           </div>
         </div>
+        
         {/* Content Section - Flex Grow */}
         <div className="flex flex-col items-start self-stretch flex-grow">
           <div className="flex flex-col items-start gap-4 self-stretch my-4">
             <div className="flex items-center gap-2 self-stretch">
               <div className="grid grid-cols-12 gap-2 w-full">
                 <div className="col-span-4 space-y-1">
-                  <div className="text-sm">Protocol</div>
-                  <div className="text-sm">TVL</div>
-                  <div className="text-sm">Tokens</div>
+                  <div className={`text-sm ${isDisabled ? 'text-gray-400' : ''}`}>Protocol</div>
+                  <div className={`text-sm ${isDisabled ? 'text-gray-400' : ''}`}>TVL</div>
+                  <div className={`text-sm ${isDisabled ? 'text-gray-400' : ''}`}>Tokens</div>
                 </div>
                 <div className="col-span-7 space-y-1">
                   <div className="flex items-center gap-1">
-                    <span className="text-sm font-medium text-gray-900 truncate">
+                    <span className={`text-sm font-medium truncate ${isDisabled ? 'text-gray-500' : 'text-gray-900'}`}>
                       {protocol.name}
                     </span>
-                    {protocol.link && (
+                    {protocol.link && !isDisabled && (
                       <Link
                         href={protocol.link}
                         target="_blank"
@@ -142,10 +190,8 @@ export default function StrategyCard(strategy: StrategyMetadata) {
                     )}
                   </div>
 
-                  {/* TODO: Use real TVL */}
-                  <p className="text-sm text-gray-900">
-                    ${" "}
-                    {Math.abs(
+                  <p className={`text-sm ${isDisabled ? 'text-gray-500' : 'text-gray-900'}`}>
+                    {isComingSoon ? 'TBA' : `$ ${Math.abs(
                       title
                         .split("")
                         .reduce(
@@ -153,13 +199,12 @@ export default function StrategyCard(strategy: StrategyMetadata) {
                             (hash << 5) - hash + char.charCodeAt(0),
                           0
                         ) % 100
-                    )}
-                    M
+                    )}M`}
                   </p>
 
-                  <div className="text-sm text-gray-900 flex items-center gap-1">
+                  <div className={`text-sm flex items-center gap-1 ${isDisabled ? 'text-gray-500' : 'text-gray-900'}`}>
                     {tokens.map((token) => (
-                      <div key={token.name} className="w-5 h-5 relative">
+                      <div key={token.name} className={`w-5 h-5 relative ${isDisabled ? 'opacity-50' : ''}`}>
                         <Image
                           src={token.icon}
                           alt={token.name}
@@ -181,35 +226,70 @@ export default function StrategyCard(strategy: StrategyMetadata) {
         {/* Action button section - always stay at bottom */}
         <div className="w-full mt-auto flex items-center gap-5">
           <button
-            className="flex-1 flex justify-center items-center py-2 px-4 bg-[#5F79F1] rounded-lg text-white font-medium hover:bg-[#4A64DC] transition-colors"
+            className={`flex-1 flex justify-center items-center py-2 px-4 rounded-lg font-medium transition-colors ${
+              isDisabled
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-[#5F79F1] text-white hover:bg-[#4A64DC]'
+            }`}
             onClick={(e) => {
               e.stopPropagation();
-              setIsModalOpen(true);
+              if (!isDisabled) {
+                setIsModalOpen(true);
+              }
             }}
+            disabled={isDisabled}
           >
-            Invest
+            {isComingSoon ? 'Coming Soon' : 'Invest'}
           </button>
           <div className="flex justify-center" style={{ width: 30 }}>
             <button
               onClick={handleBotClick}
-              className="cursor-pointer hover:scale-130 rounded-full transition-transform"
+              className={`rounded-full transition-transform ${
+                isDisabled 
+                  ? 'cursor-not-allowed opacity-50' 
+                  : 'cursor-pointer hover:scale-130'
+              }`}
+              disabled={isDisabled}
             >
               <Image
                 src="/bot-icon-blue.svg"
                 alt="bot"
                 width={30}
                 height={30}
+                className={isDisabled ? 'opacity-50' : ''}
               />
             </button>
           </div>
         </div>
+
+        {/* Coming Soon Overlay Message */}
+        {isComingSoon && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 rounded-2xl">
+            <div className="text-center p-4">
+              <div className="text-lg font-semibold text-gray-700 mb-2">
+                {chainId !== base.id ? `${getChainName(chainId)} Support` : 'Protocol Integration'}
+              </div>
+              <div className="text-sm text-gray-600 mb-3">
+                {chainId !== base.id 
+                  ? 'Multi-chain support coming soon'
+                  : 'Protocol integration in development'
+                }
+              </div>
+              <div className="text-xs text-gray-500">
+                Currently available on Base network only
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      <InvestModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        strategy={strategy}
-      />
+      {!isDisabled && (
+        <InvestModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          strategy={strategy}
+        />
+      )}
     </>
   );
 }

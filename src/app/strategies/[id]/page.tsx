@@ -10,6 +10,7 @@ import { StrategyDetailsChart } from "@/components/StrategyList/StrategyDetailsC
 import { StrategyDetailsChartToggleOption } from "@/types/strategies";
 import { StrategyDetailsTradeTable } from "@/components/StrategyDetailsTradeTable";
 import InvestmentForm from "@/components/StrategyList/StrategyCard/InvestModal/InvestmentForm";
+import { DynamicChainDisplay } from "@/components/DynamicChainDisplay";
 import { Home, ChartLine, FileChartColumn } from "lucide-react";
 import { getRiskColor } from "@/utils";
 
@@ -95,11 +96,9 @@ function StrategyDetailContent() {
           {/* Strategy Name and Details */}
           <div id="overview" className="space-y-4">
             <div className="flex items-center gap-3">
-              <Image
-                src={`/crypto-icons/chains/${strategy.chainId}.svg`}
-                alt="Strategy Icon"
-                width={40}
-                height={40}
+              <DynamicChainDisplay
+                strategy={strategy}
+                size={40}
               />
               <h2 className="text-4xl font-semibold">{strategy.title}</h2>
               <span

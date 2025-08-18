@@ -13,6 +13,13 @@ export interface TokenData {
   balance: bigint;
 }
 
+// Define chains that are supported by smart wallets in Privy dashboard
+const SMART_WALLET_SUPPORTED_CHAINS = [
+  8453, // Base
+  // Add other chain IDs that are configured in your Privy dashboard
+  // 1, // Ethereum - commented out until configured in dashboard
+];
+
 export default function useCurrencies(tokens: Token[]) {
   const { client } = useSmartWallets();
   const chainId = useChainId();
@@ -26,22 +33,36 @@ export default function useCurrencies(tokens: Token[]) {
     async (tokensData: TokenData[]): Promise<TokenData[]> => {
       if (!client || !tokens || tokens.length === 0) return tokensData;
 
-      await client.switchChain({ id: chainId });
+      // Only switch chain if it's supported by smart wallets
+      if (SMART_WALLET_SUPPORTED_CHAINS.includes(chainId)) {
+        try {
+          await client.switchChain({ id: chainId });
+        } catch (error) {
+          console.error(`Failed to switch smart wallet to chain ${chainId}:`, error);
+          // For unsupported chains, we can still try to fetch balances without switching
+        }
+      }
+
       const user = client.account.address;
       if (!user) return tokensData;
 
       const balancePromises = tokensData.map(async (tokenData, index) => {
         const token = tokenData.token;
 
-        const params = {
-          address: user,
-          ...(token.isNativeToken
-            ? {}
-            : { token: getTokenAddress(token, chainId) }),
-        };
+        try {
+          const params = {
+            address: user,
+            ...(token.isNativeToken
+              ? {}
+              : { token: getTokenAddress(token, chainId) }),
+          };
 
-        const { value } = await getBalance(config, params);
-        tokensData[index].balance = value;
+          const { value } = await getBalance(config, params);
+          tokensData[index].balance = value;
+        } catch (error) {
+          console.error(`Failed to fetch balance for ${token.name} on chain ${chainId}:`, error);
+          // Keep the default balance of 0
+        }
       });
 
       await Promise.all(balancePromises);

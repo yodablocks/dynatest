@@ -4,6 +4,16 @@ import { ERC20_ABI } from "@/constants/abis";
 
 const FEE_RECEIVER: Address = process.env.NEXT_PUBLIC_FEE_RECEIVER as Address;
 
+console.log('💰 FEE_RECEIVER debug:', {
+  env: process.env.NEXT_PUBLIC_FEE_RECEIVER,
+  feeReceiver: FEE_RECEIVER,
+  length: FEE_RECEIVER?.length
+});
+
+// Fallback fee receiver if env var is not set
+const FALLBACK_FEE_RECEIVER: Address = "0x0000000000000000000000000000000000000000";
+const ACTUAL_FEE_RECEIVER = FEE_RECEIVER || FALLBACK_FEE_RECEIVER;
+
 export const calculateFee = (amount: bigint, fee: bigint = BigInt(5)) => {
   return {
     fee: (amount * fee) / BigInt(1000),
@@ -18,7 +28,7 @@ export const addFeesCall = (
 ) => {
   if (isNativeToken) {
     return {
-      to: FEE_RECEIVER,
+      to: ACTUAL_FEE_RECEIVER,
       value: fee,
     };
   } else {
@@ -27,7 +37,7 @@ export const addFeesCall = (
       data: encodeFunctionData({
         abi: ERC20_ABI,
         functionName: "transfer",
-        args: [FEE_RECEIVER, fee],
+        args: [ACTUAL_FEE_RECEIVER, fee],
       }),
     };
   }

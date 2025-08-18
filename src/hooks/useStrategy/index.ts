@@ -91,7 +91,7 @@ export function useStrategy() {
     }
   }
 
-  async function sendAndWaitTransaction(calls: StrategyCall[]) {
+  async function sendAndWaitTransaction(calls: StrategyCall[], targetChainId?: number) {
     async function waitForUserOp(userOp: `0x${string}`): Promise<string> {
       if (!publicClient) throw new Error("Public client not available");
 
@@ -113,7 +113,19 @@ export function useStrategy() {
 
     if (!client) throw new Error("Client not available");
 
-    await client.switchChain({ id: chainId });
+    // Only switch chain if targetChainId is provided and different from current
+    const switchChainId = targetChainId || chainId;
+    if (switchChainId !== chainId) {
+      try {
+        await client.switchChain({ id: switchChainId });
+      } catch (error) {
+        console.error('Chain switch failed:', error);
+        throw new Error(
+          `Unable to switch to required chain ${switchChainId}. Please make sure the chain is configured in your wallet.`
+        );
+      }
+    }
+    
     const userOp = await client.sendTransaction(
       {
         calls,
@@ -147,13 +159,14 @@ export function useStrategy() {
       );
 
       const feeCall = addFeesCall(
-        getTokenAddress(token, chainId),
+        getTokenAddress(token, strategy.chainId),
         token.isNativeToken,
         fee
       );
+      console.log('💰 Fee call debug:', { tokenName: token.name, strategyChainId: strategy.chainId, feeCall });
       calls.push(feeCall);
 
-      const txHash = await sendAndWaitTransaction(calls);
+      const txHash = await sendAndWaitTransaction(calls, strategy.chainId);
 
       // Update the status of position
       await axios.patch(
@@ -165,7 +178,7 @@ export function useStrategy() {
 
       await addTx.mutateAsync({
         address: user,
-        chain_id: chainId,
+        chain_id: strategy.chainId,
         strategy: strategy.name,
         hash: txHash,
         amount: Number(formatUnits(amountWithoutFee, token.decimals)),
@@ -181,46 +194,107 @@ export function useStrategy() {
 
   const invest = useMutation({
     mutationFn: async ({ strategyId, amount, token }: InvestParams) => {
-      if (!user) throw new Error("Smart wallet account not found");
+      console.log('🚀 Investment started:', { strategyId, amount: amount.toString(), tokenName: token.name });
+      
+      try {
+        if (!user) throw new Error("Smart wallet account not found");
 
-      const strategy = getStrategy(strategyId, chainId);
+        const strategy = getStrategy(strategyId, chainId);
+        console.log('🚀 Strategy DEBUG:', {
+          strategyId,
+          userChainId: chainId,
+          strategyChainId: strategy.chainId,
+          strategyName: strategy.name
+        });
 
-      const { fee, amount: amountWithoutFee } = calculateFee(amount);
-      const calls = await getInvestCalls(
-        strategy,
-        amountWithoutFee,
-        user,
-        token,
-        chainId
-      );
+        // For SmokehouseStrategy, handle cross-chain bridging automatically
+        if (strategyId === 'SmokehouseStrategy' && chainId !== strategy.chainId) {
+          console.log('🌉 Cross-chain investment detected:', {
+            userChain: chainId,
+            strategyChain: strategy.chainId,
+            willBridge: true
+          });
+          
+          // This will trigger CCTP bridging automatically
+          // The SmokehouseStrategy.investCalls() will handle the bridge transaction
+        } else {
+          console.log('🔗 Direct investment (same chain)');
+        }
 
-      const feeCall = addFeesCall(
-        getTokenAddress(token, chainId),
-        token.isNativeToken,
-        fee
-      );
+        const { fee, amount: amountWithoutFee } = calculateFee(amount);
+        console.log('💰 Fee calculation:', { originalAmount: amount.toString(), fee: fee.toString(), amountWithoutFee: amountWithoutFee.toString() });
+        
+        // For SmokehouseStrategy, pass user's current chain for bridge logic
+        let calls: StrategyCall[];
+        if (strategyId === 'SmokehouseStrategy') {
+          // Call the strategy directly with user's current chainId for bridge detection
+          calls = await strategy.investCalls(
+            amountWithoutFee,
+            user,
+            getTokenAddress(token, chainId), // Use user's current chain for source token
+            chainId // Pass user's current chainId for bridge logic
+          ) as StrategyCall[];
+        } else {
+          // Standard flow for other strategies
+          calls = await getInvestCalls(
+            strategy,
+            amountWithoutFee,
+            user,
+            token,
+            strategy.chainId
+          );
+        }
+        console.log('📋 Investment calls generated:', calls);
 
-      calls.push(feeCall);
-      const txHash = await sendAndWaitTransaction(calls);
+        // For fee call, use appropriate chain based on whether it's a bridge scenario
+        const isBridgeScenario = strategyId === 'SmokehouseStrategy' && chainId !== strategy.chainId;
+        const feeChainId = isBridgeScenario ? chainId : strategy.chainId;
+        
+        const feeCall = addFeesCall(
+          getTokenAddress(token, feeChainId),
+          token.isNativeToken,
+          fee
+        );
+        console.log('💰 Fee call created:', { 
+          feeCall, 
+          feeChainId, 
+          isBridgeScenario,
+          tokenName: token.name 
+        });
+        
+        calls.push(feeCall);
+        console.log('📋 All calls (including fee):', calls);
+        
+        console.log('🔗 Attempting to send transaction...');
+        // Execute transaction on user's current chain (for bridge scenarios, this is the source chain)
+        const executionChainId = isBridgeScenario ? chainId : strategy.chainId;
+        const txHash = await sendAndWaitTransaction(calls, executionChainId);
+        console.log('✅ Transaction sent successfully:', txHash);
 
-      await updatePosition({
-        address: user,
-        amount: Number(formatUnits(amountWithoutFee, token.decimals)),
-        token_name: token.name,
-        chain_id: chainId,
-        strategy: strategy.name,
-      });
+        // For position tracking, use strategy's chainId for consistency
+        await updatePosition({
+          address: user,
+          amount: Number(formatUnits(amountWithoutFee, token.decimals)),
+          token_name: token.name,
+          chain_id: strategy.chainId,
+          strategy: strategy.name,
+        });
 
-      await addTx.mutateAsync({
-        address: user,
-        chain_id: chainId,
-        strategy: strategy.name,
-        hash: txHash,
-        amount: Number(formatUnits(amountWithoutFee, token.decimals)),
-        token_name: token.name,
-      });
+        await addTx.mutateAsync({
+          address: user,
+          chain_id: strategy.chainId,
+          strategy: strategy.name,
+          hash: txHash,
+          amount: Number(formatUnits(amountWithoutFee, token.decimals)),
+          token_name: token.name,
+        });
 
-      return txHash;
+        console.log('✅ Investment completed successfully!');
+        return txHash;
+      } catch (error) {
+        console.error('❌ Investment failed:', error);
+        throw error;
+      }
     },
 
     onSuccess: () => {
@@ -248,7 +322,7 @@ export function useStrategy() {
       );
       calls.push(feeCall);
 
-      const txHash = await sendAndWaitTransaction(calls);
+      const txHash = await sendAndWaitTransaction(calls, chainId);
 
       await updatePositions(
         txHash,

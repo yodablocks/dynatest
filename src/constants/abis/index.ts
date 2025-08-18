@@ -4,6 +4,7 @@ export * from "./erc20Permit";
 export * from "./executor";
 export * from "./liquidityRouter";
 export * from "./morpho";
+export * from "./metamorpho";
 export * from "./stakeCelo";
 export * from "./nftManager";
 export * from "./v3SwapRouter";

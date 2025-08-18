@@ -10,7 +10,7 @@ import ProtocolFilter from "./ProtocolFilter";
 import ChainFilter from "./ChainFilter";
 import APYFilter from "./APYFilter";
 
-import { STRATEGIES_METADATA } from "@/constants/strategies";
+import { STRATEGIES_METADATA, ACTIVE_STRATEGIES, COMING_SOON_STRATEGIES } from "@/constants/strategies";
 import { Protocol } from "@/types/strategies";
 
 // No results placeholder
@@ -35,6 +35,7 @@ export default function StrategyList() {
   const [selectedChains, setSelectedChains] = useState<number[]>([]);
   const [showApyDropdown, setShowApyDropdown] = useState(false);
   const [selectedApySort, setSelectedApySort] = useState<string | null>(null);
+  const [showComingSoon, setShowComingSoon] = useState(true);
 
   // Extract all distinct protocols
   const protocolOptions = useMemo(() => {
@@ -56,6 +57,7 @@ export default function StrategyList() {
       return [...prev, protocol];
     });
   };
+  
   // Toggle risk selection
   const toggleRiskSelection = (risk: string) => {
     setSelectedRisks((prev) =>
@@ -65,7 +67,8 @@ export default function StrategyList() {
 
   // Filter and sort strategies based on all criteria
   const filteredStrategies = useMemo(() => {
-    let filtered = STRATEGIES_METADATA;
+    // Start with active strategies, optionally include coming soon
+    let filtered = showComingSoon ? STRATEGIES_METADATA : ACTIVE_STRATEGIES;
 
     // Filter by risk if any risks are selected
     if (selectedRisks.length > 0) {
@@ -77,7 +80,7 @@ export default function StrategyList() {
     // Filter by protocol if any protocols are selected
     if (selectedProtocols.length > 0) {
       filtered = filtered.filter((strategy) =>
-        selectedProtocols.includes(strategy.protocol)
+        selectedProtocols.some(p => p.name === strategy.protocol.name)
       );
     }
 
@@ -121,6 +124,16 @@ export default function StrategyList() {
       });
     }
 
+    // Sort active strategies first, then coming soon
+    filtered = [...filtered].sort((a, b) => {
+      const aIsActive = a.status !== 'coming_soon';
+      const bIsActive = b.status !== 'coming_soon';
+      
+      if (aIsActive && !bIsActive) return -1;
+      if (!aIsActive && bIsActive) return 1;
+      return 0;
+    });
+
     return filtered;
   }, [
     searchQuery,
@@ -128,13 +141,40 @@ export default function StrategyList() {
     selectedProtocols,
     selectedChains,
     selectedApySort,
+    showComingSoon,
   ]);
+
+  const activeCount = ACTIVE_STRATEGIES.length;
+  const comingSoonCount = COMING_SOON_STRATEGIES.length;
 
   return (
     <div>
+      {/* Status Banner */}
+      <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-blue-900 mb-1">
+              🚀 Currently Live on Base & Ethereum Networks
+            </h3>
+            <p className="text-sm text-blue-700">
+              {activeCount} strategies available • {comingSoonCount} more coming soon across multiple chains
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-sm text-blue-700">
+              <input
+                type="checkbox"
+                checked={showComingSoon}
+                onChange={(e) => setShowComingSoon(e.target.checked)}
+                className="rounded"
+              />
+              Show coming soon
+            </label>
+          </div>
+        </div>
+      </div>
+
       {/* Filters */}
-      {/* TODO: Implement more filters */}
-      {/* TODO: Make fitlers dynamic */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-3">
         {/* Filters row */}
         <div className="flex items-center gap-2 md:gap-4 w-full">
@@ -224,7 +264,7 @@ export default function StrategyList() {
           {filteredStrategies.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
               {filteredStrategies.map((strategy, index) => (
-                <StrategyCard key={index} {...strategy} />
+                <StrategyCard key={`${strategy.id}-${strategy.chainId}-${index}`} {...strategy} />
               ))}
             </div>
           ) : (

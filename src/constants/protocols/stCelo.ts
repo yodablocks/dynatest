@@ -1,7 +1,17 @@
 import { celo } from "viem/chains";
+import type { Protocol } from "@/types/strategies";
 
 export const ST_CELO_CONTRACTS = {
   [celo.id]: {
     manager: "0x0239b96D10a434a56CC9E09383077A0490cF9398",
   },
 } as const;
+
+export const ST_CELO = {
+  name: "StakedCelo",
+  description:
+    "Liquid staking protocol for CELO tokens.",
+  icon: "/crypto-icons/protocol/celo.svg",
+  link: "https://stcelo.com/",
+  contracts: ST_CELO_CONTRACTS,
+} as const satisfies Protocol;

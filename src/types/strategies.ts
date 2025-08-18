@@ -33,6 +33,7 @@ export type StrategyMetadata = {
   learnMoreLink?: string;
   chainId: number;
   tokens: Token[];
+  status?: 'active' | 'coming_soon' | 'composition';
 };
 
 export type RiskLevel = (typeof RISK_OPTIONS)[number];

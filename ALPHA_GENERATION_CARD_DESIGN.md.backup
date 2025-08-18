@@ -1,0 +1,201 @@
+# Alpha Generation Strategy - Dynamic Card Design
+
+## 🎨 Visual Design Specification
+
+### **Strategy Card Enhancements for "Alpha Generation"**
+
+#### **1. Color Scheme (Updated)**
+- **Primary Color:** `#E74C3C` (Current red)
+- **Gradient:** `linear-gradient(135deg, #E74C3C 0%, #C0392B 50%, #A93226 100%)`
+- **Accent:** `#FFD700` (Gold accent for "Alpha" premium feeling)
+- **Text:** White on gradient background
+
+#### **2. Visual Elements**
+
+**Badge/Indicator:**
+```tsx
+<div className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-2 py-1 rounded-lg text-xs font-bold">
+  ALPHA
+</div>
+```
+
+**MEV-Specific Icons:**
+- ⚡ Lightning bolt for "fast execution"
+- 🔄 Circular arrows for "arbitrage/optimization" 
+- 📊 Chart trend for "alpha generation"
+- 🧠 Brain icon for "intelligent algorithms"
+
+**Hover Effects:**
+- Gentle glow effect around the card
+- Subtle gradient shift animation
+- APY number with slight bounce effect
+
+#### **3. Layout Enhancements**
+
+**Header Section:**
+```
+┌─────────────────────────────────────┐
+│ 🧠 Alpha Generation            ALPHA │
+│ MEV Capital                          │
+│ ⚡ Advanced Strategy                  │
+└─────────────────────────────────────┘
+```
+
+**Stats Section:**
+```
+┌─────────────────────────────────────┐
+│ APY: 7.8% 📈  │  Risk: Medium 🎯    │
+│ TVL: $XXM     │  Chain: ETH ⟠        │
+└─────────────────────────────────────┘
+```
+
+**Features Badge:**
+```
+┌─────────────────────────────────────┐
+│ ✨ MEV Extraction                    │
+│ 🔄 DeFi Optimization                │
+│ ⚡ CCTP Bridge Support              │
+└─────────────────────────────────────┘
+```
+
+#### **4. CSS Classes for Implementation**
+
+**Gradient Card Background:**
+```css
+.alpha-generation-card {
+  background: linear-gradient(135deg, #E74C3C 0%, #C0392B 50%, #A93226 100%);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(231, 76, 60, 0.15);
+  transition: all 0.3s ease;
+}
+
+.alpha-generation-card:hover {
+  box-shadow: 0 8px 30px rgba(231, 76, 60, 0.25);
+  transform: translateY(-2px);
+}
+```
+
+**Alpha Badge:**
+```css
+.alpha-badge {
+  background: linear-gradient(45deg, #FFD700, #FFA500);
+  color: #000;
+  font-weight: bold;
+  text-shadow: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+```
+
+**APY Animation:**
+```css
+.apy-highlight {
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+```
+
+#### **5. Component Implementation Example**
+
+```tsx
+// Enhanced StrategyCard for Alpha Generation
+const AlphaGenerationCard = ({ strategy }: { strategy: StrategyMetadata }) => {
+  const isAlphaGeneration = strategy.id === "MevCapitalStrategy";
+  
+  return (
+    <div className={cn(
+      "strategy-card",
+      isAlphaGeneration && "alpha-generation-card"
+    )}>
+      {/* Header with Alpha Badge */}
+      <div className="flex justify-between items-start">
+        <div>
+          <h3 className="text-white font-bold flex items-center gap-2">
+            🧠 {strategy.title}
+            {isAlphaGeneration && (
+              <span className="alpha-badge">ALPHA</span>
+            )}
+          </h3>
+          <p className="text-white/80 text-sm">MEV Capital</p>
+        </div>
+        <div className="text-white/60">⚡</div>
+      </div>
+      
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-4 mt-4">
+        <div>
+          <span className="text-white/70 text-xs">APY</span>
+          <div className={cn(
+            "text-white font-bold text-lg",
+            isAlphaGeneration && "apy-highlight"
+          )}>
+            {strategy.apy}% 📈
+          </div>
+        </div>
+        <div>
+          <span className="text-white/70 text-xs">Risk</span>
+          <div className="text-white font-medium">Medium 🎯</div>
+        </div>
+      </div>
+      
+      {/* Features */}
+      <div className="mt-4 space-y-1">
+        <div className="text-white/90 text-xs flex items-center gap-1">
+          ✨ MEV Extraction
+        </div>
+        <div className="text-white/90 text-xs flex items-center gap-1">
+          🔄 DeFi Optimization  
+        </div>
+        <div className="text-white/90 text-xs flex items-center gap-1">
+          ⚡ CCTP Bridge Support
+        </div>
+      </div>
+    </div>
+  );
+};
+```
+
+#### **6. Unique Features for Alpha Generation**
+
+**1. Dynamic APY Display:**
+- Subtle animation on the APY number
+- Gradient text effect for emphasis
+
+**2. MEV-Specific Messaging:**
+- "Alpha Generation" instead of generic "yield"
+- Technical terminology (MEV, optimization, extraction)
+
+**3. Premium Indicators:**
+- Gold "ALPHA" badge
+- Advanced strategy designation
+- Professional trading icons
+
+**4. Interactive Elements:**
+- Hover reveals additional MEV metrics
+- Smooth transitions and micro-animations
+- Glow effects on interaction
+
+#### **7. Comparison with Other Cards**
+
+| Strategy | Card Style | Special Elements |
+|----------|------------|------------------|
+| Institutional USDC | Clean, professional blue | Security focus, institutional badge |
+| Professional Yield | Modern, bright blue | Professional indicators |
+| **Alpha Generation** | **Gradient red-gold** | **MEV badges, advanced indicators** |
+| Conservative Yield | Simple, muted tones | Safe, conservative messaging |
+
+This design makes the Alpha Generation strategy stand out as the premium, advanced option while maintaining consistency with your existing design system!
+
+## 🚀 Implementation Priority
+
+1. **High Priority:** Update strategy name to "Alpha Generation" ✅
+2. **Medium Priority:** Implement gradient card styling
+3. **Low Priority:** Add micro-animations and advanced visual effects
+
+The naming change is complete and ready! Would you like me to implement any of the visual card enhancements as well?

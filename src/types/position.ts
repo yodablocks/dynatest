@@ -9,4 +9,8 @@ export type Position = {
   amount: number;
   chainId: SupportedChainIds;
   status: string;
+  entryPrice: number; // Price per share when position was opened
+  updatedAt: string;
+  userId: string;
+  strategyId: string;
 };

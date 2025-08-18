@@ -7,16 +7,19 @@ import { fetchTokensPrices } from "../../hooks/useBalance/utils";
 export function useBatchTokenPrices(tokens: Token[]) {
   const account = useAccount();
 
-  return useQuery({
-    queryKey: ["batchTokenPrices", tokens.map((t) => t.name).sort()], // 排序確保 key 一致性
-    queryFn: () => fetchTokensPrices(tokens),
-    enabled: tokens.length > 0 && !!account.chainId,
-    placeholderData: {},
+  // Safety check to prevent undefined error
+  const safeTokens = tokens || [];
 
-    // Set throwOnError to false to avoid throwing error when fetching prices
-    throwOnError: (error) => {
-      console.error("BatchTokenPrices", error);
-      return false;
-    },
+  return useQuery({
+    queryKey: ["batchTokenPrices", safeTokens.map((t) => t.name).sort()],
+    queryFn: () => fetchTokensPrices(safeTokens),
+    enabled: safeTokens.length > 0,
+    placeholderData: {},
+    retry: 2, // Retry up to 2 times
+    retryDelay: 1000, // Wait 1 second between retries
+    staleTime: 60000, // Consider data fresh for 1 minute
+    
+    // Don't throw errors - return empty object instead
+    throwOnError: false,
   });
 }

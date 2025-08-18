@@ -152,14 +152,26 @@ export function AssetsProvider({ children }: AssetsProviderProps) {
   const updateTotalValue = useMutation({
     mutationFn: async () => {
       if (!smartWallet) throw new Error("User not found");
+      if (!process.env.NEXT_PUBLIC_CHATBOT_URL) {
+        console.warn("Backend API not configured - skipping total value update");
+        return;
+      }
 
       if (tokensQuery.data) {
-        await axios.patch<{ success: boolean }>(
-          `${process.env.NEXT_PUBLIC_CHATBOT_URL}/users/update_total/${smartWallet}`,
-          {
-            total_value: totalValue,
-          }
-        );
+        try {
+          await axios.patch<{ success: boolean }>(
+            `${process.env.NEXT_PUBLIC_CHATBOT_URL}/users/update_total/${smartWallet}`,
+            {
+              total_value: totalValue,
+            },
+            {
+              timeout: 5000, // 5 second timeout
+            }
+          );
+        } catch (error) {
+          console.warn("Failed to update total value on backend:", error);
+          // Don't throw - just log the warning
+        }
       }
     },
   });

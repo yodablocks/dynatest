@@ -1,4 +1,5 @@
 import { arbitrum } from "viem/chains";
+import type { Protocol } from "@/types/strategies";
 
 export const CAMELOT_CONTRACTS = {
   [arbitrum.id]: {
@@ -7,3 +8,12 @@ export const CAMELOT_CONTRACTS = {
     dividendsV2: "0x5422AA06a38fd9875fc2501380b40659fEebD3bB",
   },
 } as const;
+
+export const CAMELOT = {
+  name: "Camelot",
+  description:
+    "Camelot is a DEX and yield farming protocol on Arbitrum.",
+  icon: "/crypto-icons/protocol/camelot.svg",
+  link: "https://camelot.exchange/",
+  contracts: CAMELOT_CONTRACTS,
+} as const satisfies Protocol;

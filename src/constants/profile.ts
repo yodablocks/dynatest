@@ -1,4 +1,4 @@
-import { bsc, celo, flowMainnet, base, arbitrum, polygon } from "viem/chains";
+import { bsc, celo, flowMainnet, base, arbitrum, polygon, mainnet } from "viem/chains";
 
 import {
   CELO,
@@ -16,6 +16,7 @@ import type { SupportedChainIds } from "@/providers/config";
 
 // Define SUPPORTED_TOKENS with the correct type annotation
 export const SUPPORTED_TOKENS: Record<SupportedChainIds, Token[]> = {
+  [mainnet.id]: [ETH, USDC], // Ethereum Mainnet
   [polygon.id]: [USDT, USDC], // Polygon
   [arbitrum.id]: [ETH, USDT, USDC, wstETH], // Arbitrum
   [base.id]: [ETH, USDT, USDC, wstETH], // Base

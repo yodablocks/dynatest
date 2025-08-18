@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 import { getRiskColor } from "@/utils";
+import { DynamicChainDisplay } from "@/components/DynamicChainDisplay";
 import type { StrategyMetadata } from "@/types";
 import InvestmentForm from "./InvestmentForm";
 
@@ -98,11 +99,9 @@ export default function InvestModal({
             <div className="flex items-start mb-6">
               {/* Strategy icon (spans 2 rows) */}
               <div className="mr-4">
-                <Image
-                  src={`/crypto-icons/chains/${strategy.chainId}.svg`}
-                  alt={strategy.title}
-                  width={60}
-                  height={60}
+                <DynamicChainDisplay
+                  strategy={strategy}
+                  size={60}
                   className="rounded-lg"
                 />
               </div>

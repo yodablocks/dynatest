@@ -1,4 +1,4 @@
-import { base, bsc, celo, arbitrum, polygon } from "viem/chains";
+import { base, bsc, celo, arbitrum, polygon, mainnet } from "viem/chains";
 import type { Token } from "@/types";
 
 export const USDT = {
@@ -19,12 +19,25 @@ export const USDC = {
   decimals: 6,
   isNativeToken: false,
   chains: {
+    [mainnet.id]: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
     [arbitrum.id]: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
     [base.id]: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     [bsc.id]: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
     [polygon.id]: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
   },
 } as const satisfies Token;
+
+console.log('🔍 USDC chains debug:', {
+  mainnetId: mainnet.id,
+  baseId: base.id,
+  usdcChains: {
+    [mainnet.id]: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+    [arbitrum.id]: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+    [base.id]: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    [bsc.id]: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+    [polygon.id]: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+  }
+});
 
 export const ETH = {
   name: "ETH",
@@ -104,6 +117,7 @@ export const WETH = {
   decimals: 18,
   isNativeToken: false,
   chains: {
+    [mainnet.id]: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     [base.id]: "0x4200000000000000000000000000000000000006",
     [arbitrum.id]: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
   },

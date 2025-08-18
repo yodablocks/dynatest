@@ -19,19 +19,33 @@ type PositionResponse = {
 };
 
 const getPositions = async (address: string): Promise<Position[]> => {
-  const response = await axios.get<PositionResponse[]>(
-    `${process.env.NEXT_PUBLIC_CHATBOT_URL}/positions/${address}`
-  );
+  // Check if backend URL is configured
+  if (!process.env.NEXT_PUBLIC_CHATBOT_URL) {
+    console.warn("NEXT_PUBLIC_CHATBOT_URL not configured - positions feature disabled");
+    return [];
+  }
 
-  return response.data.map((position) => ({
-    id: position.position_id,
-    createAt: position.created_at,
-    strategy: position.strategy as Strategy,
-    tokenName: position.token_name,
-    amount: position.amount,
-    chainId: position.chain_id as SupportedChainIds,
-    status: position.status,
-  }));
+  try {
+    const response = await axios.get<PositionResponse[]>(
+      `${process.env.NEXT_PUBLIC_CHATBOT_URL}/positions/${address}`,
+      {
+        timeout: 5000, // 5 second timeout
+      }
+    );
+
+    return response.data.map((position) => ({
+      id: position.position_id,
+      createAt: position.created_at,
+      strategy: position.strategy as Strategy,
+      tokenName: position.token_name,
+      amount: position.amount,
+      chainId: position.chain_id as SupportedChainIds,
+      status: position.status,
+    }));
+  } catch (error) {
+    console.warn("Backend API not available - positions feature disabled", error);
+    return [];
+  }
 };
 
 export const usePositions = () => {
@@ -41,10 +55,9 @@ export const usePositions = () => {
   return useQuery({
     queryKey: ["positions", address],
     queryFn: () => getPositions(address || ""),
-    enabled: !!address,
-    throwOnError: (error) => {
-      console.error("PositionsQuery", error);
-      return false;
-    },
+    enabled: !!address && !!process.env.NEXT_PUBLIC_CHATBOT_URL,
+    retry: false, // Don't retry failed requests
+    throwOnError: false, // Don't throw errors - return empty data instead
+    staleTime: 30000, // Consider data fresh for 30 seconds
   });
 };

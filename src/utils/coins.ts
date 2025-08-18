@@ -27,11 +27,33 @@ export const getTokenByName = (name: string): Token => {
 };
 
 export const getTokenAddress = (token: Token, chainId: number): Address => {
-  if (!token.chains?.[chainId] && !token.isNativeToken) {
-    throw new Error("Token not supported on this chain");
+  console.log('🔍 getTokenAddress DEBUG:', {
+    tokenName: token?.name,
+    chainId,
+    tokenChains: token?.chains,
+    isNativeToken: token?.isNativeToken
+  });
+  
+  if (!token) {
+    throw new Error("Token is undefined");
   }
-
-  return token.chains?.[chainId] as Address;
+  
+  if (token.isNativeToken) {
+    throw new Error("Cannot get address for native token");
+  }
+  
+  if (!token.chains) {
+    throw new Error(`Token ${token.name} has no chains defined`);
+  }
+  
+  const address = token.chains[chainId];
+  console.log('🔍 getTokenAddress result:', { chainId, address });
+  
+  if (!address) {
+    throw new Error(`Token ${token.name} not supported on chain ${chainId}. Available chains: ${Object.keys(token.chains).join(', ')}`);
+  }
+  
+  return address as Address;
 };
 
 export const COINGECKO_IDS: Record<TokensName, string> = {

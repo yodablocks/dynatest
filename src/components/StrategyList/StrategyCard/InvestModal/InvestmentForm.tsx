@@ -52,7 +52,8 @@ const InvestmentForm: FC<InvestmentFormProps> = ({
 }) => {
   // User context
   const chainId = useChainId();
-  const isSupportedChain = chainId === strategy.chainId;
+  // For SmokehouseStrategy, allow cross-chain investment (we handle bridging)
+  const isSupportedChain = strategy.id === 'SmokehouseStrategy' ? true : chainId === strategy.chainId;
   const { authenticated } = usePrivy();
   const { ready: isWalletReady } = useWallets();
   const { switchChainAsync } = useWagmiSwitchChain();
@@ -111,23 +112,34 @@ const InvestmentForm: FC<InvestmentFormProps> = ({
   };
 
   const invest = async () => {
+    console.log('💵 INVEST FUNCTION STARTED');
+    console.log('💵 Validation check - amount validation:', validateAmount());
+    
     if (!validateAmount()) {
+      console.log('💵 ❌ Amount validation failed');
       toast.error("Investment amount must be greater than 0.01");
       return;
     }
+    
+    console.log('💵 ✅ Amount validation passed');
 
     const asset = assetsBalance.data.find((asset) => asset.token === currency);
+    console.log('💵 Asset found:', asset);
+    console.log('💵 Asset balance:', asset?.balance?.toString());
 
     // Check balance is zero and no chat process
     if (asset?.balance === BigInt(0) && !chat) {
+      console.log('💵 Balance is zero, opening deposit dialog');
       setIsDeposit(true);
       return;
     }
 
     if (chat?.handlePortfolio) {
+      console.log('💵 Chat portfolio handling');
       chat.handlePortfolio(amount);
       setIsDisabled(false);
     } else {
+      console.log('💵 Calling executeStrategy...');
       executeStrategy();
     }
   };
@@ -153,90 +165,161 @@ const InvestmentForm: FC<InvestmentFormProps> = ({
   };
 
   const executeStrategy = async () => {
+    console.log('🔥 EXECUTE STRATEGY STARTED');
+    console.log('🔥 Strategy details:', {
+      strategyId: strategy.id,
+      chainId,
+      amount,
+      currency: currency.name,
+      authenticated,
+      isWalletReady,
+      isSupportedChain
+    });
+    
     setIsLoading(true);
+    console.log('🔥 Loading state set to true');
 
-    const parsedAmount = parseUnits(amount, currency.decimals);
-    investStrategy.mutate(
-      {
-        strategyId: strategy.id,
-        amount: parsedAmount,
-        token: currency,
-      },
-      {
-        onSuccess: (tx) => {
-          toast.success(`Investment successful! ${tx}`);
-          if (handleClose) handleClose();
+    try {
+      const parsedAmount = parseUnits(amount, currency.decimals);
+      console.log('🔥 Amount parsed:', {
+        originalAmount: amount,
+        parsedAmount: parsedAmount.toString(),
+        decimals: currency.decimals
+      });
+      
+      console.log('🔥 About to call investStrategy.mutate...');
+      
+      investStrategy.mutate(
+        {
+          strategyId: strategy.id,
+          amount: parsedAmount,
+          token: currency,
         },
-        onError: (error) => {
-          console.error(error);
-          toast.error(`Investment failed! ${error}`);
-        },
-        onSettled: () => {
-          setIsLoading(false);
-        },
-      }
-    );
+        {
+          onSuccess: (tx) => {
+            console.log('🔥 ✅ Investment SUCCESS:', tx);
+            toast.success(`Investment successful! ${tx}`);
+            if (handleClose) {
+              console.log('🔥 Closing modal');
+              handleClose();
+            }
+          },
+          onError: (error) => {
+            console.log('🔥 ❌ Investment ERROR:', error);
+            console.error('🔥 Full error object:', error);
+            toast.error(`Investment failed! ${error}`);
+          },
+          onSettled: () => {
+            console.log('🔥 Investment settled, setting loading to false');
+            setIsLoading(false);
+          },
+        }
+      );
+      
+      console.log('🔥 investStrategy.mutate call completed (async)');
+    } catch (error) {
+      console.log('🔥 ❌ EXECUTE STRATEGY CAUGHT ERROR:', error);
+      setIsLoading(false);
+      toast.error(`Strategy execution failed: ${error}`);
+    }
   };
 
   const handleSubmit = (e: FormEvent) => {
+    console.log('📋 FORM SUBMIT STARTED');
     e.preventDefault();
+    
+    console.log('📋 Button state:', buttonState);
+    console.log('📋 Is disabled:', isDisabled);
+    console.log('📋 Is loading:', isLoading);
 
     switch (buttonState) {
       case ButtonState.Invest:
+        console.log('📋 Calling invest()...');
         invest();
         break;
       case ButtonState.Withdraw:
+        console.log('📋 Calling withdraw()...');
         withdraw();
         break;
       case ButtonState.LP:
+        console.log('📋 Calling processLp()...');
         processLp();
         break;
       case ButtonState.SwitchChain:
+        console.log('📋 Calling handleSwitchChain()...');
         handleSwitchChain(strategy.chainId);
         break;
       case ButtonState.ConnectWallet:
+        console.log('📋 Calling login()...');
         login();
         break;
       default:
+        console.log('📋 No action for button state:', buttonState);
         break;
     }
   };
 
   useEffect(() => {
     const getButtonState = () => {
+      console.log('🔄 BUTTON STATE CALCULATION:', {
+        authenticated,
+        isLoading,
+        isWalletReady,
+        isSupportedChain,
+        mode,
+        chainId,
+        strategyChainId: strategy.chainId
+      });
+      
       if (!authenticated) {
+        console.log('🔄 Button state: ConnectWallet (not authenticated)');
         return ButtonState.ConnectWallet;
       }
 
       if (isLoading || !isWalletReady) {
+        console.log('🔄 Button state: Pending (loading or wallet not ready)');
         return ButtonState.Pending;
       }
 
       if (!isSupportedChain) {
+        console.log('🔄 Button state: SwitchChain (unsupported chain)');
         return ButtonState.SwitchChain;
       }
 
       switch (mode) {
         case "invest":
+          console.log('🔄 Button state: Invest');
           return ButtonState.Invest;
         case "withdraw":
+          console.log('🔄 Button state: Withdraw');
           return ButtonState.Withdraw;
         case "lp":
+          console.log('🔄 Button state: LP');
           return ButtonState.LP;
         default:
+          console.log('🔄 Button state: Pending (default)');
           return ButtonState.Pending;
       }
     };
 
-    setButtonState(getButtonState());
+    const newButtonState = getButtonState();
+    setButtonState(newButtonState);
     setIsDisabled(isLoading);
-  }, [isLoading, isSupportedChain, isWalletReady, mode]);
+    
+    console.log('🔄 Final button state set to:', newButtonState);
+    console.log('🔄 Button disabled:', isLoading);
+  }, [isLoading, isSupportedChain, isWalletReady, mode, authenticated, chainId, strategy.chainId]);
 
   return (
     <>
       <form onSubmit={handleSubmit}>
         <div className="mb-1 capitalize text-sm text-gray-500">
           Investment Amount
+          {strategy.id === 'SmokehouseStrategy' && chainId !== strategy.chainId && (
+            <div className="mt-1 text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">
+              🌉 Cross-chain investment: Your USDC will be automatically bridged from {chainId === 8453 ? 'Base' : 'current chain'} to Ethereum
+            </div>
+          )}
         </div>
         {/* Amount input */}
         <AmountInput

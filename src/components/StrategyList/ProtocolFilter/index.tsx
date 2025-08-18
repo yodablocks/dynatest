@@ -6,9 +6,11 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
   DropdownMenuSeparator,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import type { Protocol } from "@/types/strategies";
+import { PROTOCOLS, COMING_SOON_PROTOCOLS } from "@/constants/protocols";
 
 export interface ProtocolFilterProps {
   protocols: Protocol[];
@@ -32,6 +34,13 @@ export default function ProtocolFilter({
     setSelectedProtocols([]);
   };
 
+  const isProtocolActive = (protocol: Protocol) => {
+    return PROTOCOLS.some(p => p.name === protocol.name);
+  };
+
+  const activeProtocols = protocols.filter(p => isProtocolActive(p));
+  const comingSoonProtocols = protocols.filter(p => !isProtocolActive(p));
+
   return (
     <DropdownMenu
       open={showProtocolDropdown}
@@ -42,7 +51,7 @@ export default function ProtocolFilter({
         <button
           className={`flex items-center gap-2 px-4 py-2.5 ${
             selectedProtocols.length > 0 ? "bg-[#E2E8F7]" : "bg-[#F8F9FE]"
-          } rounded-lg`}
+          } rounded-lg border border-[#E2E8F7] hover:bg-[#E2E8F7] transition-colors`}
         >
           <span className="font-[family-name:var(--font-inter)] font-medium text-sm text-[#121212]">
             {selectedProtocols.length > 0
@@ -66,18 +75,54 @@ export default function ProtocolFilter({
             Filter by Protocol
           </div>
         </div>
+        
         <div className="max-h-60 overflow-y-auto px-1">
-          {protocols.map((protocol) => (
-            <DropdownMenuCheckboxItem
-              key={protocol.name}
-              className="cursor-pointer"
-              checked={selectedProtocols.some((p) => p.name === protocol.name)}
-              onCheckedChange={() => toggleProtocolSelection(protocol)}
-              onSelect={(e) => e.preventDefault()}
-            >
-              {protocol.name}
-            </DropdownMenuCheckboxItem>
-          ))}
+          {/* Active Protocols */}
+          {activeProtocols.length > 0 && (
+            <>
+              <DropdownMenuLabel className="text-xs text-green-600 font-semibold px-2 py-1">
+                🟢 Live on Base
+              </DropdownMenuLabel>
+              {activeProtocols.map((protocol) => (
+                <DropdownMenuCheckboxItem
+                  key={protocol.name}
+                  className="cursor-pointer"
+                  checked={selectedProtocols.some((p) => p.name === protocol.name)}
+                  onCheckedChange={() => toggleProtocolSelection(protocol)}
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  <div className="flex items-center gap-2">
+                    <span>{protocol.name}</span>
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  </div>
+                </DropdownMenuCheckboxItem>
+              ))}
+            </>
+          )}
+
+          {/* Coming Soon Protocols */}
+          {comingSoonProtocols.length > 0 && (
+            <>
+              {activeProtocols.length > 0 && <DropdownMenuSeparator />}
+              <DropdownMenuLabel className="text-xs text-orange-600 font-semibold px-2 py-1">
+                🟠 Coming Soon
+              </DropdownMenuLabel>
+              {comingSoonProtocols.map((protocol) => (
+                <DropdownMenuCheckboxItem
+                  key={protocol.name}
+                  className="cursor-not-allowed opacity-60"
+                  checked={false}
+                  disabled
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  <div className="flex items-center gap-2">
+                    <span>{protocol.name}</span>
+                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                  </div>
+                </DropdownMenuCheckboxItem>
+              ))}
+            </>
+          )}
         </div>
 
         <DropdownMenuSeparator />
@@ -99,6 +144,11 @@ export default function ProtocolFilter({
           >
             Apply
           </Button>
+        </div>
+        
+        {/* Info footer */}
+        <div className="px-3 py-2 text-xs text-gray-500 border-t">
+          Currently supporting Base network protocols only
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
