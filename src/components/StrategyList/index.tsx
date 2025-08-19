@@ -154,7 +154,7 @@ export default function StrategyList() {
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-semibold text-blue-900 mb-1">
-              🚀 Currently Live on Base & Ethereum Networks
+              Live
             </h3>
             <p className="text-sm text-blue-700">
               {activeCount} strategies available • {comingSoonCount} more coming soon across multiple chains

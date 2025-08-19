@@ -119,7 +119,7 @@ export default function ChainFilter({
       <div className="flex items-center gap-4 text-xs text-gray-600 mt-1">
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-          <span>Live on Base & Ethereum</span>
+          <span>Live</span>
         </div>
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 bg-orange-400 rounded-full"></div>

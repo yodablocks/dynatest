@@ -6,6 +6,7 @@ import { useState, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Tooltip } from "@/components/Tooltip";
 import { DynamicChainDisplayWithTooltip } from "@/components/DynamicChainDisplay";
+import { getDynamicRiskLevel } from "@/utils/dynamicRisk";
 
 import InvestModal from "./InvestModal";
 import { getRiskColor } from "@/utils";
@@ -26,10 +27,13 @@ function getRiskLevelLabel(risk: RiskLevel) {
 }
 
 export default function StrategyCard(strategy: StrategyMetadata) {
-  const { title, id, apy, risk, description, tokens, chainId, protocol, status } =
+  const { title, id, apy, description, tokens, chainId, protocol, status } =
     strategy;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // Use dynamic risk based on APY
+  const dynamicRisk = getDynamicRiskLevel(strategy);
 
   // Extract the base description without "Learn More" text
   const baseDescription = description.replace(/\s*Learn More\s*$/, "");
@@ -138,13 +142,13 @@ export default function StrategyCard(strategy: StrategyMetadata) {
               </span>
               <div
                 className="flex justify-center items-center px-2 py-1 rounded-lg"
-                style={{ backgroundColor: isDisabled ? '#f3f4f6' : getRiskColor(risk).bg }}
+                style={{ backgroundColor: isDisabled ? '#f3f4f6' : getRiskColor(dynamicRisk).bg }}
               >
                 <span
                   className="text-xs font-medium"
-                  style={{ color: isDisabled ? '#9ca3af' : getRiskColor(risk).text }}
+                  style={{ color: isDisabled ? '#9ca3af' : getRiskColor(dynamicRisk).text }}
                 >
-                  {getRiskLevelLabel(risk)}
+                  {getRiskLevelLabel(dynamicRisk)}
                 </span>
               </div>
             </div>

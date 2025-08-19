@@ -4,6 +4,7 @@ import { useState } from "react";
 import { base, mainnet } from "viem/chains";
 
 import { getRiskColor } from "@/utils";
+import { getDynamicRiskLevel } from "@/utils/dynamicRisk";
 import { useChat } from "@/contexts/ChatContext";
 import type { Message, StrategyMetadata } from "@/types";
 import { getChain } from "@/constants/chains";
@@ -143,6 +144,7 @@ export default function StrategyTable({ strategies }: StrategyTableProps) {
           {sortedStrategies.map((strategy, index) => {
             const isComingSoon = isStrategyComingSoon(strategy);
             const isDisabled = isComingSoon;
+            const dynamicRisk = getDynamicRiskLevel(strategy);
             
             return (
               <tr 
@@ -181,21 +183,21 @@ export default function StrategyTable({ strategies }: StrategyTableProps) {
                   </div>
                 </td>
                 
-                {/* Risk */}
+                {/* Risk - Now using simple dynamic risk based on APY */}
                 <td className="pr-2 py-4">
                   <div
                     className="inline-flex px-2 py-1 text-sm rounded-lg"
                     style={{ 
-                      backgroundColor: isDisabled ? '#f3f4f6' : getRiskColor(strategy.risk).bg 
+                      backgroundColor: isDisabled ? '#f3f4f6' : getRiskColor(dynamicRisk).bg 
                     }}
                   >
                     <span
                       className="font-medium capitalize"
                       style={{ 
-                        color: isDisabled ? '#9ca3af' : getRiskColor(strategy.risk).text 
+                        color: isDisabled ? '#9ca3af' : getRiskColor(dynamicRisk).text 
                       }}
                     >
-                      {strategy.risk}
+                      {dynamicRisk}
                     </span>
                   </div>
                 </td>
