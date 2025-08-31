@@ -46,8 +46,8 @@ export default function StrategiesTableComponent() {
       <table className="w-full border-separate border-spacing-y-3">
         <thead>
           <tr className="text-sm font-semibold text-gray-500">
-            <th className="w-[20%] text-left px-6 font-medium">Strategy</th>
-            <th className="w-[20%] text-right px-4 font-medium">Asset</th>
+            <th className="w-[25%] text-left px-6 font-medium">Strategy</th>
+            <th className="w-[15%] text-right px-4 font-medium">Asset</th>
             <th
               className="w-[20%] text-right px-4 font-medium cursor-pointer"
               onClick={handleSort}
@@ -61,8 +61,9 @@ export default function StrategiesTableComponent() {
                 )}
               </div>
             </th>
-            <th className="w-[20%] text-right px-4 font-medium">Profit</th>
-            <th className="w-[20%] text-right px-6 font-medium">Action</th>
+            <th className="w-[15%] text-right px-4 font-medium">Chain</th>
+            <th className="w-[15%] text-right px-4 font-medium">Profit</th>
+            <th className="w-[10%] text-right px-6 font-medium">Action</th>
           </tr>
         </thead>
         <tbody>

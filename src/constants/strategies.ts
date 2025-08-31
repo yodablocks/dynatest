@@ -138,7 +138,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
 
   {
     title: "Enhanced Returns",
-    id: "AaveV3Supply",
+    id: "AaveV3SupplyLeveraged",
     apy: 10.1,
     risk: "medium",
     color: "#9896FF",
@@ -195,7 +195,7 @@ export const COMING_SOON_STRATEGIES: StrategyMetadata[] = [
   },
   {
     title: "AAVE Lending (Arbitrum)",
-    id: "AaveV3Supply",
+    id: "AaveV3SupplyArbitrum",
     apy: 4.5,
     risk: "medium",
     color: "#9896FF",
@@ -215,7 +215,7 @@ export const COMING_SOON_STRATEGIES: StrategyMetadata[] = [
 
   {
     title: "AAVE Supplying (BSC)",
-    id: "AaveV3Supply",
+    id: "AaveV3SupplyBSC",
     apy: 4.3,
     risk: "medium",
     color: "#1000FF",
@@ -235,7 +235,7 @@ export const COMING_SOON_STRATEGIES: StrategyMetadata[] = [
 
   {
     title: "Flow Ecosystem Yield",
-    id: "MorphoSupply",
+    id: "MorphoSupplyFlow",
     apy: 4.3,
     risk: "low",
     color: "#1000FF",

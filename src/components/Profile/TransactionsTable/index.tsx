@@ -8,6 +8,17 @@ import { getChain } from "@/constants/chains";
 
 const initialTransactions: GetTransactionResponse[] = [];
 
+// Map backend strategy IDs to user-friendly names
+const STRATEGY_DISPLAY_NAMES: Record<string, string> = {
+  'SmokehouseStrategy': 'Institutional USDC',
+  'Re7Strategy': 'Professional Yield', 
+  'MevCapitalStrategy': 'Alpha Generation',
+  'AaveV3Supply': 'Conservative Yield',
+  'MorphoSupply': 'Optimized Lending',
+  'AaveV3SupplyLeveraged': 'Enhanced Returns',
+  'FluidSupply': 'Dynamic Yield'
+};
+
 export default function TransactionsTableComponent() {
   const { transactions: txs } = useTransaction();
   const chainId = useChainId();
@@ -50,7 +61,7 @@ export default function TransactionsTableComponent() {
                 {/* Date */}
                 <div className="w-[20%] p-4">
                   <div className="font-medium text-md">
-                    {transaction.created_at}
+                    {transaction.created_at.split('T')[0]}
                   </div>
                 </div>
 
@@ -72,14 +83,18 @@ export default function TransactionsTableComponent() {
                       />
                     </div>
                     <div>
-                      <div className="font-bold">{transaction.strategy}</div>
+                      <div className="font-bold">
+                        {STRATEGY_DISPLAY_NAMES[transaction.strategy] || transaction.strategy}
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Type */}
                 <div className="w-[20%] p-4">
-                  <div className="font-medium text-md">Lending</div>
+                  <div className="font-medium text-md">
+                    {transaction.transaction_type === "withdraw" ? "Withdraw" : "Deposit"}
+                  </div>
                 </div>
 
                 {/* Amount */}

@@ -87,6 +87,7 @@ export function useStrategy() {
         hash: txHash,
         amount: splitAmount,
         token_name: tokenName,
+        transaction_type: "deposit",
       });
     }
   }
@@ -164,7 +165,11 @@ export function useStrategy() {
         fee
       );
       console.log('💰 Fee call debug:', { tokenName: token.name, strategyChainId: strategy.chainId, feeCall });
-      calls.push(feeCall);
+      
+      // Only add fee call if fee > 0
+      if (fee > BigInt(0)) {
+        calls.push(feeCall);
+      }
 
       const txHash = await sendAndWaitTransaction(calls, strategy.chainId);
 
@@ -183,6 +188,7 @@ export function useStrategy() {
         hash: txHash,
         amount: Number(formatUnits(amountWithoutFee, token.decimals)),
         token_name: token.name,
+        transaction_type: "withdraw",
       });
 
       return txHash;
@@ -250,6 +256,7 @@ export function useStrategy() {
         const isBridgeScenario = strategyId === 'SmokehouseStrategy' && chainId !== strategy.chainId;
         const feeChainId = isBridgeScenario ? chainId : strategy.chainId;
         
+        // Skip fee for testing
         const feeCall = addFeesCall(
           getTokenAddress(token, feeChainId),
           token.isNativeToken,
@@ -262,7 +269,10 @@ export function useStrategy() {
           tokenName: token.name 
         });
         
-        calls.push(feeCall);
+        // Only add fee call if fee > 0
+        if (fee > BigInt(0)) {
+          calls.push(feeCall);
+        }
         console.log('📋 All calls (including fee):', calls);
         
         console.log('🔗 Attempting to send transaction...');
@@ -287,6 +297,7 @@ export function useStrategy() {
           hash: txHash,
           amount: Number(formatUnits(amountWithoutFee, token.decimals)),
           token_name: token.name,
+          transaction_type: "deposit",
         });
 
         console.log('✅ Investment completed successfully!');
@@ -320,7 +331,11 @@ export function useStrategy() {
         token.isNativeToken,
         fee
       );
-      calls.push(feeCall);
+      
+      // Only add fee call if fee > 0
+      if (fee > BigInt(0)) {
+        calls.push(feeCall);
+      }
 
       const txHash = await sendAndWaitTransaction(calls, chainId);
 

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Tooltip } from "@/components/Tooltip";
 import { DynamicChainDisplayWithTooltip } from "@/components/DynamicChainDisplay";
 import { getDynamicRiskLevel } from "@/utils/dynamicRisk";
+import { useStrategyLiveData } from "@/services/strategyDataService";
 
 import InvestModal from "./InvestModal";
 import { getRiskColor } from "@/utils";
@@ -32,8 +33,23 @@ export default function StrategyCard(strategy: StrategyMetadata) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+  // Get live data for this strategy
+  const { data: liveData, loading: liveDataLoading } = useStrategyLiveData(id);
+  
   // Use dynamic risk based on APY
   const dynamicRisk = getDynamicRiskLevel(strategy);
+
+  // Use live data with fallback to hardcoded values
+  const displayAPY = liveData?.apy ?? apy;
+  const displayTVL = liveData?.tvl ?? Math.abs(
+    title
+      .split("")
+      .reduce(
+        (hash, char) => (hash << 5) - hash + char.charCodeAt(0),
+        0
+      ) % 100
+  );
+  const dataSource = liveData?.source ?? 'hardcoded';
 
   // Extract the base description without "Learn More" text
   const baseDescription = description.replace(/\s*Learn More\s*$/, "");
@@ -138,7 +154,23 @@ export default function StrategyCard(strategy: StrategyMetadata) {
             </div>
             <div className="flex items-center gap-3">
               <span className={`font-medium text-base ${isDisabled ? 'text-gray-400' : 'text-[#17181C]'}`}>
-                {isComingSoon ? 'APY TBA' : `APY ${apy}%`}
+                {isComingSoon ? 'APY TBA' : (
+                  liveDataLoading ? (
+                    <span className="animate-pulse">Loading...</span>
+                  ) : (
+                    `APY ${displayAPY.toFixed(2)}%`
+                  )
+                )}
+                {liveData && !isComingSoon && (
+                  <span 
+                    className={`ml-1 text-xs ${
+                      dataSource === 'morpho' ? 'text-green-600' : 'text-gray-400'
+                    }`}
+                    title={`Source: ${dataSource}`}
+                  >
+                    {dataSource === 'morpho' ? '🟢' : '⚪'}
+                  </span>
+                )}
               </span>
               <div
                 className="flex justify-center items-center px-2 py-1 rounded-lg"
@@ -195,15 +227,23 @@ export default function StrategyCard(strategy: StrategyMetadata) {
                   </div>
 
                   <p className={`text-sm ${isDisabled ? 'text-gray-500' : 'text-gray-900'}`}>
-                    {isComingSoon ? 'TBA' : `$ ${Math.abs(
-                      title
-                        .split("")
-                        .reduce(
-                          (hash, char) =>
-                            (hash << 5) - hash + char.charCodeAt(0),
-                          0
-                        ) % 100
-                    )}M`}
+                    {isComingSoon ? 'TBA' : (
+                      liveDataLoading ? (
+                        <span className="animate-pulse">Loading...</span>
+                      ) : (
+                        `${displayTVL.toFixed(0)}M`
+                      )
+                    )}
+                    {liveData && !isComingSoon && (
+                      <span 
+                        className={`ml-1 text-xs ${
+                          dataSource === 'morpho' ? 'text-green-600' : 'text-gray-400'
+                        }`}
+                        title={`Source: ${dataSource}`}
+                      >
+                        {dataSource === 'morpho' ? '🟢' : '⚪'}
+                      </span>
+                    )}
                   </p>
 
                   <div className={`text-sm flex items-center gap-1 ${isDisabled ? 'text-gray-500' : 'text-gray-900'}`}>

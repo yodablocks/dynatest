@@ -19,7 +19,7 @@ export const SUPPORTED_TOKENS: Record<SupportedChainIds, Token[]> = {
   [mainnet.id]: [ETH, USDC], // Ethereum Mainnet
   [polygon.id]: [USDT, USDC], // Polygon
   [arbitrum.id]: [ETH, USDT, USDC, wstETH], // Arbitrum
-  [base.id]: [ETH, USDT, USDC, wstETH], // Base
+  [base.id]: [USDC], // Base - Only USDC for DynaVest strategies
   [bsc.id]: [BNB, USDT, USDC, wbETH], // BSC
   [celo.id]: [CELO, cEUR], // Celo
   [flowMainnet.id]: [FLOW, USDT, USDC], // Flow

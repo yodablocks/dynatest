@@ -3,7 +3,7 @@
 import { useState, KeyboardEvent, useRef, useEffect } from "react";
 import { Undo2 } from "lucide-react";
 import { format } from "date-fns";
-import { arbitrum } from "viem/chains";
+import { base } from "viem/chains";
 
 import type { Message } from "@/classes/message";
 import {
@@ -70,7 +70,7 @@ export default function Home() {
       case "strategies":
         const chains = botResponse.data.chain
           ? [botResponse.data.chain]
-          : [arbitrum.id];
+          : [base.id];
         const riskLevel = botResponse.data.risk_level || "low";
 
         nextMessage = new FindStrategiesMessage(
@@ -224,7 +224,8 @@ export default function Home() {
     closeChat();
   }, [closeChat]);
 
-  // Process onboarding logic
+  // Check if conversation contains FindStrategiesMessage to expand width
+  const hasStrategiesMessage = conversation.some(message => message instanceof FindStrategiesMessage);
 
   return (
     <div className="h-[80vh]">
@@ -243,10 +244,9 @@ export default function Home() {
                   <h2 className="font-[Manrope] font-extrabold text-lg mb-2">
                     👋 Welcome to DynaVest Bot!
                   </h2>
+                  {/* Old message: I'm a DeFi investment bot. Ask me anything about DeFi yield strategies, portfolio management, or use one of our built-in functions below to get started. */}
                   <p className="font-[Manrope] font-medium text-sm">
-                    I&apos;m a DeFi investment bot. Ask me anything about DeFi
-                    yield strategies, portfolio management, or use one of our
-                    built-in functions below to get started.
+                    I help you discover and invest in curated DeFi strategies. I can show you our active yield strategies, build personalized portfolios, or guide you through the investment process step-by-step.
                   </p>
                 </div>
               </div>
@@ -340,18 +340,16 @@ export default function Home() {
           </>
         ) : (
           <>
-            {/* Chat View */}
-            {/* Welcome Message at top of conversation */}
-            <div className="w-full max-w-[805px] mx-auto px-4 md:px-0">
+            {/* Chat View - Expand width when strategies are shown */}
+            <div className={`w-full ${hasStrategiesMessage ? 'max-w-[1200px]' : 'max-w-[805px]'} mx-auto px-4 md:px-0`}>
               <div className="mx-auto mb-4">
                 <div className="text-[#17181C] rounded-[0px_10px_10px_10px] p-4">
                   <h2 className="font-[Manrope] font-extrabold text-lg mb-2">
                     👋 Welcome to DynaVest Bot!
                   </h2>
+                  {/* Old message: I'm a DeFi investment bot. Ask me anything about DeFi yield strategies, portfolio management, or use one of our built-in functions below to get started. */}
                   <p className="font-[Manrope] font-medium text-sm">
-                    I&apos;m a DeFi investment bot. Ask me anything about DeFi
-                    yield strategies, portfolio management, or use one of our
-                    built-in functions below to get started.
+                    I help you discover and invest in curated DeFi strategies. I can show you our active yield strategies, build personalized portfolios, or guide you through the investment process step-by-step.
                   </p>
                 </div>
               </div>
@@ -369,7 +367,11 @@ export default function Home() {
                       }`}
                     >
                       <div
-                        className={`max-w-[90%] md:max-w-[80%] rounded-2xl py-3 ${
+                        className={`${
+                          message instanceof FindStrategiesMessage 
+                            ? 'w-full' 
+                            : 'max-w-[90%] md:max-w-[80%]'
+                        } rounded-2xl py-3 ${
                           message.metadata.sender === "user"
                             ? "bg-white text-black px-4"
                             : "bg-transparent text-gray-800"

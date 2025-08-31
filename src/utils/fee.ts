@@ -14,7 +14,7 @@ console.log('💰 FEE_RECEIVER debug:', {
 const FALLBACK_FEE_RECEIVER: Address = "0x0000000000000000000000000000000000000000";
 const ACTUAL_FEE_RECEIVER = FEE_RECEIVER || FALLBACK_FEE_RECEIVER;
 
-export const calculateFee = (amount: bigint, fee: bigint = BigInt(5)) => {
+export const calculateFee = (amount: bigint, fee: bigint = BigInt(0)) => {
   return {
     fee: (amount * fee) / BigInt(1000),
     amount: amount - (amount * fee) / BigInt(1000),

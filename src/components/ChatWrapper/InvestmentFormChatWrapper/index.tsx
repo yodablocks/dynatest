@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { BOT_STRATEGY } from "@/constants/strategies";
 import type { StrategyMetadata } from "@/types";
-import ChainFilter from "@/components/StrategyList/ChainFilter";
 import InvestmentForm from "@/components/StrategyList/StrategyCard/InvestModal/InvestmentForm";
 import { InvestMessage } from "@/classes/message";
 
@@ -19,7 +18,7 @@ const InvestmentFormChatWrapper = ({
   const [botStrategy, setBotStrategy] =
     useState<StrategyMetadata>(BOT_STRATEGY);
 
-  const [chain, setChain] = useState<number>(message.chain);
+  const chain = message.chain; // Fixed to Base network
 
   useEffect(() => {
     setBotStrategy({
@@ -30,19 +29,20 @@ const InvestmentFormChatWrapper = ({
 
   const handlePortfolio = async (amount: string) => {
     message.amount = amount;
-    message.chain = chain;
+    // Chain is already set to Base by default
     await addBotMessage(message.next());
   };
 
   return (
     <div className="flex flex-col gap-3 mt-3 pt-3 border-t border-gray-300 w-[80%]">
       <div className="flex items-center gap-2">
-        <p className="font-[Manrope] font-medium text-sm"> Select Chains </p>
-        <ChainFilter
-          selectedChains={[chain]}
-          setSelectedChain={setChain}
-          selectionMode="single"
-        />
+        <p className="font-[Manrope] font-medium text-sm text-gray-600">
+          Cross-chain portfolio on Base network
+        </p>
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          <span className="text-xs text-green-600 font-medium">Base (Live)</span>
+        </div>
       </div>
       <InvestmentForm
         strategy={botStrategy}

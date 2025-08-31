@@ -13,6 +13,7 @@ import InvestmentForm from "@/components/StrategyList/StrategyCard/InvestModal/I
 import { DynamicChainDisplay } from "@/components/DynamicChainDisplay";
 import { Home, ChartLine, FileChartColumn } from "lucide-react";
 import { getRiskColor } from "@/utils";
+import { useStrategyLiveData, formatAPY, formatTVL } from "@/services/strategyDataService";
 
 function StrategyDetailContent() {
   const { openChat } = useChat();
@@ -24,10 +25,26 @@ function StrategyDetailContent() {
 
   // Find the strategy that matches the normalized title
   const strategy = STRATEGIES_METADATA.find((s) => s.id === id);
+  
+  // Get live data for this strategy
+  const { data: liveData, loading: liveDataLoading } = useStrategyLiveData(id);
 
   if (!strategy) {
     notFound();
   }
+
+  // Use live data with fallback to hardcoded values
+  const displayAPY = liveData?.apy ?? strategy.apy;
+  const displayTVL = liveData?.tvl ?? Math.abs(
+    strategy.title
+      .split("")
+      .reduce(
+        (hash, char) => (hash << 5) - hash + char.charCodeAt(0),
+        0
+      ) % 100
+  );
+  const displayDaily = liveData?.dailyRate ?? (strategy.apy / 365);
+  const dataSource = liveData?.source ?? 'hardcoded';
 
   return (
     <div className="relative">
@@ -179,23 +196,66 @@ function StrategyDetailContent() {
                   <div className="md:px-4 py-2">
                     <div className="text-xs text-gray-500 uppercase tracking-wider">
                       TVL
+                      {liveDataLoading && (
+                        <span className="ml-1 text-blue-500">•</span>
+                      )}
+                      {liveData && (
+                        <span 
+                          className={`ml-1 text-xs ${
+                            dataSource === 'morpho' ? 'text-green-600' : 'text-gray-400'
+                          }`}
+                          title={`Source: ${dataSource}`}
+                        >
+                          {dataSource === 'morpho' ? '🟢' : '⚪'}
+                        </span>
+                      )}
                     </div>
-                    <div className="font-medium mt-1">$130,478</div>
+                    <div className="font-medium mt-1">
+                      {liveDataLoading ? (
+                        <span className="animate-pulse">Loading...</span>
+                      ) : (
+                        `${displayTVL.toFixed(0)}M`
+                      )}
+                    </div>
                   </div>
                   <div className="md:px-4 py-2">
                     <div className="text-xs text-gray-500 uppercase tracking-wider">
                       APY
+                      {liveDataLoading && (
+                        <span className="ml-1 text-blue-500">•</span>
+                      )}
+                      {liveData && (
+                        <span 
+                          className={`ml-1 text-xs ${
+                            dataSource === 'morpho' ? 'text-green-600' : 'text-gray-400'
+                          }`}
+                          title={`Source: ${dataSource}`}
+                        >
+                          {dataSource === 'morpho' ? '🟢' : '⚪'}
+                        </span>
+                      )}
                     </div>
                     <div className="max-sm:text-xs font-medium mt-1">
-                      {strategy.apy}%
+                      {liveDataLoading ? (
+                        <span className="animate-pulse">Loading...</span>
+                      ) : (
+                        `${displayAPY.toFixed(2)}%`
+                      )}
                     </div>
                   </div>
                   <div className="md:px-4 py-2">
                     <div className="text-xs text-gray-500 uppercase tracking-wider">
                       Daily
+                      {liveDataLoading && (
+                        <span className="ml-1 text-blue-500">•</span>
+                      )}
                     </div>
                     <div className="max-sm:text-xs font-medium mt-1">
-                      0.0555%
+                      {liveDataLoading ? (
+                        <span className="animate-pulse">Loading...</span>
+                      ) : (
+                        `${displayDaily.toFixed(4)}%`
+                      )}
                     </div>
                   </div>
                 </div>

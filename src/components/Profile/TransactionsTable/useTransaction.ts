@@ -13,6 +13,7 @@ export type GetTransactionResponse = {
   amount: number;
   chain_id: number;
   token_name: string;
+  transaction_type?: string;
 };
 
 export type AddTransactionRequest = {
@@ -22,6 +23,7 @@ export type AddTransactionRequest = {
   hash: string;
   amount: number;
   token_name: string;
+  transaction_type: string;
 };
 
 export const useTransaction = () => {

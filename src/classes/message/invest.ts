@@ -13,7 +13,7 @@ import { base, arbitrum } from "viem/chains";
 
 export class InvestMessage extends Message {
   public amount: string = "0";
-  public chain: number = wagmiConfig.chains[0].id;
+  public chain: number = base.id;
 
   constructor(metadata: MessageMetadata, _chain?: number) {
     super(metadata);
