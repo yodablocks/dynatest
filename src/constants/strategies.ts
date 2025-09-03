@@ -8,11 +8,12 @@ export const STRATEGIES = [
   "AaveV3Supply",
   "MorphoSupply", 
   "FluidSupply",
-  "UniswapV3SwapLST",
+  // "UniswapV3SwapLST", // DISABLED: Liquid Staking - not ready for production
   "MultiStrategy", // Composition pattern - combines multiple strategies
-  "SmokehouseStrategy", // Ethereum Smokehouse USDC vault
+  // DISABLED: CCTP incompatible with Privy smart wallets
+  // "SmokehouseStrategy", // Ethereum Smokehouse USDC vault - DISABLED
   "Re7Strategy", // Base Re7 USDC vault
-  "MevCapitalStrategy", // Ethereum MEV Capital USDC vault
+  // "MevCapitalStrategy", // Ethereum MEV Capital USDC vault - DISABLED
   // Coming soon strategies
   "StCeloStaking",
   "CamelotStaking",
@@ -38,8 +39,8 @@ export const BOT_STRATEGY: StrategyMetadata = {
 // Ethereum strategies (currently empty - moved to ACTIVE)
 export const ETHEREUM_STRATEGIES: StrategyMetadata[] = [];
 
-// Active strategies on Base network + Cross-Chain strategies
-export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
+// CCTP strategies temporarily disabled due to Privy smart wallet incompatibility
+const DISABLED_CCTP_STRATEGIES: StrategyMetadata[] = [
   {
     title: "Institutional USDC",
     id: "SmokehouseStrategy",
@@ -57,26 +58,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
       "https://steakhouse.financial/",
     tokens: [USDC],
     chainId: mainnet.id,
-    status: "active",
-  },
-  {
-    title: "Professional Yield",
-    id: "Re7Strategy",
-    apy: 8.2,
-    risk: "medium",
-    color: "#4C9AFF",
-    protocol: MORPHO,
-    description:
-      "Supply USDC to Re7 Labs institutional-grade MetaMorpho vault on Base network with $700M+ TVL and professional risk management.",
-    fullDescription:
-      "Access Re7 Labs' institutional-grade USDC lending through a premium MetaMorpho vault on Base network. Re7 Labs manages $700M+ TVL with institutional validation and professional risk management. Features a 20% performance fee structure.",
-    externalLink:
-      "https://app.morpho.org/base/vault/0x12AFDeFb2237a5963e7BAb3e2D46ad0eee70406e/re7-usdc",
-    learnMoreLink:
-      "https://re7.capital/",
-    tokens: [USDC],
-    chainId: base.id,
-    status: "active",
+    status: "disabled", // CCTP bridge incompatible with Privy
   },
   {
     title: "Alpha Generation",
@@ -95,6 +77,29 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
       "https://mev.capital/",
     tokens: [USDC],
     chainId: mainnet.id,
+    status: "disabled", // CCTP bridge incompatible with Privy
+  },
+];
+
+// Active strategies on Base network only
+export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
+  {
+    title: "Professional Yield",
+    id: "Re7Strategy",
+    apy: 8.2,
+    risk: "medium",
+    color: "#4C9AFF",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to Re7 Labs institutional-grade MetaMorpho vault on Base network with $700M+ TVL and professional risk management.",
+    fullDescription:
+      "Access Re7 Labs' institutional-grade USDC lending through a premium MetaMorpho vault on Base network. Re7 Labs manages $700M+ TVL with institutional validation and professional risk management. Features a 20% performance fee structure.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0x12AFDeFb2237a5963e7BAb3e2D46ad0eee70406e/re7-usdc",
+    learnMoreLink:
+      "https://re7.capital/",
+    tokens: [USDC],
+    chainId: base.id,
     status: "active",
   },
   {

@@ -1,4 +1,4 @@
-import { STRATEGIES_METADATA } from "@/constants/strategies";
+import { STRATEGIES_METADATA, ACTIVE_STRATEGIES } from "@/constants/strategies";
 import type {
   StrategiesSet,
   RiskLevel,
@@ -7,16 +7,16 @@ import type {
 
 // Helper function to convert StrategyMetadata to RiskPortfolioStrategies with allocation
 const addAllocation = (
-  strategy: (typeof STRATEGIES_METADATA)[0],
+  strategy: (typeof ACTIVE_STRATEGIES)[0],
   allocation: number
 ): RiskPortfolioStrategies => ({
   ...strategy,
   allocation,
 });
 
-// Filter strategies by risk level
+// Filter ONLY ACTIVE strategies by risk level (excludes coming soon strategies)
 const getStrategiesByRisk = (riskLevel: RiskLevel) => {
-  return STRATEGIES_METADATA.filter((s) => s.risk === riskLevel);
+  return ACTIVE_STRATEGIES.filter((s) => s.risk === riskLevel);
 };
 
 // Get all unique strategies for high airdrop potential (using specific protocols)
@@ -37,7 +37,7 @@ const getStrategiesByRisk = (riskLevel: RiskLevel) => {
 
 // Generate allocations based on strategy count and risk type
 const generateAllocations = (
-  strategies: typeof STRATEGIES_METADATA,
+  strategies: typeof ACTIVE_STRATEGIES,
   riskType: RiskLevel
 ): number[] => {
   const count = strategies.length;

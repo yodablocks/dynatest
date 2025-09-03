@@ -13,6 +13,7 @@ import { useStrategy } from "@/hooks/useStrategy";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { DepositDialog } from "@/components/DepositDialog";
 import { useAssets } from "@/contexts/AssetsContext";
+import { BridgeWarning, useStrategyInvestmentValidation } from "@/components/BridgeWarning";
 import {
   Select,
   SelectContent,

@@ -38,12 +38,12 @@ export class InvestMessage extends Message {
       riskLevelStrategies: {
         low: [
           { strategyId: "AaveV3Supply", allocationRange: [30, 50] },
-          { strategyId: "UniswapV3SwapLST", allocationRange: null }, // Will be adjusted to ensure 100% total
+          { strategyId: "FluidSupply", allocationRange: null }, // UniswapV3SwapLST old Will be adjusted to ensure 100% total
         ],
         medium: [
           { strategyId: "AaveV3Supply", allocationRange: [15, 30] },
           { strategyId: "MorphoSupply", allocationRange: [15, 30] },
-          { strategyId: "UniswapV3SwapLST", allocationRange: null }, // Will be adjusted to ensure 100% total
+          { strategyId: "FluidSupply", allocationRange: null }, // UniswapV3SwapLST old Will be adjusted to ensure 100% total
         ],
         high: [
           { strategyId: "AaveV3Supply", allocationRange: [20, 40] },

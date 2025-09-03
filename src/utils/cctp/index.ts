@@ -15,14 +15,46 @@ export const CCTP_CONTRACTS = {
 
 // CCTP Token Messenger ABI (minimal required functions)
 export const TOKEN_MESSENGER_ABI = [
-  "function depositForBurn(uint256 amount, uint32 destinationDomain, bytes32 mintRecipient, address burnToken) external returns (uint64)",
-  "function replaceDepositForBurn(bytes calldata originalMessage, bytes calldata originalAttestation, bytes32 newDestinationCaller, bytes32 newMintRecipient) external",
+  {
+    "name": "depositForBurn",
+    "type": "function",
+    "inputs": [
+      {"name": "amount", "type": "uint256"},
+      {"name": "destinationDomain", "type": "uint32"},
+      {"name": "mintRecipient", "type": "bytes32"},
+      {"name": "burnToken", "type": "address"}
+    ],
+    "outputs": [{"name": "", "type": "uint64"}],
+    "stateMutability": "nonpayable"
+  }
 ] as const;
 
 // CCTP Message Transmitter ABI (minimal required functions)
 export const MESSAGE_TRANSMITTER_ABI = [
-  "function receiveMessage(bytes calldata message, bytes calldata attestation) external returns (bool)",
-  "function replaceMessage(bytes calldata originalMessage, bytes calldata originalAttestation, bytes calldata newMessageBody, bytes32 newDestinationCaller) external",
+  {
+    "name": "receiveMessage",
+    "type": "function",
+    "inputs": [
+      {"name": "message", "type": "bytes"},
+      {"name": "attestation", "type": "bytes"}
+    ],
+    "outputs": [{"name": "", "type": "bool"}],
+    "stateMutability": "nonpayable"
+  }
+] as const;
+
+// ERC20 Approve ABI
+export const ERC20_APPROVE_ABI = [
+  {
+    "name": "approve",
+    "type": "function", 
+    "inputs": [
+      {"name": "spender", "type": "address"},
+      {"name": "amount", "type": "uint256"}
+    ],
+    "outputs": [{"name": "", "type": "bool"}],
+    "stateMutability": "nonpayable"
+  }
 ] as const;
 
 // Domain IDs for CCTP
@@ -59,9 +91,7 @@ export function generateCCTPBridgeCalls(
     {
       to: usdcAddress,
       data: encodeFunctionData({
-        abi: [
-          "function approve(address spender, uint256 amount) external returns (bool)"
-        ],
+        abi: ERC20_APPROVE_ABI,
         functionName: "approve",
         args: [tokenMessenger, amount],
       }),

@@ -15,10 +15,13 @@ export default function AssetsTableComponent() {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
   const serializeBalance = useMemo(() => {
-    return assetsBalance.data.map((t) => ({
-      ...t,
-      balance: Number(formatUnits(t.balance, t.token.decimals)),
-    }));
+    return assetsBalance.data
+      .map((t) => ({
+        ...t,
+        balance: Number(formatUnits(t.balance, t.token.decimals)),
+      }))
+      // Filter to only show tokens with balance > 0
+      .filter((t) => t.balance > 0);
   }, [assetsBalance]);
 
   const handleSort = () => {
@@ -45,6 +48,20 @@ export default function AssetsTableComponent() {
       toast.error("Error fetching assets");
     }
   }, [isError, isLoading, error]);
+
+  // Show a message when no tokens have balance > 0
+  if (!isLoading && sortedData && sortedData.length === 0) {
+    return (
+      <div className="mx-4 w-[calc(100%-2rem)]">
+        <div className="text-center py-12">
+          <div className="text-gray-400 text-lg mb-2">No assets found</div>
+          <p className="text-gray-500 text-sm">
+            Your wallet doesn't currently hold any supported tokens with a balance greater than 0.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-4 w-[calc(100%-2rem)]">
@@ -116,6 +133,15 @@ export default function AssetsTableComponent() {
           ))}
         </tbody>
       </table>
+
+      {/* Show count of displayed tokens */}
+      {!isLoading && sortedData && sortedData.length > 0 && (
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-500">
+            Showing {sortedData.length} token{sortedData.length !== 1 ? 's' : ''} with balance &gt; 0
+          </p>
+        </div>
+      )}
     </div>
   );
 }

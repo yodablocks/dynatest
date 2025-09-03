@@ -1,0 +1,146 @@
+/**
+ * DynaVest Authentication Utilities
+ * Safe utilities for debugging and fixing authentication issues
+ */
+
+export const authDebugUtils = {
+  /**
+   * Clear authentication cache safely
+   * This can help resolve SIWE errors after configuration changes
+   */
+  clearAuthCache: () => {
+    if (typeof window === 'undefined') return;
+
+    console.log('🧹 Clearing DynaVest authentication cache...');
+    
+    const keysToRemove: string[] = [];
+    
+    // Find keys that might contain auth data
+    Object.keys(localStorage).forEach(key => {
+      if (key.includes('privy') || 
+          key.includes('zerodev') || 
+          key.includes('wallet') || 
+          key.includes('auth') ||
+          key.includes('dyna')) {
+        keysToRemove.push(key);
+      }
+    });
+
+    // Remove localStorage items
+    keysToRemove.forEach(key => {
+      localStorage.removeItem(key);
+      console.log(`  ✓ Cleared localStorage: ${key}`);
+    });
+
+    // Clear sessionStorage
+    sessionStorage.clear();
+    console.log('  ✓ Cleared sessionStorage');
+
+    // Clear IndexedDB databases (async)
+    if ('indexedDB' in window) {
+      try {
+        indexedDB.deleteDatabase('privy');
+        indexedDB.deleteDatabase('zerodev');
+        console.log('  ✓ Requested IndexedDB cleanup');
+      } catch (error) {
+        console.log('  ⚠️ IndexedDB cleanup failed:', error);
+      }
+    }
+
+    console.log('✅ Authentication cache cleared!');
+    console.log('💡 Reload the page to complete the reset.');
+    
+    return keysToRemove.length;
+  },
+
+  /**
+   * Check current authentication configuration
+   */
+  checkConfig: () => {
+    console.log('🔍 DynaVest Configuration Check');
+    console.log('  PRIVY_APP_ID:', process.env.NEXT_PUBLIC_PRIVY_APP_ID?.slice(0, 8) + '...' || '❌ Missing');
+    console.log('  ZERODEV_PROJECT_ID:', process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || '❌ Missing');
+    
+    if (typeof window !== 'undefined' && window.ethereum) {
+      window.ethereum.request({ method: 'eth_chainId' }).then(chainId => {
+        console.log('  Current Chain:', chainId, `(${parseInt(chainId, 16)})`);
+      }).catch(() => {
+        console.log('  Current Chain: Unable to detect');
+      });
+    }
+  },
+
+  /**
+   * Test ZeroDev API connectivity
+   */
+  testZeroDevAPI: async (chainId = 8453) => {
+    const projectId = process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID;
+    if (!projectId) {
+      console.error('❌ NEXT_PUBLIC_ZERODEV_PROJECT_ID is missing');
+      return false;
+    }
+
+    const endpoint = `https://rpc.zerodev.app/api/v3/${projectId}/chain/${chainId}`;
+    
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: 1,
+          jsonrpc: '2.0',
+          method: 'eth_chainId',
+          params: []
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ ZeroDev API test successful:', data);
+        return true;
+      } else {
+        console.error('❌ ZeroDev API test failed:', response.status, response.statusText);
+        return false;
+      }
+    } catch (error) {
+      console.error('❌ ZeroDev API test error:', error);
+      return false;
+    }
+  },
+
+  /**
+   * Complete diagnostic check
+   */
+  runDiagnostics: async () => {
+    console.log('🏥 Running DynaVest Auth Diagnostics...\n');
+    
+    authDebugUtils.checkConfig();
+    console.log('');
+    
+    const apiWorking = await authDebugUtils.testZeroDevAPI();
+    console.log('');
+    
+    if (typeof window !== 'undefined') {
+      const cacheSize = Object.keys(localStorage).filter(key => 
+        key.includes('privy') || key.includes('zerodev') || key.includes('wallet')
+      ).length;
+      console.log(`📦 Auth cache items: ${cacheSize}`);
+    }
+    
+    console.log('\n🎯 Recommendations:');
+    if (!apiWorking) {
+      console.log('  • Check ZeroDev project configuration');
+      console.log('  • Verify API keys in environment variables');
+    }
+    if (typeof window !== 'undefined') {
+      console.log('  • If experiencing SIWE errors, run: authDebugUtils.clearAuthCache()');
+      console.log('  • Then reload the page');
+    }
+  }
+};
+
+// Make it available globally in development
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  (window as any).dynavestAuth = authDebugUtils;
+  console.log('🔧 DynaVest auth utils available at: window.dynavestAuth');
+}

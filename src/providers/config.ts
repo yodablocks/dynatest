@@ -7,31 +7,92 @@ export const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 // Check if Alchemy API key is available
 const hasAlchemyKey = !!ALCHEMY_API_KEY;
 
+// Enhanced HTTP transport with rate limiting and retry logic
+const createRobustHttpTransport = (urls: string | string[], chainId: number) => {
+  const urlArray = Array.isArray(urls) ? urls : [urls];
+  
+  return http(urlArray[0], {
+    batch: {
+      multicall: {
+        batchSize: 1024,
+        wait: 32, // Wait 32ms to batch calls together
+      },
+    },
+    fallbackUrls: urlArray.slice(1),
+    retryCount: 3,
+    retryDelay: (attempt) => {
+      // Exponential backoff with jitter for rate limits
+      const baseDelay = Math.min(1000 * Math.pow(2, attempt), 10000);
+      const jitter = Math.random() * 1000; // Add randomness to prevent thundering herd
+      return baseDelay + jitter;
+    },
+    timeout: 30000, // 30 second timeout
+    onError: (error) => {
+      if (error.message?.includes('429') || error.message?.includes('rate limit')) {
+        console.warn(`🚫 Rate limit hit on chain ${chainId}, switching to fallback...`);
+      }
+    },
+  });
+};
+
 // Fallback to public RPC endpoints if Alchemy key is missing
 const getHttpTransport = (chainId: number, alchemyUrl?: string) => {
+  const fallbackUrls: string[] = [];
+  
+  // Add Alchemy URL if available
   if (hasAlchemyKey && alchemyUrl) {
-    return http(`${alchemyUrl}/${ALCHEMY_API_KEY}`);
+    fallbackUrls.push(`${alchemyUrl}/${ALCHEMY_API_KEY}`);
   }
   
-  // Fallback to public RPC endpoints
+  // Add multiple public RPC endpoints as fallbacks
   switch (chainId) {
     case mainnet.id:
-      return http("https://eth-mainnet.public.blastapi.io");
+      fallbackUrls.push(
+        "https://eth-mainnet.public.blastapi.io",
+        "https://ethereum.publicnode.com",
+        "https://1rpc.io/eth"
+      );
+      break;
     case base.id:
-      return http("https://mainnet.base.org");
+      fallbackUrls.push(
+        "https://mainnet.base.org",
+        "https://base-mainnet.public.blastapi.io", 
+        "https://base.gateway.fm",
+        "https://1rpc.io/base"
+      );
+      break;
     case arbitrum.id:
-      return http("https://arb1.arbitrum.io/rpc");
+      fallbackUrls.push(
+        "https://arb1.arbitrum.io/rpc",
+        "https://arbitrum-mainnet.public.blastapi.io",
+        "https://1rpc.io/arb"
+      );
+      break;
     case polygon.id:
-      return http("https://polygon-rpc.com");
+      fallbackUrls.push(
+        "https://polygon-rpc.com",
+        "https://polygon-mainnet.public.blastapi.io",
+        "https://1rpc.io/matic"
+      );
+      break;
     case bsc.id:
-      return http("https://bsc-dataseed1.binance.org");
+      fallbackUrls.push(
+        "https://bsc-dataseed1.binance.org",
+        "https://bsc-dataseed2.binance.org",
+        "https://bsc-mainnet.public.blastapi.io"
+      );
+      break;
     case celo.id:
-      return http("https://forno.celo.org");
+      fallbackUrls.push("https://forno.celo.org");
+      break;
     case flowMainnet.id:
-      return http("https://access-mainnet-beta.onflow.org");
+      fallbackUrls.push("https://access-mainnet-beta.onflow.org");
+      break;
     default:
-      return http();
+      fallbackUrls.push("https://cloudflare-eth.com"); // Generic fallback
   }
+  
+  return createRobustHttpTransport(fallbackUrls, chainId);
 };
 
 export const wagmiConfig = createConfig({
@@ -50,7 +111,7 @@ export const wagmiConfig = createConfig({
 // Create a mapped type for chain IDs from wagmiConfig.chains
 export type SupportedChainIds = (typeof wagmiConfig.chains)[number]["id"];
 
-// Log configuration status
+// Log configuration status with more details
 if (typeof window !== 'undefined') {
-  console.log(`🔗 Blockchain config: ${hasAlchemyKey ? 'Alchemy API' : 'Public RPC'} endpoints`);
+  console.log(`🔗 Enhanced blockchain config: ${hasAlchemyKey ? 'Alchemy API + Fallbacks' : 'Public RPC fallbacks'} with rate limiting`);
 }
