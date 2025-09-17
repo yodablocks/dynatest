@@ -1,5 +1,25 @@
 import { createConfig } from "@privy-io/wagmi";
 import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/chains";
+import { defineChain } from "viem";
+
+// Define HyperEVM chain
+export const hyperEvm = defineChain({
+  id: 998,
+  name: 'Hyperliquid EVM Testnet',
+  nativeCurrency: { name: 'HYPE', symbol: 'HYPE', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.hyperliquid-testnet.xyz/evm'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'HyperEVM Explorer',
+      url: 'https://explorer.hyperliquid-testnet.xyz',
+    },
+  },
+  testnet: true,
+});
 import { http } from "wagmi";
 
 export const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
@@ -88,6 +108,9 @@ const getHttpTransport = (chainId: number, alchemyUrl?: string) => {
     case flowMainnet.id:
       fallbackUrls.push("https://access-mainnet-beta.onflow.org");
       break;
+    case hyperEvm.id:
+      fallbackUrls.push("https://rpc.hyperliquid-testnet.xyz/evm");
+      break;
     default:
       fallbackUrls.push("https://cloudflare-eth.com"); // Generic fallback
   }
@@ -96,7 +119,7 @@ const getHttpTransport = (chainId: number, alchemyUrl?: string) => {
 };
 
 export const wagmiConfig = createConfig({
-  chains: [mainnet, base, arbitrum, celo, flowMainnet, bsc, polygon],
+  chains: [mainnet, base, arbitrum, celo, flowMainnet, bsc, polygon, hyperEvm],
   transports: {
     [mainnet.id]: getHttpTransport(mainnet.id, "https://eth-mainnet.g.alchemy.com/v2"),
     [celo.id]: getHttpTransport(celo.id, "https://celo-mainnet.g.alchemy.com/v2"),
@@ -105,6 +128,7 @@ export const wagmiConfig = createConfig({
     [bsc.id]: getHttpTransport(bsc.id, "https://bnb-mainnet.g.alchemy.com/v2"),
     [arbitrum.id]: getHttpTransport(arbitrum.id, "https://arb-mainnet.g.alchemy.com/v2"),
     [polygon.id]: getHttpTransport(polygon.id, "https://polygon-mainnet.g.alchemy.com/v2"),
+    [hyperEvm.id]: getHttpTransport(hyperEvm.id),
   },
 });
 

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Dispatch, Fragment, SetStateAction } from "react";
 import { base, mainnet } from "viem/chains";
+import { hyperEvm } from "@/providers/config";
 
 import { CHAINS } from "@/constants/chains";
 
@@ -21,8 +22,8 @@ export default function ChainFilter({
 }: ChainFilterProps) {
   
   const getChainStatus = (chainId: number) => {
-    // Base is live, Ethereum is live for cross-chain strategies
-    return (chainId === base.id || chainId === mainnet.id) ? 'active' : 'coming_soon';
+    // Base is live, Ethereum is live for cross-chain strategies, HyperEVM is live for HyperSwap
+    return (chainId === base.id || chainId === mainnet.id || chainId === hyperEvm.id) ? 'active' : 'coming_soon';
   };
 
   const getChainName = (chainId: number) => {

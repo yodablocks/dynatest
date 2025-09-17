@@ -20,7 +20,7 @@ const SMART_WALLET_SUPPORTED_CHAINS = [
   // 1, // Ethereum - commented out until configured in dashboard
 ];
 
-export default function useCurrencies(tokens: Token[]) {
+export default function useCurrencies(tokens: Token[] = []) {
   const { client } = useSmartWallets();
   const chainId = useChainId();
 

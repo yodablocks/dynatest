@@ -1,4 +1,5 @@
 import { base, bsc, celo, arbitrum, polygon, mainnet } from "viem/chains";
+import { hyperEvm } from "@/providers/config";
 import type { Token } from "@/types";
 
 export const USDT = {
@@ -153,6 +154,26 @@ export const WBNB = {
   },
 } as const satisfies Token;
 
+export const HYPE = {
+  name: "HYPE",
+  icon: "/crypto-icons/hype.svg",
+  decimals: 18,
+  isNativeToken: true,
+  chains: {
+    [hyperEvm.id]: "native",
+  },
+} as const satisfies Token;
+
+export const USDT0 = {
+  name: "USDT0",
+  icon: "/crypto-icons/usdt.svg",
+  decimals: 6,
+  isNativeToken: false,
+  chains: {
+    [hyperEvm.id]: "0x...", // TODO: Get actual USDT0 contract address
+  },
+} as const satisfies Token;
+
 export const TOKENS = [
   USDT,
   USDC,
@@ -167,6 +188,8 @@ export const TOKENS = [
   cEUR,
   GRAIL,
   xGRAIL,
+  HYPE,
+  USDT0,
 ] as const;
 
 export type TokensName = (typeof TOKENS)[number]["name"];

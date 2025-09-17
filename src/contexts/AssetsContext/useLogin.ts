@@ -39,14 +39,28 @@ const useLogin = ({
       if (wasAlreadyAuthenticated || !loginMethod) return;
 
       const params = handleLoginComplete(loginResponse);
-      if (isNewUser) {
-        localStorage.setItem("isNewUser", "true");
-        localStorage.setItem("addUserParams", JSON.stringify(params));
-        return;
+      // Try to add user to database immediately
+      try {
+        await addUser(params);
+        
+        if (isNewUser) {
+          console.log("New user successfully added:", params.address);
+        }
+        
+        onSuccess(params.address);
+      } catch (error) {
+        console.error("Failed to add user to database:", error);
+        
+        // For new users, store in localStorage as fallback
+        if (isNewUser) {
+          localStorage.setItem("isNewUser", "true");
+          localStorage.setItem("addUserParams", JSON.stringify(params));
+          console.log("Stored new user in localStorage as fallback");
+        }
+        
+        // Still call onSuccess to not block the user
+        onSuccess(params.address);
       }
-
-      await addUser(params);
-      onSuccess(params.address);
     },
     onError: (error) => {
       onError(error);

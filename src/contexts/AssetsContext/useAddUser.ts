@@ -12,30 +12,19 @@ export type AddUserParams = {
 export const useAddUser = () => {
   return useMutation({
     mutationFn: async (params: AddUserParams) => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_CHATBOT_URL}/user/${params.address}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      // Skip the GET check since it's causing Method Not Allowed
+      // Go directly to creating the user
+      const createResponse = await fetch(`${process.env.NEXT_PUBLIC_CHATBOT_URL}/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      });
 
-      if (response.ok) return params.address;
-      const data = await response.json();
-
-      // Check the address if it exists before adding user
-      if (!response.ok && data.detail === "User not found") {
-        await fetch(`${process.env.NEXT_PUBLIC_CHATBOT_URL}/user`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(params),
-        });
-      } else {
-        throw new Error(data.detail);
+      if (!createResponse.ok) {
+        const createData = await createResponse.json();
+        throw new Error(createData.detail || 'Failed to create user');
       }
 
       return params.address;

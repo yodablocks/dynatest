@@ -1,8 +1,9 @@
 import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/chains";
+import { hyperEvm } from "@/providers/config";
 
 import type { StrategyMetadata } from "@/types";
-import { USDC, CELO, FLOW, cEUR, BNB } from "@/constants/coins";
-import { AAVE, UNISWAP, MORPHO, LIDO, FLUID } from "./protocols";
+import { USDC, CELO, FLOW, cEUR, BNB, HYPE, USDT0 } from "@/constants/coins";
+import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, HYPERSWAP } from "./protocols";
 
 export const STRATEGIES = [
   "AaveV3Supply",
@@ -14,6 +15,7 @@ export const STRATEGIES = [
   // "SmokehouseStrategy", // Ethereum Smokehouse USDC vault - DISABLED
   "Re7Strategy", // Base Re7 USDC vault
   // "MevCapitalStrategy", // Ethereum MEV Capital USDC vault - DISABLED
+  "HyperSwapStrategy", // NEW: HyperEVM HyperSwap strategy
   // Coming soon strategies
   "StCeloStaking",
   "CamelotStaking",
@@ -175,6 +177,25 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     learnMoreLink: "https://fluid.io/",
     tokens: [USDC],
     chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "HyperSwap Auto-Pilot 🚀",
+    id: "HyperSwapStrategy",
+    apy: 45.7,
+    risk: "high", // New risk category
+    color: "#FF3366",
+    protocol: HYPERSWAP,
+    description:
+      "🎯 One-click USDC deposits → Earn 45%+ APY automatically. Zero management needed. Concentrated liquidity + MEV protection on HyperEVM.",
+    fullDescription:
+      "**The simplest way to earn high DeFi yields**\n\nJust deposit USDC and watch your money work harder than ever:\n\n✅ **45%+ APY** - Much higher than traditional DeFi\n✅ **One-click everything** - No complexity for users\n✅ **USDC in, USDC out** - Familiar stablecoin interface\n✅ **Zero Management** - No research, no monitoring, no rebalancing needed\n✅ **Auto-Compounding** - Fees automatically reinvested for maximum growth\n✅ **Easy Exit** - Withdraw anytime with one click back to USDC\n\n**What happens behind the scenes:**\n1. Your USDC bridges to HyperEVM (Hyperliquid's blockchain)\n2. Converts to USDT0 and provides liquidity to WHYPE/USDT0 pool\n3. Earns 0.3% fees from every trade + HYPE rewards\n4. Uses COW protocol for MEV protection\n5. Auto-compounds everything back into your position\n\n**Perfect for**: Anyone who wants high yields without the complexity of managing DeFi positions manually.",
+    externalLink:
+      "https://app.hyperliquid.xyz/trade",
+    learnMoreLink:
+      "https://docs.hyperliquid.xyz/hyperevm/overview",
+    tokens: [USDC],
+    chainId: hyperEvm.id,
     status: "active",
   },
 ];
