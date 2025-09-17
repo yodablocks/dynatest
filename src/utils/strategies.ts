@@ -29,7 +29,6 @@ import {
 } from "@/classes/strategies";
 import { AAVE } from "@/constants/protocols/aave";
 import { SMOKEHOUSE } from "@/constants/protocols/smokehouse";
-import { MORPHO } from "@/constants/protocols/morpho";
 
 export function isChainSupported<T extends Protocol>(
   protocol: T,
@@ -48,7 +47,18 @@ export function getDeadline(): bigint {
  * @dev Allow `as`, because check chainId if supported before create strategy instance
  */
 const STRATEGY_CONFIGS: Record<
-  Strategy,
+  | "MorphoSupply"
+  | "AaveV3Supply"
+  | "UniswapV3SwapLST"
+  | "FluidSupply"
+  | "SmokehouseStrategy"
+  | "Re7Strategy"
+  | "MevCapitalStrategy"
+  | "StCeloStaking"
+  | "UniswapV3AddLiquidity"
+  | "CamelotStaking"
+  | "GMXDeposit"
+  | "MultiStrategy",
   {
     protocol: Protocol;
     factory: (chainId: GetProtocolChains<Protocol>) => BaseStrategy<Protocol>;
@@ -132,15 +142,19 @@ const STRATEGY_CONFIGS: Record<
     },
   },
   MultiStrategy: {
-    protocol: MORPHO, // MultiStrategy 比較特殊，可能需要特殊處理
-    factory: () => {
-      throw new Error("MultiStrategy not implemented yet");
+    protocol: MORPHO, // MultiStrategy is special - it can combine multiple protocols
+    factory: (chainId) => {
+      // For now, create a simple multi-strategy with default components
+      // This should be refactored to accept strategy compositions as parameters
+      throw new Error("MultiStrategy requires specific strategy composition - use MultiStrategyManager instead");
     },
   },
 };
 
-export function getStrategy(
-  strategy: Strategy,
+export function getStrategy<
+  T extends keyof typeof STRATEGY_CONFIGS
+>(
+  strategy: T,
   chainId: number
 ): BaseStrategy<Protocol> {
   const config = STRATEGY_CONFIGS[strategy];
