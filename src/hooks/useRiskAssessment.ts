@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import type { StrategyMetadata } from '@/types';
+import type { StrategyMetadata, RiskLevel } from '@/types';
 import { riskCalculationService, type RiskAssessment } from '@/services/riskCalculationService';
 
 /**
@@ -97,7 +97,12 @@ export function useRiskFiltering(strategies: StrategyMetadata[]) {
 
   const sortByRisk = useMemo(() => {
     return (ascending = true) => {
-      const riskOrder = { low: 1, medium: 2, high: 3 };
+      // ✅ Fix: Properly type the riskOrder object
+      const riskOrder: Record<RiskLevel, number> = { 
+        low: 1, 
+        medium: 2, 
+        high: 3 
+      };
       
       return [...strategies].sort((a, b) => {
         const aAssessment = assessments.get(a.id);
@@ -106,6 +111,7 @@ export function useRiskFiltering(strategies: StrategyMetadata[]) {
         const aRisk = aAssessment?.level || a.risk;
         const bRisk = bAssessment?.level || b.risk;
         
+        // ✅ Fix: TypeScript now knows these are valid keys
         const aScore = riskOrder[aRisk];
         const bScore = riskOrder[bRisk];
         

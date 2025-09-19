@@ -1,22 +1,22 @@
 import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/chains";
-import { hyperEvm } from "@/providers/config";
 
 import type { StrategyMetadata } from "@/types";
-import { USDC, CELO, FLOW, cEUR, BNB, HYPE, USDT0 } from "@/constants/coins";
-import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, HYPERSWAP } from "./protocols";
+import { USDC, CELO, FLOW, cEUR, BNB } from "@/constants/coins";
+import { AAVE, UNISWAP, MORPHO, LIDO, FLUID } from "./protocols";
 
 export const STRATEGIES = [
+  // Active strategies
   "AaveV3Supply",
+  "AaveV3SupplyLeveraged", // Enhanced Returns - leveraged AAVE position
   "MorphoSupply", 
   "FluidSupply",
-  // "UniswapV3SwapLST", // DISABLED: Liquid Staking - not ready for production
-  "MultiStrategy", // Composition pattern - combines multiple strategies
-  // DISABLED: CCTP incompatible with Privy smart wallets
-  // "SmokehouseStrategy", // Ethereum Smokehouse USDC vault - DISABLED
   "Re7Strategy", // Base Re7 USDC vault
-  // "MevCapitalStrategy", // Ethereum MEV Capital USDC vault - DISABLED
-  "HyperSwapStrategy", // NEW: HyperEVM HyperSwap strategy
+  "MultiStrategy", // Composition pattern - combines multiple strategies
   // Coming soon strategies
+  "UniswapV3SwapLST", // Liquid Staking
+  "AaveV3SupplyArbitrum", // AAVE on Arbitrum
+  "AaveV3SupplyBSC", // AAVE on BSC
+  "MorphoSupplyFlow", // Morpho on Flow
   "StCeloStaking",
   "CamelotStaking",
   "GMXDeposit",
@@ -38,50 +38,8 @@ export const BOT_STRATEGY: StrategyMetadata = {
   status: "composition",
 };
 
-// Ethereum strategies (currently empty - moved to ACTIVE)
-export const ETHEREUM_STRATEGIES: StrategyMetadata[] = [];
-
-// CCTP strategies temporarily disabled due to Privy smart wallet incompatibility
-const DISABLED_CCTP_STRATEGIES: StrategyMetadata[] = [
-  {
-    title: "Institutional USDC",
-    id: "SmokehouseStrategy",
-    apy: 6.5,
-    risk: "low",
-    color: "#FF6B35",
-    protocol: MORPHO,
-    description:
-      "Supply USDC to an institutional-grade MetaMorpho vault with professional risk management. Requires CCTP bridge from Base to Ethereum.",
-    fullDescription:
-      "Access institutional-grade USDC lending through a premium MetaMorpho vault on Ethereum mainnet with professional curation and zero bad debt history. USDC is bridged from Base to Ethereum using Circle's CCTP for fast, secure transfers (~2 minutes).",
-    externalLink:
-      "https://app.morpho.org/vault?vault=0xBEeFFF209270748ddd194831b3fa287a5386f5bC",
-    learnMoreLink:
-      "https://steakhouse.financial/",
-    tokens: [USDC],
-    chainId: mainnet.id,
-    status: "disabled", // CCTP bridge incompatible with Privy
-  },
-  {
-    title: "Alpha Generation",
-    id: "MevCapitalStrategy",
-    apy: 7.8,
-    risk: "medium",
-    color: "#E74C3C",
-    protocol: MORPHO,
-    description:
-      "Advanced MEV extraction and DeFi optimization strategies by MEV Capital. Professional institutional-grade vault on Ethereum with cutting-edge yield enhancement. Requires CCTP bridge from Base to Ethereum.",
-    fullDescription:
-      "Access MEV Capital's advanced alpha generation strategies through a sophisticated MetaMorpho vault on Ethereum mainnet. MEV Capital specializes in maximum extractable value (MEV) capture and DeFi optimization with institutional-grade risk management since 2020. Features cutting-edge algorithms for yield enhancement and market inefficiency exploitation. USDC is bridged from Base to Ethereum using Circle's CCTP for fast, secure transfers (~2 minutes).",
-    externalLink:
-      "https://app.morpho.org/ethereum/vault/0xd63070114470f685b75B74D60EEc7c1113d33a3D/mev-capital-usdc",
-    learnMoreLink:
-      "https://mev.capital/",
-    tokens: [USDC],
-    chainId: mainnet.id,
-    status: "disabled", // CCTP bridge incompatible with Privy
-  },
-];
+// CCTP strategies have been removed due to bridging incompatibility with Privy smart wallets
+// These strategies are no longer available and have been completely removed from the platform
 
 // Active strategies on Base network only
 export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
@@ -179,25 +137,6 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     chainId: base.id,
     status: "active",
   },
-  {
-    title: "HyperSwap Auto-Pilot 🚀",
-    id: "HyperSwapStrategy",
-    apy: 45.7,
-    risk: "high", // New risk category
-    color: "#FF3366",
-    protocol: HYPERSWAP,
-    description:
-      "🎯 One-click USDC deposits → Earn 45%+ APY automatically. Zero management needed. Concentrated liquidity + MEV protection on HyperEVM.",
-    fullDescription:
-      "**The simplest way to earn high DeFi yields**\n\nJust deposit USDC and watch your money work harder than ever:\n\n✅ **45%+ APY** - Much higher than traditional DeFi\n✅ **One-click everything** - No complexity for users\n✅ **USDC in, USDC out** - Familiar stablecoin interface\n✅ **Zero Management** - No research, no monitoring, no rebalancing needed\n✅ **Auto-Compounding** - Fees automatically reinvested for maximum growth\n✅ **Easy Exit** - Withdraw anytime with one click back to USDC\n\n**What happens behind the scenes:**\n1. Your USDC bridges to HyperEVM (Hyperliquid's blockchain)\n2. Converts to USDT0 and provides liquidity to WHYPE/USDT0 pool\n3. Earns 0.3% fees from every trade + HYPE rewards\n4. Uses COW protocol for MEV protection\n5. Auto-compounds everything back into your position\n\n**Perfect for**: Anyone who wants high yields without the complexity of managing DeFi positions manually.",
-    externalLink:
-      "https://app.hyperliquid.xyz/trade",
-    learnMoreLink:
-      "https://docs.hyperliquid.xyz/hyperevm/overview",
-    tokens: [USDC],
-    chainId: hyperEvm.id,
-    status: "active",
-  },
 ];
 
 // Coming Soon strategies (other chains and protocols)
@@ -278,9 +217,8 @@ export const COMING_SOON_STRATEGIES: StrategyMetadata[] = [
   },
 ];
 
-// Combined strategies metadata for backward compatibility
+// Combined strategies metadata - Base network focus
 export const STRATEGIES_METADATA: StrategyMetadata[] = [
-  ...ETHEREUM_STRATEGIES,
   ...ACTIVE_STRATEGIES,
   ...COMING_SOON_STRATEGIES,
 ];
