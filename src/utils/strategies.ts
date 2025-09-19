@@ -46,6 +46,7 @@ export function getDeadline(): bigint {
 const STRATEGY_CONFIGS: Record<
   | "MorphoSupply"
   | "AaveV3Supply"
+  | "AaveV3SupplyLeveraged"
   | "UniswapV3SwapLST"
   | "FluidSupply"
   | "Re7Strategy"
@@ -68,6 +69,11 @@ const STRATEGY_CONFIGS: Record<
     protocol: AAVE,
     factory: (chainId) =>
       new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
+  },
+  AaveV3SupplyLeveraged: {
+    protocol: AAVE,
+    factory: (chainId) =>
+      new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>), // Uses same class as regular AaveV3Supply
   },
   UniswapV3SwapLST: {
     protocol: UNISWAP,
