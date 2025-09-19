@@ -57,7 +57,8 @@ export function PortfolioPieChart({
                 outerRadius={60}
                 fill="#8884d8"
                 labelLine={windowWidth > 375 ? true : false}
-                label={({ cx, cy, midAngle, outerRadius, index, value }) => {
+                label={(props: any) => {
+                  const { cx, cy, midAngle, outerRadius, index, value } = props;
                   const RADIAN = Math.PI / 180;
                   // Increase distance from pie chart to avoid overlap
                   const radius =
