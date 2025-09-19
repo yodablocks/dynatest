@@ -47,6 +47,9 @@ const STRATEGY_CONFIGS: Record<
   | "MorphoSupply"
   | "AaveV3Supply"
   | "AaveV3SupplyLeveraged"
+  | "AaveV3SupplyArbitrum"
+  | "AaveV3SupplyBSC"
+  | "MorphoSupplyFlow"
   | "UniswapV3SwapLST"
   | "FluidSupply"
   | "Re7Strategy"
@@ -74,6 +77,21 @@ const STRATEGY_CONFIGS: Record<
     protocol: AAVE,
     factory: (chainId) =>
       new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>), // Uses same class as regular AaveV3Supply
+  },
+  AaveV3SupplyArbitrum: {
+    protocol: AAVE,
+    factory: (chainId) =>
+      new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
+  },
+  AaveV3SupplyBSC: {
+    protocol: AAVE,
+    factory: (chainId) =>
+      new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
+  },
+  MorphoSupplyFlow: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new MorphoSupply(chainId as GetProtocolChains<typeof MORPHO>),
   },
   UniswapV3SwapLST: {
     protocol: UNISWAP,
