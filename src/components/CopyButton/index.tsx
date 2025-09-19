@@ -3,6 +3,9 @@ import { Copy, CopyCheck } from "lucide-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 
+// Type cast to fix React type compatibility
+const CopyToClipboardComponent = CopyToClipboard as any;
+
 export default function CopyButton({
   text,
   size,
@@ -22,7 +25,7 @@ export default function CopyButton({
   };
 
   return (
-    <CopyToClipboard text={text} onCopy={handleCopy}>
+    <CopyToClipboardComponent text={text} onCopy={handleCopy}>
       <div className="flex flex-col items-center gap-2 cursor-pointer">
         {copied ? (
           <CopyCheck className={`${sizeClass} text-green-500`} />
@@ -30,6 +33,6 @@ export default function CopyButton({
           <Copy className={`${sizeClass} text-gray-500`} />
         )}
       </div>
-    </CopyToClipboard>
+    </CopyToClipboardComponent>
   );
 }
