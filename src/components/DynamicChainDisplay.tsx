@@ -1,7 +1,5 @@
 // components/DynamicChainDisplay.tsx
 import Image from "next/image";
-import { useChainId } from "wagmi";
-import { base, mainnet } from "viem/chains";
 import { getChain } from "@/constants/chains";
 import type { StrategyMetadata } from "@/types";
 
@@ -13,9 +11,8 @@ interface DynamicChainDisplayProps {
 }
 
 /**
- * Dynamic chain display component for cross-chain strategies like "Institutional USDC"
- * Shows Base logo when user is on Base (can invest directly)
- * Shows Ethereum logo when indicating destination/deployment chain
+ * Chain display component for DynaVest strategies
+ * All current strategies operate on Base network
  */
 export function DynamicChainDisplay({ 
   strategy, 
@@ -23,32 +20,7 @@ export function DynamicChainDisplay({
   showChainName = false,
   className = "" 
 }: DynamicChainDisplayProps) {
-  const currentChainId = useChainId();
-  
-  // Special handling for cross-chain strategies that use CCTP bridge
-  const isInstitutionalUSDC = strategy.title === "Institutional USDC";
-  const isAlphaGeneration = strategy.title === "Alpha Generation";
-  const isCCTPStrategy = isInstitutionalUSDC || isAlphaGeneration;
-  
-  let displayChainId: number;
-  let displayText: string | undefined;
-  
-  if (isCCTPStrategy) {
-    // For CCTP strategies: show current chain if user is on Base, otherwise show destination (Ethereum)
-    if (currentChainId === base.id) {
-      displayChainId = base.id;
-      displayText = showChainName ? "Available on Base" : undefined;
-    } else {
-      displayChainId = mainnet.id; // Ethereum mainnet
-      displayText = showChainName ? "Deploys to Ethereum" : undefined;
-    }
-  } else {
-    // For other strategies: show the strategy's native chain
-    displayChainId = strategy.chainId;
-    displayText = showChainName ? getChain(displayChainId)?.name : undefined;
-  }
-  
-  const displayChain = getChain(displayChainId);
+  const displayChain = getChain(strategy.chainId);
   
   if (!displayChain) {
     return null;
@@ -63,8 +35,8 @@ export function DynamicChainDisplay({
         height={size}
         className="rounded-full"
       />
-      {displayText && (
-        <span className="text-sm text-gray-600">{displayText}</span>
+      {showChainName && (
+        <span className="text-sm text-gray-600">{displayChain.name}</span>
       )}
     </div>
   );
@@ -80,26 +52,12 @@ export function DynamicChainDisplayWithTooltip({
   showTooltip = true,
   ...props 
 }: DynamicChainDisplayWithTooltipProps) {
-  const currentChainId = useChainId();
-  const isInstitutionalUSDC = strategy.title === "Institutional USDC";
-  const isAlphaGeneration = strategy.title === "Alpha Generation";
-  const isCCTPStrategy = isInstitutionalUSDC || isAlphaGeneration;
-  
-  let tooltipText: string | undefined;
-  
-  if (isCCTPStrategy && showTooltip) {
-    if (currentChainId === base.id) {
-      tooltipText = "Invest directly from Base via CCTP bridge to Ethereum";
-    } else {
-      tooltipText = "Strategy deploys to Ethereum mainnet";
-    }
-  }
-  
+  const displayChain = getChain(strategy.chainId);
   const display = <DynamicChainDisplay strategy={strategy} {...props} />;
   
-  if (tooltipText) {
+  if (showTooltip && displayChain) {
     return (
-      <div title={tooltipText} className="cursor-help">
+      <div title={`Strategy operates on ${displayChain.name}`} className="cursor-help">
         {display}
       </div>
     );

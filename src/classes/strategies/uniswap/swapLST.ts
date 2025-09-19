@@ -5,7 +5,7 @@ import { BaseStrategy, StrategyCall } from "../baseStrategy";
 import { ERC20_ABI, V3_SWAP_ROUTER_ABI } from "@/constants/abis";
 import { UNISWAP } from "@/constants/protocols/uniswap";
 import { Token } from "@/types/blockchain";
-import { wagmiConfig } from "@/providers/config";
+import { coreWagmiConfig } from "@/providers/config";
 import { Position } from "@/types/position";
 import { GetProtocolChains } from "@/types/strategies";
 
@@ -78,7 +78,7 @@ export class UniswapV3SwapLST extends BaseStrategy<typeof UNISWAP> {
     const swapRouter = this.getAddress("swapRouter");
     const tokenInAddress = this.lstToken.chains![this.chainId];
 
-    const amountIn = await readContract(wagmiConfig, {
+    const amountIn = await readContract(coreWagmiConfig, {
       abi: ERC20_ABI,
       address: tokenInAddress,
       functionName: "balanceOf",

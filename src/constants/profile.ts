@@ -1,5 +1,4 @@
 import { bsc, celo, flowMainnet, base, arbitrum, polygon, mainnet } from "viem/chains";
-import { hyperEvm } from "@/providers/config";
 
 import {
   CELO,
@@ -16,8 +15,6 @@ import {
   WBNB,
   GRAIL,
   xGRAIL,
-  HYPE,
-  USDT0,
 } from "@/constants/coins";
 import { Token } from "@/types";
 import type { SupportedChainIds } from "@/providers/config";
@@ -31,5 +28,4 @@ export const SUPPORTED_TOKENS: Record<SupportedChainIds, Token[]> = {
   [bsc.id]: [BNB, USDT, USDC, wbETH, WBNB], // BSC
   [celo.id]: [CELO, cEUR], // Celo
   [flowMainnet.id]: [FLOW, USDT, USDC], // Flow
-  [hyperEvm.id]: [HYPE, USDC, USDT0], // HyperEVM - HYPE is native, USDC for deposits, USDT0 for swaps
 };

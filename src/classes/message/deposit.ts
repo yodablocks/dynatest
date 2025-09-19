@@ -1,8 +1,8 @@
 import { Message, MessageMetadata } from "./base";
 import { PortfolioMessage } from "./portfolio";
 import { BuildPortfolioMessage } from "./build-portfolio";
-import { RiskPortfolioStrategies } from "@/types/strategies";
-import { MOCK_STRATEGIES_SET } from "@/test/constants/strategiesSet";
+import { StrategiesSet, RiskPortfolioStrategies } from "@/types/strategies";
+import { ACTIVE_STRATEGIES } from "@/constants/strategies";
 
 export class DepositMessage extends Message {
   constructor(
@@ -14,6 +14,20 @@ export class DepositMessage extends Message {
     super(metadata);
   }
 
+  // Create a simple strategies set from active strategies
+  private createStrategiesSet(): StrategiesSet {
+    const strategiesWithAllocation = ACTIVE_STRATEGIES.map((strategy, index) => ({
+      ...strategy,
+      allocation: Math.round(100 / ACTIVE_STRATEGIES.length) // Equal allocation
+    }));
+
+    return {
+      low: strategiesWithAllocation.filter(s => s.risk === 'low'),
+      medium: strategiesWithAllocation.filter(s => s.risk === 'medium'),
+      high: strategiesWithAllocation.filter(s => s.risk === 'high')
+    };
+  }
+
   next(action: "build" | "portfolio"): Message {
     switch (action) {
       case "portfolio":
@@ -21,7 +35,7 @@ export class DepositMessage extends Message {
           this.createDefaultMetadata(`Portfolio: ${this.amount} USDC`),
           this.amount,
           this.chain,
-          MOCK_STRATEGIES_SET
+          this.createStrategiesSet()
         );
       case "build":
         return new BuildPortfolioMessage(

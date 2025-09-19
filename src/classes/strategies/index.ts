@@ -3,7 +3,7 @@ export * from "./morpho/supply";
 export * from "./baseStrategy";
 export * from "./aave/supply";
 export * from "./fluid/supply";
-export * from "./steakhouse/smokehouse";
+
 export * from "./re7/re7";
-export * from "./mev/mevCapital";
+
 export * from "./multiStrategy";

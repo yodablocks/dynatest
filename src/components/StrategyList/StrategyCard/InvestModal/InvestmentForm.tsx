@@ -13,7 +13,7 @@ import { useStrategy } from "@/hooks/useStrategy";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { DepositDialog } from "@/components/DepositDialog";
 import { useAssets } from "@/contexts/AssetsContext";
-import { BridgeWarning, useStrategyInvestmentValidation } from "@/components/BridgeWarning";
+
 import {
   Select,
   SelectContent,
@@ -53,8 +53,8 @@ const InvestmentForm: FC<InvestmentFormProps> = ({
 }) => {
   // User context
   const chainId = useChainId();
-  // For CCTP strategies (SmokehouseStrategy and MevCapitalStrategy), allow cross-chain investment
-  const isSupportedChain = (strategy.id === 'SmokehouseStrategy' || strategy.id === 'MevCapitalStrategy') ? true : chainId === strategy.chainId;
+  // All strategies now operate on their native chains only
+  const isSupportedChain = chainId === strategy.chainId;
   const { authenticated } = usePrivy();
   const { ready: isWalletReady } = useWallets();
   const { switchChainAsync } = useWagmiSwitchChain();
@@ -316,11 +316,6 @@ const InvestmentForm: FC<InvestmentFormProps> = ({
       <form onSubmit={handleSubmit}>
         <div className="mb-1 capitalize text-sm text-gray-500">
           Investment Amount
-          {(strategy.id === 'SmokehouseStrategy' || strategy.id === 'MevCapitalStrategy') && chainId !== strategy.chainId && (
-            <div className="mt-1 text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">
-              🌉 Cross-Chain Investment: Your USDC Will Be Automatically Bridged From {chainId === 8453 ? 'Base' : 'Current Chain'} To Ethereum
-            </div>
-          )}
         </div>
         {/* Amount input */}
         <AmountInput

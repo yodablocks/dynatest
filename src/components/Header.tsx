@@ -4,6 +4,7 @@ import Link from "next/link";
 import ConnectWalletButton from "./ConnectWalletButton";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { ACTIVE_STRATEGIES } from "@/constants/strategies";
 
 interface NavItem {
   label: string;
@@ -20,6 +21,9 @@ const navItems: NavItem[] = [
 export default function Header() {
   const pathname = usePathname();
 
+  // Get the actual count of active strategies
+  const activeStrategiesCount = ACTIVE_STRATEGIES.length;
+
   return (
     <>
       {/* Status Banner */}
@@ -29,7 +33,7 @@ export default function Header() {
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
             <span className="font-medium">Live on Base Network</span>
             <span className="text-blue-200">•</span>
-            <span className="text-blue-200">6 strategies available</span>
+            <span className="text-blue-200">{activeStrategiesCount} strategies available</span>
           </div>
           <div className="hidden md:flex items-center gap-2 text-blue-200">
             <span>Multi-chain support coming soon</span>

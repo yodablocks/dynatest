@@ -213,48 +213,24 @@ export function useStrategy() {
           strategyName: strategy.name
         });
 
-        // For SmokehouseStrategy, handle cross-chain bridging automatically
-        if (strategyId === 'SmokehouseStrategy' && chainId !== strategy.chainId) {
-          console.log('🌉 Cross-chain investment detected:', {
-            userChain: chainId,
-            strategyChain: strategy.chainId,
-            willBridge: true
-          });
-          
-          // This will trigger CCTP bridging automatically
-          // The SmokehouseStrategy.investCalls() will handle the bridge transaction
-        } else {
-          console.log('🔗 Direct investment (same chain)');
-        }
+        // All strategies operate on Base network - no bridging required
+        console.log('🔗 Direct investment on Base network');
 
         const { fee, amount: amountWithoutFee } = calculateFee(amount);
         console.log('💰 Fee calculation:', { originalAmount: amount.toString(), fee: fee.toString(), amountWithoutFee: amountWithoutFee.toString() });
         
-        // For SmokehouseStrategy, pass user's current chain for bridge logic
-        let calls: StrategyCall[];
-        if (strategyId === 'SmokehouseStrategy') {
-          // Call the strategy directly with user's current chainId for bridge detection
-          calls = await strategy.investCalls(
-            amountWithoutFee,
-            user,
-            getTokenAddress(token, chainId), // Use user's current chain for source token
-            chainId // Pass user's current chainId for bridge logic
-          ) as StrategyCall[];
-        } else {
-          // Standard flow for other strategies
-          calls = await getInvestCalls(
-            strategy,
-            amountWithoutFee,
-            user,
-            token,
-            strategy.chainId
-          );
-        }
+        // Standard investment flow for all Base strategies
+        const calls = await getInvestCalls(
+          strategy,
+          amountWithoutFee,
+          user,
+          token,
+          strategy.chainId
+        );
         console.log('📋 Investment calls generated:', calls);
 
-        // For fee call, use appropriate chain based on whether it's a bridge scenario
-        const isBridgeScenario = strategyId === 'SmokehouseStrategy' && chainId !== strategy.chainId;
-        const feeChainId = isBridgeScenario ? chainId : strategy.chainId;
+        // For fee call, use strategy's chain (all strategies on Base)
+        const feeChainId = strategy.chainId;
         
         // Skip fee for testing
         const feeCall = addFeesCall(
@@ -264,8 +240,7 @@ export function useStrategy() {
         );
         console.log('💰 Fee call created:', { 
           feeCall, 
-          feeChainId, 
-          isBridgeScenario,
+          feeChainId,
           tokenName: token.name 
         });
         
@@ -276,9 +251,8 @@ export function useStrategy() {
         console.log('📋 All calls (including fee):', calls);
         
         console.log('🔗 Attempting to send transaction...');
-        // Execute transaction on user's current chain (for bridge scenarios, this is the source chain)
-        const executionChainId = isBridgeScenario ? chainId : strategy.chainId;
-        const txHash = await sendAndWaitTransaction(calls, executionChainId);
+        // Execute transaction on strategy chain (Base)
+        const txHash = await sendAndWaitTransaction(calls, strategy.chainId);
         console.log('✅ Transaction sent successfully:', txHash);
 
         // For position tracking, use strategy's chainId for consistency

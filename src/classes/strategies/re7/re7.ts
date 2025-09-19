@@ -7,7 +7,7 @@ import { ERC20_ABI } from "@/constants/abis/erc20";
 import { METAMORPHO_ABI } from "@/constants/abis/metamorpho";
 import { BaseStrategy, StrategyCall } from "../baseStrategy";
 import { Position } from "@/types/position";
-import { wagmiConfig as config } from "@/providers/config";
+import { coreWagmiConfig as config } from "@/providers/config";
 import { GetProtocolChains } from "@/types/strategies";
 
 /**
