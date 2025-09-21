@@ -63,7 +63,7 @@ const OnboardingGate = ({
           Get Started
         </h2>
         <div className="flex flex-col md:flex-row gap-4 w-full">
-          <CreateAccount />
+          <CreateAccount handleMessage={handleMessage} />
           <YieldPortfolio handleMessage={handleMessage} />
         </div>
       </div>
