@@ -36,7 +36,8 @@ const useLogin = ({
         return params;
       };
 
-      if (wasAlreadyAuthenticated || !loginMethod) return;
+      // Skip if already authenticated AND not a new user, or if no login method
+      if ((wasAlreadyAuthenticated && !isNewUser) || !loginMethod) return;
 
       const params = handleLoginComplete(loginResponse);
       // Try to add user to database immediately
