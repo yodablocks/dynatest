@@ -205,6 +205,24 @@ export default function Home() {
     }
   };
 
+  const HOT_TOPICS = [
+    {
+      label: "DeFi Strategy:",
+      text: "Help me find the best DeFi strategies",
+      handler: handleMessage,
+    },
+    {
+      label: "DynaVest Academy:",
+      text: "Learn more about DeFi",
+      handler: handleHotTopic,
+    },
+    {
+      label: "Trend:",
+      text: "Give me an analysis on current crypto market",
+      handler: handleHotTopic,
+    },
+  ];
+
   // Scroll to bottom of messages when conversation updates
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -225,7 +243,9 @@ export default function Home() {
   }, [closeChat]);
 
   // Check if conversation contains FindStrategiesMessage to expand width
-  const hasStrategiesMessage = conversation.some(message => message instanceof FindStrategiesMessage);
+  const hasStrategiesMessage = conversation.some(
+    (message) => message instanceof FindStrategiesMessage
+  );
 
   return (
     <div className="h-[80vh]">
@@ -237,16 +257,19 @@ export default function Home() {
         {conversation.length === 0 ? (
           <>
             {/* Welcome Message and Options UI based on Figma design */}
-            <div className="flex flex-col gap-10 w-full max-w-[805px] mx-auto px-4 md:px-0">
+            <div className="flex flex-col gap-5 w-full max-w-[805px] mx-auto px-4 md:px-0">
               {/* Welcome Message */}
               <div className="w-full">
-                <div className="text-[#17181C] rounded-[0px_10px_10px_10px] p-4 ">
+                <div className="text-[#17181C] rounded-[0px_10px_10px_10px] px-4 pb-4">
                   <h2 className="font-[Manrope] font-extrabold text-lg mb-2">
                     👋 Welcome to DynaVest Bot!
                   </h2>
                   {/* Old message: I'm a DeFi investment bot. Ask me anything about DeFi yield strategies, portfolio management, or use one of our built-in functions below to get started. */}
                   <p className="font-[Manrope] font-medium text-sm">
-                    I help you discover and invest in curated DeFi strategies. I can show you our active yield strategies, build personalized portfolios, or guide you through the investment process step-by-step.
+                    I help you discover and invest in curated DeFi strategies. I
+                    can show you our active yield strategies, build personalized
+                    portfolios, or guide you through the investment process
+                    step-by-step.
                   </p>
                 </div>
               </div>
@@ -254,56 +277,31 @@ export default function Home() {
               <OnboardingGate handleMessage={handleMessage} />
 
               {/* Hot Topics */}
-              <div className="flex-col items-center gap-3.5 w-full max-w-[771px]  mx-auto md:flex hidden">
+              <div className="flex-col items-center gap-3.5 w-full max-w-[771px] mx-auto md:flex hidden">
                 <p className="font-[Manrope] font-medium text-sm text-left w-full text-black">
                   Explore hot topics
                 </p>
                 <div className="flex flex-col w-full gap-4">
-                  <button
-                    className="w-full bg-[rgba(255,255,255,0.7)] text-black rounded-[14px] py-1.5 px-5 flex items-center gap-1.5"
-                    onClick={() =>
-                      handleMessage("Help me find the best DeFi strategies")
-                    }
-                  >
-                    <span className="font-[Manrope] font-bold text-sm">
-                      DeFi Strategy:
-                    </span>
-                    <span className="font-[Manrope] font-medium text-sm truncate">
-                      Help me find the best DeFi strategies
-                    </span>
-                  </button>
-                  <button
-                    className="w-full bg-[rgba(255,255,255,0.7)] text-black rounded-[14px] py-1.5 px-5 flex items-center gap-1.5"
-                    onClick={() => handleHotTopic("Learn more about DeFi")}
-                  >
-                    <span className="font-[Manrope] font-bold text-sm">
-                      DynaVest Academy:
-                    </span>
-                    <span className="font-[Manrope] font-medium text-sm truncate">
-                      Learn more about DeFi
-                    </span>
-                  </button>
-                  <button
-                    className="w-full bg-[rgba(255,255,255,0.7)] text-black rounded-[14px] py-1.5 px-5 flex items-center gap-1.5"
-                    onClick={() =>
-                      handleHotTopic(
-                        "Give me an analysis on current crypto market"
-                      )
-                    }
-                  >
-                    <span className="font-[Manrope] font-bold text-sm">
-                      Trend:
-                    </span>
-                    <span className="font-[Manrope] font-medium text-sm truncate">
-                      Give me an analysis on current crypto market
-                    </span>
-                  </button>
+                  {HOT_TOPICS.map((topic, index) => (
+                    <button
+                      key={index}
+                      className="w-full bg-[rgba(255,255,255,0.7)] text-black rounded-[14px] py-1.5 px-5 flex items-center gap-1.5"
+                      onClick={() => topic.handler(topic.text)}
+                    >
+                      <span className="font-[Manrope] font-bold text-sm">
+                        {topic.label}
+                      </span>
+                      <span className="font-[Manrope] font-medium text-sm truncate">
+                        {topic.text}
+                      </span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
 
             {/* Input Bar */}
-            <div className="flex fixed w-[95%] md:w-[50%] bottom-[75px] md:bottom-5 left-1/2 -translate-x-1/2 gap-4 z-10">
+            <div className="flex fixed w-[95%] md:w-[65%] bottom-[75px] md:bottom-5 left-1/2 -translate-x-1/2 gap-3 z-10">
               <div className="flex-1 border border-[rgba(113,128,150,0.5)] bg-white rounded-lg px-5 py-2.5 flex items-center">
                 <input
                   ref={inputRef}
@@ -341,7 +339,11 @@ export default function Home() {
         ) : (
           <>
             {/* Chat View - Expand width when strategies are shown */}
-            <div className={`w-full ${hasStrategiesMessage ? 'max-w-[1200px]' : 'max-w-[805px]'} mx-auto px-4 md:px-0`}>
+            <div
+              className={`w-full ${
+                hasStrategiesMessage ? "max-w-[1200px]" : "max-w-[805px]"
+              } mx-auto px-4 md:px-0`}
+            >
               <div className="mx-auto mb-4">
                 <div className="text-[#17181C] rounded-[0px_10px_10px_10px] p-4">
                   <h2 className="font-[Manrope] font-extrabold text-lg mb-2">
@@ -349,7 +351,10 @@ export default function Home() {
                   </h2>
                   {/* Old message: I'm a DeFi investment bot. Ask me anything about DeFi yield strategies, portfolio management, or use one of our built-in functions below to get started. */}
                   <p className="font-[Manrope] font-medium text-sm">
-                    I help you discover and invest in curated DeFi strategies. I can show you our active yield strategies, build personalized portfolios, or guide you through the investment process step-by-step.
+                    I help you discover and invest in curated DeFi strategies. I
+                    can show you our active yield strategies, build personalized
+                    portfolios, or guide you through the investment process
+                    step-by-step.
                   </p>
                 </div>
               </div>
@@ -368,9 +373,9 @@ export default function Home() {
                     >
                       <div
                         className={`${
-                          message instanceof FindStrategiesMessage 
-                            ? 'w-full' 
-                            : 'max-w-[90%] md:max-w-[80%]'
+                          message instanceof FindStrategiesMessage
+                            ? "w-full"
+                            : "max-w-[90%] md:max-w-[80%]"
                         } rounded-2xl py-3 ${
                           message.metadata.sender === "user"
                             ? "bg-white text-black px-4"
