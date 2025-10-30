@@ -261,11 +261,11 @@ export default function Home() {
               {/* Welcome Message */}
               <div className="w-full">
                 <div className="text-[#17181C] rounded-[0px_10px_10px_10px] px-4 pb-4">
-                  <h2 className="font-[Manrope] font-extrabold text-lg mb-2">
+                  <h2 className="font-extrabold text-lg mb-2">
                     👋 Welcome to DynaVest Bot!
                   </h2>
                   {/* Old message: I'm a DeFi investment bot. Ask me anything about DeFi yield strategies, portfolio management, or use one of our built-in functions below to get started. */}
-                  <p className="font-[Manrope] font-medium text-sm">
+                  <p className="font-medium text-sm">
                     I help you discover and invest in curated DeFi strategies. I
                     can show you our active yield strategies, build personalized
                     portfolios, or guide you through the investment process
@@ -278,7 +278,7 @@ export default function Home() {
 
               {/* Hot Topics */}
               <div className="flex-col items-center gap-3.5 w-full max-w-[771px] mx-auto md:flex hidden">
-                <p className="font-[Manrope] font-medium text-sm text-left w-full text-black">
+                <p className="font-medium text-sm text-left w-full text-black">
                   Explore hot topics
                 </p>
                 <div className="flex flex-col w-full gap-4">
@@ -288,10 +288,8 @@ export default function Home() {
                       className="w-full bg-[rgba(255,255,255,0.7)] text-black rounded-[14px] py-1.5 px-5 flex items-center gap-1.5"
                       onClick={() => topic.handler(topic.text)}
                     >
-                      <span className="font-[Manrope] font-bold text-sm">
-                        {topic.label}
-                      </span>
-                      <span className="font-[Manrope] font-medium text-sm truncate">
+                      <span className="font-bold text-sm">{topic.label}</span>
+                      <span className="font-medium text-sm truncate">
                         {topic.text}
                       </span>
                     </button>
@@ -308,7 +306,7 @@ export default function Home() {
                   value={command}
                   onChange={(e) => setCommand(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  className="flex-1 outline-none text-black font-[Manrope] font-medium text-base"
+                  className="flex-1 outline-none text-black font-medium text-base"
                   placeholder="Ask me anything about DeFi strategies or use the quick commands"
                 />
               </div>
@@ -346,11 +344,11 @@ export default function Home() {
             >
               <div className="mx-auto mb-4">
                 <div className="text-[#17181C] rounded-[0px_10px_10px_10px] p-4">
-                  <h2 className="font-[Manrope] font-extrabold text-lg mb-2">
+                  <h2 className="font-extrabold text-lg mb-2">
                     👋 Welcome to DynaVest Bot!
                   </h2>
                   {/* Old message: I'm a DeFi investment bot. Ask me anything about DeFi yield strategies, portfolio management, or use one of our built-in functions below to get started. */}
-                  <p className="font-[Manrope] font-medium text-sm">
+                  <p className="font-medium text-sm">
                     I help you discover and invest in curated DeFi strategies. I
                     can show you our active yield strategies, build personalized
                     portfolios, or guide you through the investment process
@@ -444,7 +442,7 @@ export default function Home() {
                     value={command}
                     onChange={(e) => setCommand(e.target.value)}
                     onKeyDown={handleKeyPress}
-                    className="flex-1 outline-none text-black font-[Manrope] font-medium text-base"
+                    className="flex-1 outline-none text-black font-medium text-base"
                     placeholder="Ask me anything about DeFi strategies or use the quick commands"
                   />
                 </div>
