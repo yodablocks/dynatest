@@ -27,7 +27,7 @@ export const USDC = {
   },
 } as const satisfies Token;
 
-console.log('🔍 USDC chains debug:', {
+console.log("🔍 USDC chains debug:", {
   mainnetId: mainnet.id,
   baseId: base.id,
   usdcChains: {
@@ -36,7 +36,7 @@ console.log('🔍 USDC chains debug:', {
     [base.id]: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     [bsc.id]: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
     [polygon.id]: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
-  }
+  },
 });
 
 export const ETH = {
@@ -153,6 +153,16 @@ export const WBNB = {
   },
 } as const satisfies Token;
 
+export const DYNA = {
+  name: "DYNA",
+  icon: "/crypto-icons/dyna.png",
+  decimals: 18,
+  isNativeToken: false,
+  chains: {
+    [base.id]: "0xFF89b7cdAC2C74eF228e7667c2fEdEB57DA39c81",
+  },
+} as const satisfies Token;
+
 export const TOKENS = [
   USDT,
   USDC,
@@ -167,6 +177,7 @@ export const TOKENS = [
   cEUR,
   GRAIL,
   xGRAIL,
+  DYNA,
 ] as const;
 
 export type TokensName = (typeof TOKENS)[number]["name"];
