@@ -37,7 +37,7 @@ const getHttpTransport = (chainId: number, alchemyUrl?: string) => {
 
 // Privy wagmi config (for WagmiProvider)
 export const wagmiConfig = createConfig({
-  chains: [mainnet, base, arbitrum, celo, flowMainnet, bsc, polygon],
+  chains: [base, mainnet, arbitrum, celo, flowMainnet, bsc, polygon],
   transports: {
     [mainnet.id]: getHttpTransport(mainnet.id, "https://eth-mainnet.g.alchemy.com/v2"),
     [celo.id]: getHttpTransport(celo.id, "https://celo-mainnet.g.alchemy.com/v2"),
@@ -51,7 +51,7 @@ export const wagmiConfig = createConfig({
 
 // Regular wagmi config (for @wagmi/core functions like readContract)
 export const coreWagmiConfig = createCoreConfig({
-  chains: [mainnet, base, arbitrum, celo, flowMainnet, bsc, polygon],
+  chains: [base, mainnet, arbitrum, celo, flowMainnet, bsc, polygon],
   transports: {
     [mainnet.id]: getHttpTransport(mainnet.id, "https://eth-mainnet.g.alchemy.com/v2"),
     [celo.id]: getHttpTransport(celo.id, "https://celo-mainnet.g.alchemy.com/v2"),
