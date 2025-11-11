@@ -13,14 +13,14 @@ const backgroundStyle = {
 const MultiStrategy = ({ handleMessage }: MultiStrategyProps) => {
   return (
     <button
-      className="flex-1 bg-white border border-[rgba(95,121,241,0.4)] rounded-[11px] p-5 relative shadow-[0px_4px_4px_0px_rgba(0,0,0,0.15)] text-left flex flex-col gap-2"
+      className="cursor-pointer flex-1 bg-white border border-[rgba(95,121,241,0.4)] rounded-[11px] p-3 relative shadow-[0px_4px_4px_0px_rgba(0,0,0,0.15)] text-left flex flex-col gap-2"
       onClick={() =>
         handleMessage("Run a Cross-Chain, Multi-Protocols Yield Portfolio")
       }
     >
       <div
         style={backgroundStyle}
-        className="bg-gradient-to-r rounded-[4px] px-2.5 py-1.5 self-start shadow-[0px_1px_4px_0px_rgba(0,0,0,0.15)]"
+        className="bg-gradient-to-r rounded-[4px] px-4 py-1 self-start shadow-[0px_1px_4px_0px_rgba(0,0,0,0.15)]"
       >
         <span className="font-[Manrope] font-semibold text-xs text-black    ">
           Multi-Strategies

@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Copy, Check } from "lucide-react";
+import { useChainId } from "wagmi";
 
 import { useAssets } from "@/contexts/AssetsContext";
 import AssetsTableComponent from "@/components/Profile/AssetsTable";
@@ -12,6 +14,7 @@ import { DepositDialog } from "@/components/DepositDialog";
 import { USDC } from "@/constants/coins";
 import { WithdrawDialog } from "@/components/WithdrawDialog";
 import { usePrivy } from "@privy-io/react-auth";
+import { getChain } from "@/constants/chains";
 
 const PROFILE_TABS = [
   {
@@ -43,7 +46,10 @@ function getTabComponent(tab: string) {
 
 export default function ProfilePage() {
   const [selectedTab, setSelectedTab] = useState(PROFILE_TABS[0].value);
+  const [copied, setCopied] = useState(false);
   const { user: privyUser } = usePrivy();
+  const chainId = useChainId();
+  const chain = getChain(chainId);
 
   const { profitsQuery, updateTotalValue, assetsBalance, smartWallet } =
     useAssets();
@@ -86,6 +92,47 @@ export default function ProfilePage() {
                   {privyUser?.google?.name}
                 </h1>
               </div>
+              {/* Smart wallet address and current chain */}
+              {smartWallet && (
+                <div className="flex items-center gap-2 mt-1">
+                  <p className="text-sm text-gray-600 font-mono">
+                    {smartWallet.slice(0, 4)}...{smartWallet.slice(-4)}
+                  </p>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(smartWallet);
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2000);
+                    }}
+                    className="text-gray-500 cursor-pointer hover:text-gray-700 transition-colors"
+                    title="Copy address"
+                  >
+                    {copied ? (
+                      <Check className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
+
+                  {chain && (
+                    <>
+                      <span className="text-gray-400">•</span>
+                      <div className="flex items-center gap-1.5">
+                        <Image
+                          src={chain.icon}
+                          alt={chain.name}
+                          width={16}
+                          height={16}
+                          className="rounded-full"
+                        />
+                        <span className="text-sm text-gray-600">
+                          {chain.name}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
           {/* Action buttons */}
