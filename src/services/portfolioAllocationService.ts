@@ -108,8 +108,12 @@ class PortfolioAllocationService {
 
     // For 3 strategies: Different distribution based on risk level
     if (strategies.length === 3) {
+      console.log(`🎲 Calculating allocation for risk level: "${riskLevel}"`);
+
       // High risk: More concentrated in highest APY (aggressive)
       if (riskLevel === "high") {
+        console.log("🔥 Using HIGH RISK allocation (concentrated)");
+
         // Concentrate 50-60% in highest APY, split the rest
         const highestAllocation = 50 + Math.floor(Math.random() * 11); // 50-60%
         const remaining = 100 - highestAllocation;
@@ -118,8 +122,12 @@ class PortfolioAllocationService {
         const secondAllocation = Math.floor(remaining * 0.4) + Math.floor(Math.random() * 10);
         const thirdAllocation = 100 - highestAllocation - secondAllocation;
 
+        console.log(`📊 High-risk allocations: [${highestAllocation}%, ${secondAllocation}%, ${thirdAllocation}%]`);
+
         return [highestAllocation, secondAllocation, thirdAllocation];
       }
+
+      console.log("⚖️ Using BALANCED allocation (medium/low risk)");
 
       // Low and Medium risk: More balanced distribution
       const totalAPY = strategies.reduce(
