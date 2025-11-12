@@ -38,32 +38,30 @@ function StrategyRow({ strategy, index, isDisabled, dynamicRisk, isComingSoon, o
     >
       {/* Title */}
       <td className="pr-2 py-4">
-        <div className="flex items-center flex-wrap gap-2">
-          <div className="flex items-center gap-2">
-            <div className={`text-sm font-medium ${isDisabled ? 'text-gray-500' : 'text-gray-900'}`}>
-              {strategy.title}
-              {isComingSoon && strategy.chainId !== base.id && strategy.chainId !== celo.id && strategy.chainId !== bsc.id && strategy.chainId !== polygon.id && strategy.chainId !== arbitrum.id && (
-                <span className="text-xs text-gray-400 block">
-                  ({getChainName(strategy.chainId)})
-                </span>
-              )}
-            </div>
-            
-            {/* Status indicator */}
-            {isComingSoon ? (
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                Coming Soon
-              </span>
-            ) : (
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1"></div>
-                Live
-              </span>
-            )}
-          </div>
+        <div className={`text-sm font-medium ${isDisabled ? 'text-gray-500' : 'text-gray-900'}`}>
+          {strategy.title}
+          {isComingSoon && strategy.chainId !== base.id && strategy.chainId !== celo.id && strategy.chainId !== bsc.id && strategy.chainId !== polygon.id && strategy.chainId !== arbitrum.id && (
+            <span className="text-xs text-gray-400 block">
+              ({getChainName(strategy.chainId)})
+            </span>
+          )}
         </div>
       </td>
-      
+
+      {/* Status */}
+      <td className="pr-2 py-4">
+        {isComingSoon ? (
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+            Coming Soon
+          </span>
+        ) : (
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1"></div>
+            Live
+          </span>
+        )}
+      </td>
+
       {/* Risk */}
       <td className="pr-2 py-4">
         <div
@@ -290,9 +288,15 @@ export default function StrategyTable({ strategies }: StrategyTableProps) {
           <tr>
             <th
               scope="col"
-              className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-[20%]"
+              className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-[15%]"
             >
               Strategy
+            </th>
+            <th
+              scope="col"
+              className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-[10%]"
+            >
+              Status
             </th>
             <th
               scope="col"
@@ -308,13 +312,13 @@ export default function StrategyTable({ strategies }: StrategyTableProps) {
             </th>
             <th
               scope="col"
-              className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-[20%]"
+              className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-[18%]"
             >
               Protocol
             </th>
             <th
               scope="col"
-              className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-[10%]"
+              className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-[8%]"
             >
               Type
             </th>
@@ -352,7 +356,7 @@ export default function StrategyTable({ strategies }: StrategyTableProps) {
             </th>
             <th
               scope="col"
-              className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-[15%]"
+              className="py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 w-[14%]"
             >
               Action
             </th>
