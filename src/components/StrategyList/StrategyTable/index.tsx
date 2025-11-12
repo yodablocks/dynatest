@@ -154,16 +154,6 @@ function StrategyRow({ strategy, index, isDisabled, dynamicRisk, isComingSoon, o
               )
             )}
           </span>
-          {liveData && !isComingSoon && (
-            <span
-              className={`text-xs ${
-                dataSource === 'hardcoded' ? 'text-gray-400' : 'text-green-600'
-              }`}
-              title={`Source: ${dataSource}`}
-            >
-              {dataSource === 'hardcoded' ? '⚪' : '🟢'}
-            </span>
-          )}
         </div>
       </td>
 

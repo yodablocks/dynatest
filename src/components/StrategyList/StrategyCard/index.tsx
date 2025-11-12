@@ -161,16 +161,6 @@ export default function StrategyCard(strategy: StrategyMetadata) {
                     `APY ${displayAPY.toFixed(2)}%`
                   )
                 )}
-                {liveData && !isComingSoon && (
-                  <span
-                    className={`ml-1 text-xs ${
-                      dataSource === 'hardcoded' ? 'text-gray-400' : 'text-green-600'
-                    }`}
-                    title={`Source: ${dataSource}`}
-                  >
-                    {dataSource === 'hardcoded' ? '⚪' : '🟢'}
-                  </span>
-                )}
               </span>
               <div
                 className="flex justify-center items-center px-2 py-1 rounded-lg"
@@ -233,16 +223,6 @@ export default function StrategyCard(strategy: StrategyMetadata) {
                       ) : (
                         `${displayTVL.toFixed(0)}M`
                       )
-                    )}
-                    {liveData && !isComingSoon && (
-                      <span
-                        className={`ml-1 text-xs ${
-                          dataSource === 'hardcoded' ? 'text-gray-400' : 'text-green-600'
-                        }`}
-                        title={`Source: ${dataSource}`}
-                      >
-                        {dataSource === 'hardcoded' ? '⚪' : '🟢'}
-                      </span>
                     )}
                   </p>
 
