@@ -11,7 +11,7 @@ export const ST_CELO = {
   name: "StakedCelo",
   description:
     "Liquid staking protocol for CELO tokens.",
-  icon: "/crypto-icons/protocol/celo.svg",
+  icon: "/crypto-icons/chains/42220.svg",
   link: "https://stcelo.com/",
   contracts: ST_CELO_CONTRACTS,
 } as const satisfies Protocol;
