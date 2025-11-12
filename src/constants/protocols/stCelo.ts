@@ -8,7 +8,7 @@ export const ST_CELO_CONTRACTS = {
 } as const;
 
 export const ST_CELO = {
-  name: "StakedCelo",
+  name: "StCelo",
   description:
     "Liquid staking protocol for CELO tokens.",
   icon: "/crypto-icons/chains/42220.svg",

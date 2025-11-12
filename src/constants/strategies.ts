@@ -148,7 +148,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     description:
       "Stake CELO tokens to earn staking rewards while maintaining liquidity through stCELO liquid staking tokens.",
     fullDescription:
-      "Stake CELO tokens through StakedCelo protocol to earn staking rewards while receiving stCELO tokens that can be used across DeFi. StakedCelo is a liquid staking protocol that allows you to earn staking rewards while maintaining the flexibility to use your staked assets.",
+      "Stake CELO tokens through StCelo protocol to earn staking rewards while receiving stCELO tokens that can be used across DeFi. StCelo is a liquid staking protocol that allows you to earn staking rewards while maintaining the flexibility to use your staked assets.",
     externalLink: "https://app.stcelo.xyz/",
     learnMoreLink: "https://docs.stcelo.xyz/",
     tokens: [CELO],

@@ -27,7 +27,9 @@ export default function ChainFilter({
 
   const getChainName = (chainId: number) => {
     const chain = CHAINS.find(c => c.id === chainId);
-    return chain?.name || 'Unknown';
+    const name = chain?.name || 'Unknown';
+    // Use short names for better display
+    return name === 'BNB Smart Chain' ? 'BSC' : name;
   };
 
   return (

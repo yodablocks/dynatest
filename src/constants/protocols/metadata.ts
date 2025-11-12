@@ -28,10 +28,10 @@ export const PROTOCOLS_METADATA: Record<
     description: "DEX and yield farming protocol on Arbitrum",
     status: "coming_soon",
   },
-  StakedCelo: {
+  StCelo: {
     icon: "/crypto-icons/celo.svg",
     description: "Liquid staking protocol for CELO tokens",
-    status: "coming_soon",
+    status: "active",
   },
   GMX: {
     icon: "/crypto-icons/gmx.svg",
@@ -52,7 +52,7 @@ export const STRATEGIES_PROTOCOLS_MAPPING: Record<
   AaveV3Supply: PROTOCOLS_METADATA.Aave,
   MorphoSupply: PROTOCOLS_METADATA.Morpho,
   CamelotStaking: PROTOCOLS_METADATA.Camelot,
-  StCeloStaking: PROTOCOLS_METADATA.StakedCelo,
+  StCeloStaking: PROTOCOLS_METADATA.StCelo,
   GMXDeposit: PROTOCOLS_METADATA.GMX,
   UniswapV3SwapLST: PROTOCOLS_METADATA.Lido,
   UniswapV3AddLiquidity: PROTOCOLS_METADATA.UniswapV3,
