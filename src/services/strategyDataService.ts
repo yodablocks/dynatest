@@ -233,14 +233,14 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     'MevCapitalStrategy': { apy: 7.8, title: 'Alpha Generation' },
     'AaveV3Supply': { apy: 4.5, title: 'Conservative Yield' },
     'AaveV3SupplyLeveraged': { apy: 8.0, title: 'Enhanced Returns' },
-    'MorphoSupply': { apy: 6.7, title: 'Optimized Lending' },
-    'FluidSupply': { apy: 6.23, title: 'Dynamic Yield' },
-    'StCeloStaking': { apy: 4.5, title: 'CELO Liquid Staking' },
+    'MorphoSupply': { apy: 8.5, title: 'Optimized Lending' },
+    'FluidSupply': { apy: 5.7, title: 'Dynamic Yield' },
+    'StCeloStaking': { apy: 6.8, title: 'CELO Liquid Staking' },
     'AaveV3SupplyCelo': { apy: 2.5, title: 'AAVE Lending (Celo)' },
     'AaveV3SupplyBSC': { apy: 1.6, title: 'AAVE BNB Lending' },
     'AaveV3SupplyPolygon': { apy: 3.8, title: 'AAVE USDC Lending (Polygon)' },
     'AaveV3SupplyArbitrum': { apy: 4.2, title: 'AAVE USDC Lending (Arbitrum)' },
-    'AnkrFlowStaking': { apy: 7.9, title: 'Flow Liquid Staking' }
+    'AnkrFlowStaking': { apy: 10.8, title: 'Flow Liquid Staking' }
   };
 
   const strategy = STRATEGIES_MAP[strategyId as keyof typeof STRATEGIES_MAP];

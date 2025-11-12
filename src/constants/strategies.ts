@@ -85,7 +85,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
   {
     title: "Optimized Lending",
     id: "MorphoSupply",
-    apy: 6.7,
+    apy: 8.5,
     risk: "medium",
     color: "#C4DAFF",
     protocol: MORPHO,
@@ -124,7 +124,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
   {
     title: "Dynamic Yield",
     id: "FluidSupply",
-    apy: 6.23,
+    apy: 5.7,
     risk: "medium",
     color: "#3f75ff",
     protocol: FLUID,
@@ -141,7 +141,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
   {
     title: "CELO Liquid Staking",
     id: "StCeloStaking",
-    apy: 4.5,
+    apy: 6.8,
     risk: "low",
     color: "#35D07F",
     protocol: ST_CELO,
@@ -226,14 +226,14 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
   {
     title: "Flow Liquid Staking",
     id: "AnkrFlowStaking",
-    apy: 7.9,
+    apy: 10.8,
     risk: "low",
     color: "#00EF8B",
     protocol: ANKR,
     description:
       "Stake FLOW tokens with Ankr to earn staking rewards while maintaining liquidity through ankrFLOW tokens.",
     fullDescription:
-      "Stake FLOW tokens through Ankr's liquid staking protocol to earn 7.9% APY while receiving ankrFLOW tokens that can be used across DeFi. Ankr is a leading liquid staking provider with billions in TVL, offering secure and efficient staking solutions.",
+      "Stake FLOW tokens through Ankr's liquid staking protocol to earn 10.8% APY while receiving ankrFLOW tokens that can be used across DeFi. Ankr is a leading liquid staking provider with billions in TVL, offering secure and efficient staking solutions.",
     externalLink: "https://www.ankr.com/staking-crypto/flow-flowevm/",
     learnMoreLink: "https://www.ankr.com/docs/staking/liquid-staking/flow/",
     tokens: [FLOW],
