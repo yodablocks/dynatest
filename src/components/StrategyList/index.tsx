@@ -218,7 +218,7 @@ export default function StrategyList() {
         </div>
 
         {/* Search bar and view toggle row */}
-        <div className="flex items-center gap-4 w-full md:w-auto">
+        <div className="flex items-center gap-4 w-full md:w-auto" suppressHydrationWarning>
           <div className="flex items-center gap-3 px-3 py-2.5 h-[44px] bg-[#F8F9FE] border border-[#E2E8F7] rounded-lg w-full md:w-[300px]">
             <Image
               src="/search.svg"
