@@ -57,7 +57,6 @@ export default function ChainFilter({
                           : "opacity-50"
                         : "opacity-100"
                     }
-                    ${!isActive ? 'grayscale' : ''}
                   `}
                   onClick={() => {
                     if (!isActive) return; // Don't allow selection of inactive chains
