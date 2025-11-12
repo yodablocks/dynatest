@@ -11,32 +11,41 @@ interface DynamicChainDisplayProps {
 }
 
 /**
+ * Get short chain name for display
+ */
+function getShortChainName(chainName: string): string {
+  return chainName === 'BNB Smart Chain' ? 'BSC' : chainName;
+}
+
+/**
  * Chain display component for DynaVest strategies
  * All current strategies operate on Base network
  */
-export function DynamicChainDisplay({ 
-  strategy, 
-  size = 24, 
+export function DynamicChainDisplay({
+  strategy,
+  size = 24,
   showChainName = false,
-  className = "" 
+  className = ""
 }: DynamicChainDisplayProps) {
   const displayChain = getChain(strategy.chainId);
-  
+
   if (!displayChain) {
     return null;
   }
-  
+
+  const shortName = getShortChainName(displayChain.name);
+
   return (
     <div className={`flex items-center gap-2 ${className}`}>
       <Image
         src={displayChain.icon}
-        alt={displayChain.name}
+        alt={shortName}
         width={size}
         height={size}
         className="rounded-full"
       />
       {showChainName && (
-        <span className="text-sm text-gray-600">{displayChain.name}</span>
+        <span className="text-sm text-gray-600">{shortName}</span>
       )}
     </div>
   );
@@ -47,21 +56,22 @@ interface DynamicChainDisplayWithTooltipProps extends DynamicChainDisplayProps {
   showTooltip?: boolean;
 }
 
-export function DynamicChainDisplayWithTooltip({ 
-  strategy, 
+export function DynamicChainDisplayWithTooltip({
+  strategy,
   showTooltip = true,
-  ...props 
+  ...props
 }: DynamicChainDisplayWithTooltipProps) {
   const displayChain = getChain(strategy.chainId);
   const display = <DynamicChainDisplay strategy={strategy} {...props} />;
-  
+
   if (showTooltip && displayChain) {
+    const shortName = getShortChainName(displayChain.name);
     return (
-      <div title={`Strategy operates on ${displayChain.name}`} className="cursor-help">
+      <div title={`Strategy operates on ${shortName}`} className="cursor-help">
         {display}
       </div>
     );
   }
-  
+
   return display;
 }
