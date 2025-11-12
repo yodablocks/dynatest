@@ -49,11 +49,8 @@ const STRATEGY_CONFIGS: Record<
   | "MorphoSupply"
   | "AaveV3Supply"
   | "AaveV3SupplyLeveraged"
-  | "AaveV3SupplyArbitrum"
   | "AaveV3SupplyBSC"
   | "AaveV3SupplyCelo"
-  | "MorphoSupplyFlow"
-  | "UniswapV3SwapLST"
   | "FluidSupply"
   | "Re7Strategy"
   | "StCeloStaking"
@@ -81,11 +78,6 @@ const STRATEGY_CONFIGS: Record<
     factory: (chainId) =>
       new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>), // Uses same class as regular AaveV3Supply
   },
-  AaveV3SupplyArbitrum: {
-    protocol: AAVE,
-    factory: (chainId) =>
-      new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
-  },
   AaveV3SupplyBSC: {
     protocol: AAVE,
     factory: (chainId) =>
@@ -95,23 +87,6 @@ const STRATEGY_CONFIGS: Record<
     protocol: AAVE,
     factory: (chainId) =>
       new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
-  },
-  MorphoSupplyFlow: {
-    protocol: MORPHO,
-    factory: (chainId) =>
-      new MorphoSupply(chainId as GetProtocolChains<typeof MORPHO>),
-  },
-  UniswapV3SwapLST: {
-    protocol: UNISWAP,
-    factory: (chainId) => {
-      const typedChainId = chainId as GetProtocolChains<typeof UNISWAP>;
-      // 根據不同鏈條選擇不同的 token 組合
-      if (chainId === bsc.id) {
-        return new UniswapV3SwapLST(typedChainId, BNB, wbETH);
-      } else {
-        return new UniswapV3SwapLST(typedChainId, ETH, wstETH);
-      }
-    },
   },
   FluidSupply: {
     protocol: FLUID,

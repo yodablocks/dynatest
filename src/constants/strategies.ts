@@ -14,11 +14,8 @@ export const STRATEGIES = [
   "MultiStrategy", // Composition pattern - combines multiple strategies
   "StCeloStaking", // Celo liquid staking
   "AaveV3SupplyCelo", // AAVE on Celo
-  // Coming soon strategies
-  "UniswapV3SwapLST", // Liquid Staking
-  "AaveV3SupplyArbitrum", // AAVE on Arbitrum
   "AaveV3SupplyBSC", // AAVE on BSC
-  "MorphoSupplyFlow", // Morpho on Flow
+  // Coming soon strategies
   "CamelotStaking",
   "GMXDeposit",
 ] as const;
@@ -192,61 +189,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
 ];
 
 // Coming Soon strategies (other chains and protocols)
-export const COMING_SOON_STRATEGIES: StrategyMetadata[] = [
-  {
-    title: "Liquid Staking",
-    id: "UniswapV3SwapLST",
-    apy: 2.8,
-    risk: "low",
-    color: "#F50DB5",
-    protocol: LIDO,
-    description:
-      "Staking tokens to operate network nodes helps to maintain security on the blockchain.",
-    fullDescription:
-      "Staking tokens to operate network nodes helps to maintain security on the blockchain.",
-    externalLink: "https://lido.fi/",
-    learnMoreLink: "https://lido.fi/",
-    tokens: [USDC],
-    chainId: base.id,
-    status: "coming_soon",
-  },
-  {
-    title: "AAVE Lending (Arbitrum)",
-    id: "AaveV3SupplyArbitrum",
-    apy: 4.5,
-    risk: "medium",
-    color: "#9896FF",
-    protocol: AAVE,
-    description:
-      "Supplying USDC to AAVE Lending Protocol on Arbitrum enables earning interest and rewards.",
-    fullDescription:
-      "Supplying USDC to AAVE Lending Protocol on Arbitrum enables earning interest and rewards.",
-    externalLink:
-      "https://app.aave.com/reserve-overview/?underlyingAsset=0xaf88d065e77c8cc2239327c5edb3a432268e5831&marketName=proto_arbitrum_v3",
-    learnMoreLink:
-      "https://app.aave.com/reserve-overview/?underlyingAsset=0xaf88d065e77c8cc2239327c5edb3a432268e5831&marketName=proto_arbitrum_v3",
-    tokens: [USDC],
-    chainId: arbitrum.id,
-    status: "coming_soon",
-  },
-  {
-    title: "Flow Ecosystem Yield",
-    id: "MorphoSupplyFlow",
-    apy: 4.3,
-    risk: "low",
-    color: "#1000FF",
-    protocol: MORPHO,
-    description:
-      "Access Flow blockchain DeFi opportunities through integrated lending protocols.",
-    fullDescription:
-      "Access Flow blockchain DeFi opportunities through integrated lending protocols.",
-    externalLink: "https://kitty.com",
-    learnMoreLink: "https://kitty.com",
-    tokens: [FLOW],
-    chainId: flowMainnet.id,
-    status: "coming_soon",
-  },
-];
+export const COMING_SOON_STRATEGIES: StrategyMetadata[] = [];
 
 // Combined strategies metadata - Base network focus
 export const STRATEGIES_METADATA: StrategyMetadata[] = [
