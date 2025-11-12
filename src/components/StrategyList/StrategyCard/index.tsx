@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { base, mainnet } from "viem/chains";
+import { base, mainnet, celo } from "viem/chains";
 
 import { useState, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
@@ -58,8 +58,8 @@ export default function StrategyCard(strategy: StrategyMetadata) {
   const router = useRouter();
 
   // Check if strategy is coming soon
-  // Allow both Base and Ethereum as active networks
-  const isComingSoon = status === 'coming_soon' || (chainId !== base.id && chainId !== mainnet.id);
+  // Allow Base, Ethereum, and Celo as active networks
+  const isComingSoon = status === 'coming_soon' || (chainId !== base.id && chainId !== mainnet.id && chainId !== celo.id);
   const isDisabled = isComingSoon;
 
   const handleCardClick = (e: MouseEvent) => {
@@ -145,7 +145,7 @@ export default function StrategyCard(strategy: StrategyMetadata) {
             <div className="flex gap-[3px] self-stretch">
               <h3 className={`text-[18px] font-semibold ${isDisabled ? 'text-gray-500' : 'text-[#17181C]'}`}>
                 {title}
-                {isComingSoon && chainId !== base.id && (
+                {isComingSoon && chainId !== base.id && chainId !== celo.id && (
                   <span className="text-sm text-gray-400 block">
                     ({getChainName(chainId)})
                   </span>
@@ -311,16 +311,16 @@ export default function StrategyCard(strategy: StrategyMetadata) {
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 rounded-2xl">
             <div className="text-center p-4">
               <div className="text-lg font-semibold text-gray-700 mb-2">
-                {chainId !== base.id ? `${getChainName(chainId)} Support` : 'Protocol Integration'}
+                {chainId !== base.id && chainId !== celo.id ? `${getChainName(chainId)} Support` : 'Protocol Integration'}
               </div>
               <div className="text-sm text-gray-600 mb-3">
-                {chainId !== base.id 
+                {chainId !== base.id && chainId !== celo.id
                   ? 'Multi-chain support coming soon'
                   : 'Protocol integration in development'
                 }
               </div>
               <div className="text-xs text-gray-500">
-                Currently available on Base network only
+                Currently available on Base and Celo networks
               </div>
             </div>
           </div>

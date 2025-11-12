@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Dispatch, Fragment, SetStateAction } from "react";
-import { base, mainnet } from "viem/chains";
+import { base, mainnet, celo } from "viem/chains";
 
 import { CHAINS } from "@/constants/chains";
 
@@ -21,8 +21,8 @@ export default function ChainFilter({
 }: ChainFilterProps) {
   
   const getChainStatus = (chainId: number) => {
-    // Base is live, Ethereum is live for cross-chain strategies (now disabled)
-    return (chainId === base.id) ? 'active' : 'coming_soon';
+    // Base and Celo are live, Ethereum is live for cross-chain strategies (now disabled)
+    return (chainId === base.id || chainId === celo.id) ? 'active' : 'coming_soon';
   };
 
   const getChainName = (chainId: number) => {
