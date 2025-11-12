@@ -68,7 +68,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     title: "Conservative",
     id: "AaveV3Supply",
     apy: 4.5,
-    risk: "medium",
+    risk: "low",
     color: "#9896FF",
     protocol: AAVE,
     description:
@@ -126,7 +126,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     title: "Dynamic",
     id: "FluidSupply",
     apy: 5.7,
-    risk: "medium",
+    risk: "low",
     color: "#3f75ff",
     protocol: FLUID,
     description:
