@@ -162,13 +162,13 @@ export default function StrategyCard(strategy: StrategyMetadata) {
                   )
                 )}
                 {liveData && !isComingSoon && (
-                  <span 
+                  <span
                     className={`ml-1 text-xs ${
-                      dataSource === 'morpho' ? 'text-green-600' : 'text-gray-400'
+                      dataSource === 'hardcoded' ? 'text-gray-400' : 'text-green-600'
                     }`}
                     title={`Source: ${dataSource}`}
                   >
-                    {dataSource === 'morpho' ? '🟢' : '⚪'}
+                    {dataSource === 'hardcoded' ? '⚪' : '🟢'}
                   </span>
                 )}
               </span>
@@ -235,13 +235,13 @@ export default function StrategyCard(strategy: StrategyMetadata) {
                       )
                     )}
                     {liveData && !isComingSoon && (
-                      <span 
+                      <span
                         className={`ml-1 text-xs ${
-                          dataSource === 'morpho' ? 'text-green-600' : 'text-gray-400'
+                          dataSource === 'hardcoded' ? 'text-gray-400' : 'text-green-600'
                         }`}
                         title={`Source: ${dataSource}`}
                       >
-                        {dataSource === 'morpho' ? '🟢' : '⚪'}
+                        {dataSource === 'hardcoded' ? '⚪' : '🟢'}
                       </span>
                     )}
                   </p>

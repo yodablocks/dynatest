@@ -155,13 +155,13 @@ function StrategyRow({ strategy, index, isDisabled, dynamicRisk, isComingSoon, o
             )}
           </span>
           {liveData && !isComingSoon && (
-            <span 
+            <span
               className={`text-xs ${
-                dataSource === 'morpho' ? 'text-green-600' : 'text-gray-400'
+                dataSource === 'hardcoded' ? 'text-gray-400' : 'text-green-600'
               }`}
               title={`Source: ${dataSource}`}
             >
-              {dataSource === 'morpho' ? '🟢' : '⚪'}
+              {dataSource === 'hardcoded' ? '⚪' : '🟢'}
             </span>
           )}
         </div>
