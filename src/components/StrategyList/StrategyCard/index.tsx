@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { base, mainnet, celo, bsc } from "viem/chains";
+import { base, mainnet, celo, bsc, polygon, arbitrum } from "viem/chains";
 
 import { useState, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
@@ -58,8 +58,8 @@ export default function StrategyCard(strategy: StrategyMetadata) {
   const router = useRouter();
 
   // Check if strategy is coming soon
-  // Allow Base, Ethereum, Celo, and BSC as active networks
-  const isComingSoon = status === 'coming_soon' || (chainId !== base.id && chainId !== mainnet.id && chainId !== celo.id && chainId !== bsc.id);
+  // Allow Base, Ethereum, Celo, BSC, Polygon, and Arbitrum as active networks
+  const isComingSoon = status === 'coming_soon' || (chainId !== base.id && chainId !== mainnet.id && chainId !== celo.id && chainId !== bsc.id && chainId !== polygon.id && chainId !== arbitrum.id);
   const isDisabled = isComingSoon;
 
   const handleCardClick = (e: MouseEvent) => {

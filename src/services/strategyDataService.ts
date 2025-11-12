@@ -53,7 +53,7 @@ const EXPAND_PROTOCOL_IDS = {
 
 // Strategy categorization
 const MORPHO_STRATEGIES = ['SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy'];
-const AAVE_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'AaveV3SupplyCelo', 'AaveV3SupplyBSC'];
+const AAVE_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'AaveV3SupplyCelo', 'AaveV3SupplyBSC', 'AaveV3SupplyPolygon', 'AaveV3SupplyArbitrum'];
 const EXPAND_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'MorphoSupply', 'SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy']; // All strategies using Expand Network API
 const FLUID_STRATEGIES = ['FluidSupply'];
 
@@ -237,7 +237,9 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     'FluidSupply': { apy: 6.23, title: 'Dynamic Yield' },
     'StCeloStaking': { apy: 4.5, title: 'CELO Liquid Staking' },
     'AaveV3SupplyCelo': { apy: 2.5, title: 'AAVE Lending (Celo)' },
-    'AaveV3SupplyBSC': { apy: 1.6, title: 'AAVE BNB Lending' }
+    'AaveV3SupplyBSC': { apy: 1.6, title: 'AAVE BNB Lending' },
+    'AaveV3SupplyPolygon': { apy: 3.8, title: 'AAVE USDC Lending (Polygon)' },
+    'AaveV3SupplyArbitrum': { apy: 4.2, title: 'AAVE USDC Lending (Arbitrum)' }
   };
 
   const strategy = STRATEGIES_MAP[strategyId as keyof typeof STRATEGIES_MAP];

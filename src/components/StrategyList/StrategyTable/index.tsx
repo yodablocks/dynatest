@@ -42,7 +42,7 @@ function StrategyRow({ strategy, index, isDisabled, dynamicRisk, isComingSoon, o
           <div className="flex items-center gap-2">
             <div className={`text-sm font-medium ${isDisabled ? 'text-gray-500' : 'text-gray-900'}`}>
               {strategy.title}
-              {isComingSoon && strategy.chainId !== base.id && strategy.chainId !== celo.id && (
+              {isComingSoon && strategy.chainId !== base.id && strategy.chainId !== celo.id && strategy.chainId !== bsc.id && strategy.chainId !== polygon.id && strategy.chainId !== arbitrum.id && (
                 <span className="text-xs text-gray-400 block">
                   ({getChainName(strategy.chainId)})
                 </span>
@@ -205,7 +205,7 @@ function StrategyRow({ strategy, index, isDisabled, dynamicRisk, isComingSoon, o
 }import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { base, mainnet, celo, bsc } from "viem/chains";
+import { base, mainnet, celo, bsc, polygon, arbitrum } from "viem/chains";
 
 import { getRiskColor } from "@/utils";
 import { getDynamicRiskLevel } from "@/utils/dynamicRisk";
@@ -254,9 +254,9 @@ export default function StrategyTable({ strategies }: StrategyTableProps) {
   };
 
   // Check if strategy is coming soon
-  // Allow Base, Ethereum, and Celo as active networks
+  // Allow Base, Ethereum, Celo, BSC, Polygon, and Arbitrum as active networks
   const isStrategyComingSoon = (strategy: StrategyMetadata) => {
-    return strategy.status === 'coming_soon' || (strategy.chainId !== base.id && strategy.chainId !== mainnet.id && strategy.chainId !== celo.id && strategy.chainId !== bsc.id);
+    return strategy.status === 'coming_soon' || (strategy.chainId !== base.id && strategy.chainId !== mainnet.id && strategy.chainId !== celo.id && strategy.chainId !== bsc.id && strategy.chainId !== polygon.id && strategy.chainId !== arbitrum.id);
   };
 
   const getChainName = (chainId: number) => {

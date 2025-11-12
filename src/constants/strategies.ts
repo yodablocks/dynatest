@@ -15,6 +15,8 @@ export const STRATEGIES = [
   "StCeloStaking", // Celo liquid staking
   "AaveV3SupplyCelo", // AAVE on Celo
   "AaveV3SupplyBSC", // AAVE on BSC
+  "AaveV3SupplyPolygon", // AAVE on Polygon
+  "AaveV3SupplyArbitrum", // AAVE on Arbitrum
   // Coming soon strategies
   "CamelotStaking",
   "GMXDeposit",
@@ -184,6 +186,40 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     learnMoreLink: "https://docs.aave.com/",
     tokens: [WBNB],
     chainId: bsc.id,
+    status: "active",
+  },
+  {
+    title: "AAVE USDC Lending (Polygon)",
+    id: "AaveV3SupplyPolygon",
+    apy: 3.8,
+    risk: "medium",
+    color: "#9896FF",
+    protocol: AAVE,
+    description:
+      "Supply USDC to AAVE V3 on Polygon network to earn lending interest with fast transactions and low fees.",
+    fullDescription:
+      "Supply USDC to AAVE V3 lending protocol on Polygon network. AAVE is a battle-tested DeFi protocol with over $43B in global TVL. Earn competitive yields on your USDC holdings with Polygon's fast finality and minimal gas costs.",
+    externalLink: "https://app.aave.com/markets/?marketName=proto_polygon_v3",
+    learnMoreLink: "https://docs.aave.com/",
+    tokens: [USDC],
+    chainId: polygon.id,
+    status: "active",
+  },
+  {
+    title: "AAVE USDC Lending (Arbitrum)",
+    id: "AaveV3SupplyArbitrum",
+    apy: 4.2,
+    risk: "medium",
+    color: "#9896FF",
+    protocol: AAVE,
+    description:
+      "Supply USDC to AAVE V3 on Arbitrum network to earn lending interest with Ethereum security and low fees.",
+    fullDescription:
+      "Supply USDC to AAVE V3 lending protocol on Arbitrum network. AAVE is a battle-tested DeFi protocol with over $43B in global TVL. Earn competitive yields on your USDC holdings with Arbitrum's Ethereum-grade security and cost efficiency.",
+    externalLink: "https://app.aave.com/markets/?marketName=proto_arbitrum_v3",
+    learnMoreLink: "https://docs.aave.com/",
+    tokens: [USDC],
+    chainId: arbitrum.id,
     status: "active",
   },
 ];

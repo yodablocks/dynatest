@@ -51,6 +51,8 @@ const STRATEGY_CONFIGS: Record<
   | "AaveV3SupplyLeveraged"
   | "AaveV3SupplyBSC"
   | "AaveV3SupplyCelo"
+  | "AaveV3SupplyPolygon"
+  | "AaveV3SupplyArbitrum"
   | "FluidSupply"
   | "Re7Strategy"
   | "StCeloStaking"
@@ -84,6 +86,16 @@ const STRATEGY_CONFIGS: Record<
       new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
   },
   AaveV3SupplyCelo: {
+    protocol: AAVE,
+    factory: (chainId) =>
+      new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
+  },
+  AaveV3SupplyPolygon: {
+    protocol: AAVE,
+    factory: (chainId) =>
+      new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
+  },
+  AaveV3SupplyArbitrum: {
     protocol: AAVE,
     factory: (chainId) =>
       new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),

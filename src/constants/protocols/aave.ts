@@ -1,4 +1,4 @@
-import { arbitrum, base, bsc, celo } from "viem/chains";
+import { arbitrum, base, bsc, celo, polygon } from "viem/chains";
 
 import type { Protocol } from "@/types/strategies";
 
@@ -16,6 +16,9 @@ export const AAVE = {
       pool: "0x6807dc923806fE8Fd134338EABCA509979a7e0cB",
     },
     [arbitrum.id]: {
+      pool: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
+    },
+    [polygon.id]: {
       pool: "0x794a61358D6845594F94dc1DB02A252b5b4814aD",
     },
     [base.id]: {
