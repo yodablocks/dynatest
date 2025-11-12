@@ -2,22 +2,23 @@ import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/c
 
 import type { StrategyMetadata } from "@/types";
 import { USDC, CELO, FLOW, cEUR, BNB } from "@/constants/coins";
-import { AAVE, UNISWAP, MORPHO, LIDO, FLUID } from "./protocols";
+import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO } from "./protocols";
 
 export const STRATEGIES = [
   // Active strategies
   "AaveV3Supply",
   "AaveV3SupplyLeveraged", // Enhanced Returns - leveraged AAVE position
-  "MorphoSupply", 
+  "MorphoSupply",
   "FluidSupply",
   "Re7Strategy", // Base Re7 USDC vault
   "MultiStrategy", // Composition pattern - combines multiple strategies
+  "StCeloStaking", // Celo liquid staking
+  "AaveV3SupplyCelo", // AAVE on Celo
   // Coming soon strategies
   "UniswapV3SwapLST", // Liquid Staking
   "AaveV3SupplyArbitrum", // AAVE on Arbitrum
   "AaveV3SupplyBSC", // AAVE on BSC
   "MorphoSupplyFlow", // Morpho on Flow
-  "StCeloStaking",
   "CamelotStaking",
   "GMXDeposit",
 ] as const;
@@ -135,6 +136,40 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     learnMoreLink: "https://fluid.io/",
     tokens: [USDC],
     chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "CELO Liquid Staking",
+    id: "StCeloStaking",
+    apy: 4.5,
+    risk: "low",
+    color: "#35D07F",
+    protocol: ST_CELO,
+    description:
+      "Stake CELO tokens to earn staking rewards while maintaining liquidity through stCELO liquid staking tokens.",
+    fullDescription:
+      "Stake CELO tokens through StakedCelo protocol to earn staking rewards while receiving stCELO tokens that can be used across DeFi. StakedCelo is a liquid staking protocol that allows you to earn staking rewards while maintaining the flexibility to use your staked assets.",
+    externalLink: "https://app.stcelo.xyz/",
+    learnMoreLink: "https://docs.stcelo.xyz/",
+    tokens: [CELO],
+    chainId: celo.id,
+    status: "active",
+  },
+  {
+    title: "AAVE Lending (Celo)",
+    id: "AaveV3SupplyCelo",
+    apy: 5.2,
+    risk: "medium",
+    color: "#9896FF",
+    protocol: AAVE,
+    description:
+      "Supply assets to AAVE V3 on Celo network to earn interest on USDC, CELO, and cEUR deposits.",
+    fullDescription:
+      "Supply assets to AAVE V3 lending protocol on Celo network. AAVE is a battle-tested DeFi protocol with over $10B in TVL. Earn competitive yields on stablecoins like USDC and cEUR, or native CELO tokens.",
+    externalLink: "https://app.aave.com/markets/?marketName=proto_celo_v3",
+    learnMoreLink: "https://docs.aave.com/",
+    tokens: [CELO, cEUR],
+    chainId: celo.id,
     status: "active",
   },
 ];

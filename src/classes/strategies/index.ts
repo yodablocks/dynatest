@@ -5,5 +5,6 @@ export * from "./aave/supply";
 export * from "./fluid/supply";
 
 export * from "./re7/re7";
+export * from "./stcelo/staking";
 
 export * from "./multiStrategy";

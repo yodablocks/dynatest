@@ -24,8 +24,10 @@ import {
   AaveV3Supply,
   FluidSupply,
   Re7Strategy,
+  StCeloStaking,
 } from "@/classes/strategies";
 import { AAVE } from "@/constants/protocols/aave";
+import { ST_CELO } from "@/constants/protocols/stCelo";
 
 export function isChainSupported<T extends Protocol>(
   protocol: T,
@@ -49,6 +51,7 @@ const STRATEGY_CONFIGS: Record<
   | "AaveV3SupplyLeveraged"
   | "AaveV3SupplyArbitrum"
   | "AaveV3SupplyBSC"
+  | "AaveV3SupplyCelo"
   | "MorphoSupplyFlow"
   | "UniswapV3SwapLST"
   | "FluidSupply"
@@ -88,6 +91,11 @@ const STRATEGY_CONFIGS: Record<
     factory: (chainId) =>
       new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
   },
+  AaveV3SupplyCelo: {
+    protocol: AAVE,
+    factory: (chainId) =>
+      new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
+  },
   MorphoSupplyFlow: {
     protocol: MORPHO,
     factory: (chainId) =>
@@ -119,12 +127,11 @@ const STRATEGY_CONFIGS: Record<
     },
   },
 
-  // Legacy
+  // Celo strategies
   StCeloStaking: {
-    protocol: MORPHO, // 暫時用 MORPHO，實際應該是 CELO 協議
-    factory: () => {
-      throw new Error("StCeloStaking not implemented yet");
-    },
+    protocol: ST_CELO,
+    factory: (chainId) =>
+      new StCeloStaking(chainId as GetProtocolChains<typeof ST_CELO>),
   },
   UniswapV3AddLiquidity: {
     protocol: UNISWAP,
