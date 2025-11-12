@@ -25,9 +25,11 @@ import {
   FluidSupply,
   Re7Strategy,
   StCeloStaking,
+  AnkrFlowStaking,
 } from "@/classes/strategies";
 import { AAVE } from "@/constants/protocols/aave";
 import { ST_CELO } from "@/constants/protocols/stCelo";
+import { ANKR } from "@/constants/protocols/ankr";
 
 export function isChainSupported<T extends Protocol>(
   protocol: T,
@@ -56,6 +58,7 @@ const STRATEGY_CONFIGS: Record<
   | "FluidSupply"
   | "Re7Strategy"
   | "StCeloStaking"
+  | "AnkrFlowStaking"
   | "UniswapV3AddLiquidity"
   | "CamelotStaking"
   | "GMXDeposit"
@@ -120,6 +123,14 @@ const STRATEGY_CONFIGS: Record<
     factory: (chainId) =>
       new StCeloStaking(chainId as GetProtocolChains<typeof ST_CELO>),
   },
+
+  // Flow strategies
+  AnkrFlowStaking: {
+    protocol: ANKR,
+    factory: (chainId) =>
+      new AnkrFlowStaking(chainId as GetProtocolChains<typeof ANKR>),
+  },
+
   UniswapV3AddLiquidity: {
     protocol: UNISWAP,
     factory: () => {

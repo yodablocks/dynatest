@@ -239,7 +239,8 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     'AaveV3SupplyCelo': { apy: 2.5, title: 'AAVE Lending (Celo)' },
     'AaveV3SupplyBSC': { apy: 1.6, title: 'AAVE BNB Lending' },
     'AaveV3SupplyPolygon': { apy: 3.8, title: 'AAVE USDC Lending (Polygon)' },
-    'AaveV3SupplyArbitrum': { apy: 4.2, title: 'AAVE USDC Lending (Arbitrum)' }
+    'AaveV3SupplyArbitrum': { apy: 4.2, title: 'AAVE USDC Lending (Arbitrum)' },
+    'AnkrFlowStaking': { apy: 7.9, title: 'Flow Liquid Staking' }
   };
 
   const strategy = STRATEGIES_MAP[strategyId as keyof typeof STRATEGIES_MAP];
@@ -258,7 +259,7 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     source = 'aave';
   } else if (isMorphoStrategy) {
     source = 'morpho';
-  } else if (isFluidStrategy || strategyId === 'StCeloStaking' || strategyId === 'AaveV3SupplyCelo') {
+  } else if (isFluidStrategy || strategyId === 'StCeloStaking' || strategyId === 'AaveV3SupplyCelo' || strategyId === 'AnkrFlowStaking') {
     // Mark all other active strategies as 'graph' to show green indicator
     source = 'graph';
   }

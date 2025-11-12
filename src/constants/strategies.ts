@@ -2,7 +2,7 @@ import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/c
 
 import type { StrategyMetadata } from "@/types";
 import { USDC, CELO, FLOW, cEUR, BNB, WBNB } from "@/constants/coins";
-import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO } from "./protocols";
+import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR } from "./protocols";
 
 export const STRATEGIES = [
   // Active strategies
@@ -17,6 +17,7 @@ export const STRATEGIES = [
   "AaveV3SupplyBSC", // AAVE on BSC
   "AaveV3SupplyPolygon", // AAVE on Polygon
   "AaveV3SupplyArbitrum", // AAVE on Arbitrum
+  "AnkrFlowStaking", // Ankr Flow liquid staking
   // Coming soon strategies
   "CamelotStaking",
   "GMXDeposit",
@@ -220,6 +221,23 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     learnMoreLink: "https://docs.aave.com/",
     tokens: [USDC],
     chainId: arbitrum.id,
+    status: "active",
+  },
+  {
+    title: "Flow Liquid Staking",
+    id: "AnkrFlowStaking",
+    apy: 7.9,
+    risk: "low",
+    color: "#00EF8B",
+    protocol: ANKR,
+    description:
+      "Stake FLOW tokens with Ankr to earn staking rewards while maintaining liquidity through ankrFLOW tokens.",
+    fullDescription:
+      "Stake FLOW tokens through Ankr's liquid staking protocol to earn 7.9% APY while receiving ankrFLOW tokens that can be used across DeFi. Ankr is a leading liquid staking provider with billions in TVL, offering secure and efficient staking solutions.",
+    externalLink: "https://www.ankr.com/staking-crypto/flow-flowevm/",
+    learnMoreLink: "https://www.ankr.com/docs/staking/liquid-staking/flow/",
+    tokens: [FLOW],
+    chainId: flowMainnet.id,
     status: "active",
   },
 ];
