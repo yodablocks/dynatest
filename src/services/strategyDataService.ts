@@ -6,7 +6,7 @@ export interface StrategyLiveData {
   dailyRate: number;
   utilizationRate?: number;
   lastUpdated: string;
-  source: 'morpho' | 'expand' | 'graph' | 'hardcoded' | 'hyperswap';
+  source: 'morpho' | 'expand' | 'graph' | 'hardcoded' | 'hyperswap' | 'aave';
   error?: string;
 }
 
@@ -20,9 +20,28 @@ interface ChartDataPoint {
 // Vault addresses for Morpho strategies
 const MORPHO_VAULT_ADDRESSES = {
   SmokehouseStrategy: "0xBEeFFF209270748ddd194831b3fa287a5386f5bC",
-  Re7Strategy: "0x12AFDeFb2237a5963e7BAb3e2D46ad0eee70406e", 
+  Re7Strategy: "0x12AFDeFb2237a5963e7BAb3e2D46ad0eee70406e",
   MevCapitalStrategy: "0xd63070114470f685b75B74D60EEc7c1113d33a3D",
   MorphoSupply: "0x8793cf302b8ffd655ab97bd1c695dbd967807e8367a65cb2f4edaf1380ba1bda" // Base market ID
+};
+
+// AAVE pool and asset addresses
+const AAVE_CONFIG = {
+  AaveV3Supply: {
+    subgraph: 'https://api.studio.thegraph.com/query/48129/aave-v3-base/version/latest',
+    pool: '0xA238Dd80C259a72e81d7e4664a9801593F98d1c5',
+    asset: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913', // USDC on Base
+  },
+  AaveV3SupplyLeveraged: {
+    subgraph: 'https://api.studio.thegraph.com/query/48129/aave-v3-base/version/latest',
+    pool: '0xA238Dd80C259a72e81d7e4664a9801593F98d1c5',
+    asset: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913', // USDC on Base
+  },
+  AaveV3SupplyCelo: {
+    subgraph: 'https://api.studio.thegraph.com/query/48129/aave-v3-celo/version/latest',
+    pool: '0x3E59A31363E2ad014dcbc521c4a0d5757d9f3402',
+    asset: '0x765de816845861e75a25fca122bb6898b8b1282a', // cUSD on Celo (most liquid)
+  }
 };
 
 // Protocol IDs for Expand Network
@@ -34,7 +53,7 @@ const EXPAND_PROTOCOL_IDS = {
 
 // Strategy categorization
 const MORPHO_STRATEGIES = ['SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy'];
-const AAVE_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged']; 
+const AAVE_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'AaveV3SupplyCelo'];
 const EXPAND_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'MorphoSupply', 'SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy']; // All strategies using Expand Network API
 const FLUID_STRATEGIES = ['FluidSupply'];
 const HYPERSWAP_STRATEGIES = ['HyperSwapStrategy']; // HyperEVM strategies
@@ -120,6 +139,86 @@ async function fetchMorphoData(strategyId: string): Promise<StrategyLiveData> {
   }
 
   return transformMorphoResponse(vault);
+}
+
+/**
+ * Fetch APY and TVL data from Aave Subgraph
+ */
+async function fetchAaveData(strategyId: string): Promise<StrategyLiveData> {
+  const config = AAVE_CONFIG[strategyId as keyof typeof AAVE_CONFIG];
+
+  if (!config) {
+    throw new Error(`No Aave config found for strategy: ${strategyId}`);
+  }
+
+  const query = `
+    query GetReserveData($asset: String!) {
+      reserve(id: $asset) {
+        id
+        symbol
+        name
+        liquidityRate
+        totalLiquidity
+        availableLiquidity
+        totalATokenSupply
+        utilizationRate
+      }
+    }
+  `;
+
+  const response = await fetch(config.subgraph, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query,
+      variables: { asset: config.asset.toLowerCase() }
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error(`Aave Subgraph error: ${response.status} ${response.statusText}`);
+  }
+
+  const data = await response.json();
+
+  if (data.errors) {
+    throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+  }
+
+  const reserve = data.data?.reserve;
+  if (!reserve) {
+    throw new Error(`No reserve data found for asset: ${config.asset}`);
+  }
+
+  return transformAaveResponse(reserve, strategyId);
+}
+
+/**
+ * Transform Aave Subgraph response to StrategyLiveData format
+ */
+function transformAaveResponse(reserve: any, strategyId: string): StrategyLiveData {
+  // Aave returns liquidityRate as a RAY (27 decimals) annual rate
+  // Convert from RAY to percentage
+  const liquidityRateRaw = reserve.liquidityRate || '0';
+  const apy = (parseFloat(liquidityRateRaw) / 1e27) * 100;
+
+  // Apply leverage multiplier for leveraged strategy
+  const multiplier = strategyId === 'AaveV3SupplyLeveraged' ? 1.65 : 1.0;
+  const finalAPY = apy * multiplier;
+
+  // Convert totalLiquidity from wei to millions (assuming 6 decimals for USDC/cUSD)
+  const tvl = parseFloat(reserve.totalLiquidity || '0') / 1e6 / 1e6;
+
+  return {
+    apy: Math.round(finalAPY * 100) / 100,
+    tvl: Math.round(tvl * 100) / 100,
+    dailyRate: Math.round((finalAPY / 365) * 10000) / 10000,
+    utilizationRate: parseFloat(reserve.utilizationRate || '0'),
+    lastUpdated: new Date().toISOString(),
+    source: 'graph'
+  };
 }
 
 /**
@@ -287,23 +386,28 @@ async function fetchFromBackend(strategyId: string): Promise<StrategyLiveData> {
  */
 async function fetchLiveData(strategyId: string): Promise<StrategyLiveData> {
   console.log(`Attempting to fetch live data for: ${strategyId}`);
-  
+
   // Prioritize working APIs first
   if (MORPHO_STRATEGIES.includes(strategyId)) {
     console.log(`Using Morpho API for: ${strategyId}`);
     return await fetchMorphoData(strategyId);
   }
-  
+
+  if (AAVE_STRATEGIES.includes(strategyId)) {
+    console.log(`Using Aave Subgraph for: ${strategyId}`);
+    return await fetchAaveData(strategyId);
+  }
+
   if (HYPERSWAP_STRATEGIES.includes(strategyId)) {
     console.log(`Using HyperSwap API for: ${strategyId}`);
     return await fetchHyperSwapData(strategyId);
   }
-  
+
   // For now, skip Expand Network API due to issues
   // TODO: Re-enable once API issues are resolved
   console.log(`No reliable live API available for: ${strategyId}, using fallback`);
   throw new Error(`Live API temporarily disabled for: ${strategyId}`);
-  
+
   // Commented out until Expand Network API is working
   // else if (EXPAND_STRATEGIES.includes(strategyId)) {
   //   console.log(`Using Expand Network API for: ${strategyId}`);
