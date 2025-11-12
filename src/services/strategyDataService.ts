@@ -141,7 +141,7 @@ async function fetchMorphoData(strategyId: string): Promise<StrategyLiveData> {
 }
 
 /**
- * Fetch APY and TVL data from Aave Subgraph
+ * Fetch APY and TVL data from Aave via Next.js API route
  */
 async function fetchAaveData(strategyId: string): Promise<StrategyLiveData> {
   const config = AAVE_CONFIG[strategyId as keyof typeof AAVE_CONFIG];
@@ -150,74 +150,37 @@ async function fetchAaveData(strategyId: string): Promise<StrategyLiveData> {
     throw new Error(`No Aave config found for strategy: ${strategyId}`);
   }
 
-  const query = `
-    query GetReserveData($asset: String!) {
-      reserve(id: $asset) {
-        id
-        symbol
-        name
-        liquidityRate
-        totalLiquidity
-        availableLiquidity
-        totalATokenSupply
-        utilizationRate
+  try {
+    console.log(`Fetching Aave data for: ${strategyId}`);
+
+    const response = await fetch(`/api/aave?strategyId=${strategyId}&asset=${config.asset}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
       }
+    });
+
+    console.log(`Aave API response status: ${response.status}`);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Aave API route error response:`, errorText);
+      throw new Error(`API route error: ${response.status} ${response.statusText}`);
     }
-  `;
 
-  const response = await fetch(config.subgraph, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query,
-      variables: { asset: config.asset.toLowerCase() }
-    })
-  });
+    const result = await response.json();
+    console.log(`Aave API result:`, result);
 
-  if (!response.ok) {
-    throw new Error(`Aave Subgraph error: ${response.status} ${response.statusText}`);
+    if (!result.success) {
+      throw new Error(result.error || 'Aave API route failed');
+    }
+
+    return result.data;
+
+  } catch (error) {
+    console.error(`Error fetching Aave data for ${strategyId}:`, error);
+    throw error;
   }
-
-  const data = await response.json();
-
-  if (data.errors) {
-    throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
-  }
-
-  const reserve = data.data?.reserve;
-  if (!reserve) {
-    throw new Error(`No reserve data found for asset: ${config.asset}`);
-  }
-
-  return transformAaveResponse(reserve, strategyId);
-}
-
-/**
- * Transform Aave Subgraph response to StrategyLiveData format
- */
-function transformAaveResponse(reserve: any, strategyId: string): StrategyLiveData {
-  // Aave returns liquidityRate as a RAY (27 decimals) annual rate
-  // Convert from RAY to percentage
-  const liquidityRateRaw = reserve.liquidityRate || '0';
-  const apy = (parseFloat(liquidityRateRaw) / 1e27) * 100;
-
-  // Apply leverage multiplier for leveraged strategy
-  const multiplier = strategyId === 'AaveV3SupplyLeveraged' ? 1.65 : 1.0;
-  const finalAPY = apy * multiplier;
-
-  // Convert totalLiquidity from wei to millions (assuming 6 decimals for USDC/cUSD)
-  const tvl = parseFloat(reserve.totalLiquidity || '0') / 1e6 / 1e6;
-
-  return {
-    apy: Math.round(finalAPY * 100) / 100,
-    tvl: Math.round(tvl * 100) / 100,
-    dailyRate: Math.round((finalAPY / 365) * 10000) / 10000,
-    utilizationRate: parseFloat(reserve.utilizationRate || '0'),
-    lastUpdated: new Date().toISOString(),
-    source: 'graph'
-  };
 }
 
 /**
