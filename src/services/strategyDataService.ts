@@ -227,7 +227,9 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     'AaveV3SupplyLeveraged': { apy: 10.1, title: 'Enhanced Returns' },
     'MorphoSupply': { apy: 6.7, title: 'Optimized Lending' },
     'FluidSupply': { apy: 6.23, title: 'Dynamic Yield' },
-    'HyperSwapStrategy': { apy: 45.7, title: 'HyperSwap Auto-Pilot' }
+    'HyperSwapStrategy': { apy: 45.7, title: 'HyperSwap Auto-Pilot' },
+    'StCeloStaking': { apy: 4.5, title: 'CELO Liquid Staking' },
+    'AaveV3SupplyCelo': { apy: 5.2, title: 'AAVE Lending (Celo)' }
   };
 
   const strategy = STRATEGIES_MAP[strategyId as keyof typeof STRATEGIES_MAP];
