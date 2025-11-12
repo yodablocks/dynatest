@@ -47,9 +47,9 @@ export class InvestMessage extends Message {
         liveAPYData
       );
 
-      // Calculate allocations for these strategies
+      // Calculate allocations for these strategies (pass riskLevel for different allocation logic)
       const allocations =
-        portfolioAllocationService.calculateAllocations(strategies);
+        portfolioAllocationService.calculateAllocations(strategies, riskLevel);
 
       // Map strategies to RiskPortfolioStrategies with allocations
       strategiesSet[riskLevel] = strategies.map((strategy, i) => ({

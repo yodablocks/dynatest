@@ -80,8 +80,12 @@ class PortfolioAllocationService {
   /**
    * Calculate allocations for strategies
    * Returns allocation percentages that sum to 100%
+   * For high-risk portfolios, we concentrate more in the highest APY
    */
-  calculateAllocations(strategies: StrategyWithAPY[]): number[] {
+  calculateAllocations(
+    strategies: StrategyWithAPY[],
+    riskLevel: RiskLevel
+  ): number[] {
     if (strategies.length === 0) return [];
     if (strategies.length === 1) return [100];
 
@@ -102,8 +106,22 @@ class PortfolioAllocationService {
       return [allocation1, allocation2];
     }
 
-    // For 3 strategies: More complex distribution
+    // For 3 strategies: Different distribution based on risk level
     if (strategies.length === 3) {
+      // High risk: More concentrated in highest APY (aggressive)
+      if (riskLevel === "high") {
+        // Concentrate 50-60% in highest APY, split the rest
+        const highestAllocation = 50 + Math.floor(Math.random() * 11); // 50-60%
+        const remaining = 100 - highestAllocation;
+
+        // Split remaining between other two strategies
+        const secondAllocation = Math.floor(remaining * 0.4) + Math.floor(Math.random() * 10);
+        const thirdAllocation = 100 - highestAllocation - secondAllocation;
+
+        return [highestAllocation, secondAllocation, thirdAllocation];
+      }
+
+      // Low and Medium risk: More balanced distribution
       const totalAPY = strategies.reduce(
         (sum, s) => sum + (s.currentAPY || s.apy),
         0
