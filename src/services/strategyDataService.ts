@@ -146,8 +146,6 @@ async function fetchMorphoData(strategyId: string): Promise<StrategyLiveData> {
  * TODO: Implement on-chain queries for live data
  */
 async function fetchAaveData(strategyId: string): Promise<StrategyLiveData> {
-  console.log(`Aave live data not available for: ${strategyId}, using fallback with 'aave' source`);
-
   // Throw to fallback to getFallbackData which will return source: 'aave'
   throw new Error(`Aave subgraphs unavailable, using fallback data`);
 }
@@ -157,16 +155,12 @@ async function fetchAaveData(strategyId: string): Promise<StrategyLiveData> {
  */
 async function fetchExpandNetworkData(strategyId: string): Promise<StrategyLiveData> {
   try {
-    console.log(`Fetching Expand Network data for: ${strategyId}`);
-    
     const response = await fetch(`/api/expand?strategyId=${strategyId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     });
-
-    console.log(`Expand API response status: ${response.status}`);
 
     if (!response.ok) {
       const errorText = await response.text();

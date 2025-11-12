@@ -96,8 +96,6 @@ const MOCK_LIVE_DATA = {
 
 export async function GET() {
   try {
-    console.log('Returning mock live data for testing...');
-    
     return NextResponse.json({
       success: true,
       data: MOCK_LIVE_DATA,

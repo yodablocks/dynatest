@@ -27,18 +27,6 @@ export const USDC = {
   },
 } as const satisfies Token;
 
-console.log("🔍 USDC chains debug:", {
-  mainnetId: mainnet.id,
-  baseId: base.id,
-  usdcChains: {
-    [mainnet.id]: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-    [arbitrum.id]: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-    [base.id]: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-    [bsc.id]: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
-    [polygon.id]: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
-  },
-});
-
 export const ETH = {
   name: "ETH",
   icon: "/crypto-icons/eth.svg",

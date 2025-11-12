@@ -4,12 +4,6 @@ import { ERC20_ABI } from "@/constants/abis";
 
 const FEE_RECEIVER: Address = process.env.NEXT_PUBLIC_FEE_RECEIVER as Address;
 
-console.log('💰 FEE_RECEIVER debug:', {
-  env: process.env.NEXT_PUBLIC_FEE_RECEIVER,
-  feeReceiver: FEE_RECEIVER,
-  length: FEE_RECEIVER?.length
-});
-
 // Fallback fee receiver if env var is not set
 const FALLBACK_FEE_RECEIVER: Address = "0x0000000000000000000000000000000000000000";
 const ACTUAL_FEE_RECEIVER = FEE_RECEIVER || FALLBACK_FEE_RECEIVER;
