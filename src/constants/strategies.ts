@@ -45,7 +45,7 @@ export const BOT_STRATEGY: StrategyMetadata = {
 // Active strategies on Base network only
 export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
   {
-    title: "Professional Yield",
+    title: "Pro",
     id: "Re7Strategy",
     apy: 8.2,
     risk: "medium",
@@ -64,7 +64,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "Conservative Yield",
+    title: "Conservative",
     id: "AaveV3Supply",
     apy: 4.5,
     risk: "medium",
@@ -83,7 +83,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "Optimized Lending",
+    title: "OptLend",
     id: "MorphoSupply",
     apy: 8.5,
     risk: "medium",
@@ -103,7 +103,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
   },
 
   {
-    title: "Enhanced Returns",
+    title: "Enhanced",
     id: "AaveV3SupplyLeveraged",
     apy: 8.0,
     risk: "medium",
@@ -122,7 +122,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "Dynamic Yield",
+    title: "Dynamic",
     id: "FluidSupply",
     apy: 5.7,
     risk: "medium",
@@ -139,7 +139,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "CELO Liquid Staking",
+    title: "CELO LST",
     id: "StCeloStaking",
     apy: 6.8,
     risk: "low",
@@ -156,7 +156,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "AAVE Lending",
+    title: "AAVE/Celo",
     id: "AaveV3SupplyCelo",
     apy: 2.5,
     risk: "medium",
@@ -173,7 +173,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "AAVE BNB Lending",
+    title: "AAVE/BNB",
     id: "AaveV3SupplyBSC",
     apy: 1.6,
     risk: "medium",
@@ -190,7 +190,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "AAVE USDC Lending",
+    title: "AAVE/USDC-Poly",
     id: "AaveV3SupplyPolygon",
     apy: 3.8,
     risk: "medium",
@@ -207,7 +207,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "AAVE USDC Lending",
+    title: "AAVE/USDC-Arb",
     id: "AaveV3SupplyArbitrum",
     apy: 4.2,
     risk: "medium",
@@ -224,7 +224,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "Flow Liquid Staking",
+    title: "Flow LST",
     id: "AnkrFlowStaking",
     apy: 10.8,
     risk: "low",

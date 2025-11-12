@@ -229,18 +229,18 @@ function getFallbackData(strategyId: string): StrategyLiveData {
   // Import strategy metadata
   const STRATEGIES_MAP = {
     'SmokehouseStrategy': { apy: 6.5, title: 'Institutional USDC' },
-    'Re7Strategy': { apy: 8.2, title: 'Professional Yield' },
+    'Re7Strategy': { apy: 8.2, title: 'Pro' },
     'MevCapitalStrategy': { apy: 7.8, title: 'Alpha Generation' },
-    'AaveV3Supply': { apy: 4.5, title: 'Conservative Yield' },
-    'AaveV3SupplyLeveraged': { apy: 8.0, title: 'Enhanced Returns' },
-    'MorphoSupply': { apy: 8.5, title: 'Optimized Lending' },
-    'FluidSupply': { apy: 5.7, title: 'Dynamic Yield' },
-    'StCeloStaking': { apy: 6.8, title: 'CELO Liquid Staking' },
-    'AaveV3SupplyCelo': { apy: 2.5, title: 'AAVE Lending (Celo)' },
-    'AaveV3SupplyBSC': { apy: 1.6, title: 'AAVE BNB Lending' },
-    'AaveV3SupplyPolygon': { apy: 3.8, title: 'AAVE USDC Lending (Polygon)' },
-    'AaveV3SupplyArbitrum': { apy: 4.2, title: 'AAVE USDC Lending (Arbitrum)' },
-    'AnkrFlowStaking': { apy: 10.8, title: 'Flow Liquid Staking' }
+    'AaveV3Supply': { apy: 4.5, title: 'Conservative' },
+    'AaveV3SupplyLeveraged': { apy: 8.0, title: 'Enhanced' },
+    'MorphoSupply': { apy: 8.5, title: 'OptLend' },
+    'FluidSupply': { apy: 5.7, title: 'Dynamic' },
+    'StCeloStaking': { apy: 6.8, title: 'CELO LST' },
+    'AaveV3SupplyCelo': { apy: 2.5, title: 'AAVE/Celo' },
+    'AaveV3SupplyBSC': { apy: 1.6, title: 'AAVE/BNB' },
+    'AaveV3SupplyPolygon': { apy: 3.8, title: 'AAVE/USDC-Poly' },
+    'AaveV3SupplyArbitrum': { apy: 4.2, title: 'AAVE/USDC-Arb' },
+    'AnkrFlowStaking': { apy: 10.8, title: 'Flow LST' }
   };
 
   const strategy = STRATEGIES_MAP[strategyId as keyof typeof STRATEGIES_MAP];
