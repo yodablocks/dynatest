@@ -26,10 +26,12 @@ import {
   Re7Strategy,
   StCeloStaking,
   AnkrFlowStaking,
+  AsterdexBNBStaking,
 } from "@/classes/strategies";
 import { AAVE } from "@/constants/protocols/aave";
 import { ST_CELO } from "@/constants/protocols/stCelo";
 import { ANKR } from "@/constants/protocols/ankr";
+import { ASTERDEX } from "@/constants/protocols/asterdex";
 
 export function isChainSupported<T extends Protocol>(
   protocol: T,
@@ -59,6 +61,7 @@ const STRATEGY_CONFIGS: Record<
   | "Re7Strategy"
   | "StCeloStaking"
   | "AnkrFlowStaking"
+  | "AsterdexBNBStaking"
   | "UniswapV3AddLiquidity"
   | "CamelotStaking"
   | "GMXDeposit"
@@ -129,6 +132,13 @@ const STRATEGY_CONFIGS: Record<
     protocol: ANKR,
     factory: (chainId) =>
       new AnkrFlowStaking(chainId as GetProtocolChains<typeof ANKR>),
+  },
+
+  // BSC strategies
+  AsterdexBNBStaking: {
+    protocol: ASTERDEX,
+    factory: (chainId) =>
+      new AsterdexBNBStaking(chainId as GetProtocolChains<typeof ASTERDEX>),
   },
 
   UniswapV3AddLiquidity: {

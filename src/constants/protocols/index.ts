@@ -11,6 +11,7 @@ import { ST_CELO } from "./stCelo";
 export * from "./aave";
 export * from "./stCelo";
 export * from "./ankr";
+export * from "./asterdex";
 export * from "./kitty";
 export * from "./morpho";
 export * from "./camelot";

@@ -7,5 +7,6 @@ export * from "./fluid/supply";
 export * from "./re7/re7";
 export * from "./stcelo/staking";
 export * from "./ankr/flowStaking";
+export * from "./asterdex/bnbStaking";
 
 export * from "./multiStrategy";
