@@ -156,7 +156,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "AAVE Lending (Celo)",
+    title: "AAVE Lending",
     id: "AaveV3SupplyCelo",
     apy: 2.5,
     risk: "medium",
@@ -190,7 +190,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "AAVE USDC Lending (Polygon)",
+    title: "AAVE USDC Lending",
     id: "AaveV3SupplyPolygon",
     apy: 3.8,
     risk: "medium",
@@ -207,7 +207,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "AAVE USDC Lending (Arbitrum)",
+    title: "AAVE USDC Lending",
     id: "AaveV3SupplyArbitrum",
     apy: 4.2,
     risk: "medium",
