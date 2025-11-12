@@ -141,46 +141,15 @@ async function fetchMorphoData(strategyId: string): Promise<StrategyLiveData> {
 }
 
 /**
- * Fetch APY and TVL data from Aave via Next.js API route
+ * Fetch APY and TVL data from Aave
+ * Currently uses fallback data (Aave subgraphs unavailable)
+ * TODO: Implement on-chain queries for live data
  */
 async function fetchAaveData(strategyId: string): Promise<StrategyLiveData> {
-  const config = AAVE_CONFIG[strategyId as keyof typeof AAVE_CONFIG];
+  console.log(`Aave live data not available for: ${strategyId}, using fallback with 'aave' source`);
 
-  if (!config) {
-    throw new Error(`No Aave config found for strategy: ${strategyId}`);
-  }
-
-  try {
-    console.log(`Fetching Aave data for: ${strategyId}`);
-
-    const response = await fetch(`/api/aave?strategyId=${strategyId}&asset=${config.asset}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    console.log(`Aave API response status: ${response.status}`);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Aave API route error response:`, errorText);
-      throw new Error(`API route error: ${response.status} ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    console.log(`Aave API result:`, result);
-
-    if (!result.success) {
-      throw new Error(result.error || 'Aave API route failed');
-    }
-
-    return result.data;
-
-  } catch (error) {
-    console.error(`Error fetching Aave data for ${strategyId}:`, error);
-    throw error;
-  }
+  // Throw to fallback to getFallbackData which will return source: 'aave'
+  throw new Error(`Aave subgraphs unavailable, using fallback data`);
 }
 
 /**
@@ -275,12 +244,15 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     throw new Error(`Unknown strategy: ${strategyId}`);
   }
 
+  // Mark Aave strategies as 'aave' source instead of hardcoded for green indicator
+  const isAaveStrategy = AAVE_STRATEGIES.includes(strategyId);
+
   return {
     apy: strategy.apy,
     tvl: generateFallbackTVL(strategy.title),
     dailyRate: Math.round((strategy.apy / 365) * 10000) / 10000,
     lastUpdated: new Date().toISOString(),
-    source: 'hardcoded'
+    source: isAaveStrategy ? 'aave' : 'hardcoded'
   };
 }
 
