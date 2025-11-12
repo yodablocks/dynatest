@@ -69,8 +69,6 @@ export class InvestMessage extends Message {
     // Get strategies filtered by chain with dynamic selection
     const strategiesSet = this.getStrategiesSetByChain(this.chain);
 
-    console.log("Dynamic portfolio allocation:", strategiesSet);
-
     return new PortfolioMessage(
       this.createDefaultMetadata(`Portfolio: ${this.amount} USDC`),
       this.amount,
