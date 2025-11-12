@@ -156,7 +156,7 @@ export default function StrategyList() {
               Live
             </h3>
             <p className="text-sm text-blue-700">
-              {activeCount} strategies available • {/* {comingSoonCount} more coming soon across multiple chains */}
+              {activeCount} strategies available {/*•  {comingSoonCount} more coming soon across multiple chains */}
             </p>
           </div>
           <div className="flex items-center gap-2">
