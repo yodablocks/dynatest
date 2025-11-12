@@ -53,7 +53,7 @@ const EXPAND_PROTOCOL_IDS = {
 
 // Strategy categorization
 const MORPHO_STRATEGIES = ['SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy'];
-const AAVE_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'AaveV3SupplyCelo'];
+const AAVE_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'AaveV3SupplyCelo', 'AaveV3SupplyBSC'];
 const EXPAND_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'MorphoSupply', 'SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy']; // All strategies using Expand Network API
 const FLUID_STRATEGIES = ['FluidSupply'];
 
@@ -236,7 +236,8 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     'MorphoSupply': { apy: 6.7, title: 'Optimized Lending' },
     'FluidSupply': { apy: 6.23, title: 'Dynamic Yield' },
     'StCeloStaking': { apy: 4.5, title: 'CELO Liquid Staking' },
-    'AaveV3SupplyCelo': { apy: 5.2, title: 'AAVE Lending (Celo)' }
+    'AaveV3SupplyCelo': { apy: 5.2, title: 'AAVE Lending (Celo)' },
+    'AaveV3SupplyBSC': { apy: 4.5, title: 'AAVE BNB Lending' }
   };
 
   const strategy = STRATEGIES_MAP[strategyId as keyof typeof STRATEGIES_MAP];

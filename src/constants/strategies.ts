@@ -1,7 +1,7 @@
 import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/chains";
 
 import type { StrategyMetadata } from "@/types";
-import { USDC, CELO, FLOW, cEUR, BNB } from "@/constants/coins";
+import { USDC, CELO, FLOW, cEUR, BNB, WBNB } from "@/constants/coins";
 import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO } from "./protocols";
 
 export const STRATEGIES = [
@@ -172,6 +172,23 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     chainId: celo.id,
     status: "active",
   },
+  {
+    title: "AAVE BNB Lending",
+    id: "AaveV3SupplyBSC",
+    apy: 4.5,
+    risk: "medium",
+    color: "#9896FF",
+    protocol: AAVE,
+    description:
+      "Supply WBNB to AAVE V3 on BNB Chain to earn competitive lending interest with institutional-grade security.",
+    fullDescription:
+      "Supply WBNB (Wrapped BNB) to AAVE V3 lending protocol on BNB Chain. AAVE is a battle-tested DeFi protocol with over $43B in global TVL. Earn competitive yields on your BNB holdings with proven security and reliability.",
+    externalLink: "https://app.aave.com/markets/?marketName=proto_bnb_v3",
+    learnMoreLink: "https://docs.aave.com/",
+    tokens: [WBNB],
+    chainId: bsc.id,
+    status: "active",
+  },
 ];
 
 // Coming Soon strategies (other chains and protocols)
@@ -212,27 +229,6 @@ export const COMING_SOON_STRATEGIES: StrategyMetadata[] = [
     chainId: arbitrum.id,
     status: "coming_soon",
   },
-
-  {
-    title: "AAVE Supplying (BSC)",
-    id: "AaveV3SupplyBSC",
-    apy: 4.3,
-    risk: "medium",
-    color: "#1000FF",
-    protocol: AAVE,
-    description:
-      "Supplying USDC to AAVE Lending Protocol on BSC for multi-chain yield strategies.",
-    fullDescription:
-      "Supplying USDC to AAVE Lending Protocol on BSC for multi-chain yield strategies.",
-    externalLink:
-      "https://app.aave.com/reserve-overview/?underlyingAsset=0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d&marketName=proto_bnb_v3",
-    learnMoreLink:
-      "https://app.aave.com/reserve-overview/?underlyingAsset=0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d&marketName=proto_bnb_v3",
-    tokens: [USDC],
-    chainId: bsc.id,
-    status: "coming_soon",
-  },
-
   {
     title: "Flow Ecosystem Yield",
     id: "MorphoSupplyFlow",

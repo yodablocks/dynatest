@@ -205,7 +205,7 @@ function StrategyRow({ strategy, index, isDisabled, dynamicRisk, isComingSoon, o
 }import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { base, mainnet, celo } from "viem/chains";
+import { base, mainnet, celo, bsc } from "viem/chains";
 
 import { getRiskColor } from "@/utils";
 import { getDynamicRiskLevel } from "@/utils/dynamicRisk";
@@ -256,7 +256,7 @@ export default function StrategyTable({ strategies }: StrategyTableProps) {
   // Check if strategy is coming soon
   // Allow Base, Ethereum, and Celo as active networks
   const isStrategyComingSoon = (strategy: StrategyMetadata) => {
-    return strategy.status === 'coming_soon' || (strategy.chainId !== base.id && strategy.chainId !== mainnet.id && strategy.chainId !== celo.id);
+    return strategy.status === 'coming_soon' || (strategy.chainId !== base.id && strategy.chainId !== mainnet.id && strategy.chainId !== celo.id && strategy.chainId !== bsc.id);
   };
 
   const getChainName = (chainId: number) => {
