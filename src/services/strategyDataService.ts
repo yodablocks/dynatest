@@ -6,7 +6,7 @@ export interface StrategyLiveData {
   dailyRate: number;
   utilizationRate?: number;
   lastUpdated: string;
-  source: 'morpho' | 'expand' | 'graph' | 'hardcoded' | 'hyperswap' | 'aave';
+  source: 'morpho' | 'expand' | 'graph' | 'hardcoded' | 'aave';
   error?: string;
 }
 
@@ -56,7 +56,6 @@ const MORPHO_STRATEGIES = ['SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrat
 const AAVE_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'AaveV3SupplyCelo'];
 const EXPAND_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'MorphoSupply', 'SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy']; // All strategies using Expand Network API
 const FLUID_STRATEGIES = ['FluidSupply'];
-const HYPERSWAP_STRATEGIES = ['HyperSwapStrategy']; // HyperEVM strategies
 
 // Cache configuration
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -259,28 +258,6 @@ async function fetchExpandNetworkData(strategyId: string): Promise<StrategyLiveD
 }
 
 /**
- * Fetch APY and TVL data from HyperSwap (placeholder)
- */
-async function fetchHyperSwapData(strategyId: string): Promise<StrategyLiveData> {
-  // TODO: Implement real HyperSwap API integration
-  // For now, return enhanced fallback data with "live" source
-  
-  console.log(`Fetching HyperSwap data for: ${strategyId}`);
-  
-  // Simulate API call delay
-  await new Promise(resolve => setTimeout(resolve, 100));
-  
-  return {
-    apy: 45.7, // High APY from HyperSwap
-    tvl: 2.5, // Simulated TVL in millions
-    dailyRate: Math.round((45.7 / 365) * 10000) / 10000,
-    utilizationRate: 85.3, // High utilization
-    lastUpdated: new Date().toISOString(),
-    source: 'hyperswap'
-  };
-}
-
-/**
  * Transform Morpho API response to StrategyLiveData format
  */
 function transformMorphoResponse(vault: any): StrategyLiveData {
@@ -326,7 +303,6 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     'AaveV3SupplyLeveraged': { apy: 10.1, title: 'Enhanced Returns' },
     'MorphoSupply': { apy: 6.7, title: 'Optimized Lending' },
     'FluidSupply': { apy: 6.23, title: 'Dynamic Yield' },
-    'HyperSwapStrategy': { apy: 45.7, title: 'HyperSwap Auto-Pilot' },
     'StCeloStaking': { apy: 4.5, title: 'CELO Liquid Staking' },
     'AaveV3SupplyCelo': { apy: 5.2, title: 'AAVE Lending (Celo)' }
   };
@@ -396,11 +372,6 @@ async function fetchLiveData(strategyId: string): Promise<StrategyLiveData> {
   if (AAVE_STRATEGIES.includes(strategyId)) {
     console.log(`Using Aave Subgraph for: ${strategyId}`);
     return await fetchAaveData(strategyId);
-  }
-
-  if (HYPERSWAP_STRATEGIES.includes(strategyId)) {
-    console.log(`Using HyperSwap API for: ${strategyId}`);
-    return await fetchHyperSwapData(strategyId);
   }
 
   // For now, skip Expand Network API due to issues
