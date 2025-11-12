@@ -163,12 +163,12 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     color: "#9896FF",
     protocol: AAVE,
     description:
-      "Supply assets to AAVE V3 on Celo network to earn interest on USDC, CELO, and cEUR deposits.",
+      "Supply CELO tokens to AAVE V3 on Celo network to earn lending interest with sub-cent transaction costs.",
     fullDescription:
-      "Supply assets to AAVE V3 lending protocol on Celo network. AAVE is a battle-tested DeFi protocol with over $10B in TVL. Earn competitive yields on stablecoins like USDC and cEUR, or native CELO tokens.",
+      "Supply CELO tokens to AAVE V3 lending protocol on Celo network. AAVE is a battle-tested DeFi protocol with over $10B in TVL. Earn competitive yields on your CELO holdings with 1-second transaction finality and minimal fees.",
     externalLink: "https://app.aave.com/markets/?marketName=proto_celo_v3",
     learnMoreLink: "https://docs.aave.com/",
-    tokens: [CELO, cEUR],
+    tokens: [CELO],
     chainId: celo.id,
     status: "active",
   },
