@@ -112,25 +112,24 @@ export default function StrategyList() {
       }
     }
 
-    // Sort by APY if selected
-    if (selectedApySort) {
-      filtered = [...filtered].sort((a, b) => {
+    // Sort by status first (active strategies first), then by APY within each group
+    filtered = [...filtered].sort((a, b) => {
+      const aIsActive = a.status !== 'coming_soon';
+      const bIsActive = b.status !== 'coming_soon';
+
+      // Primary sort: active strategies first
+      if (aIsActive && !bIsActive) return -1;
+      if (!aIsActive && bIsActive) return 1;
+
+      // Secondary sort: APY within same status group
+      if (selectedApySort) {
         if (selectedApySort === "high-to-low") {
           return b.apy - a.apy;
         } else if (selectedApySort === "low-to-high") {
           return a.apy - b.apy;
         }
-        return 0;
-      });
-    }
+      }
 
-    // Sort active strategies first, then coming soon
-    filtered = [...filtered].sort((a, b) => {
-      const aIsActive = a.status !== 'coming_soon';
-      const bIsActive = b.status !== 'coming_soon';
-      
-      if (aIsActive && !bIsActive) return -1;
-      if (!aIsActive && bIsActive) return 1;
       return 0;
     });
 
