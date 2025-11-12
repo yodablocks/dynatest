@@ -17,6 +17,7 @@ export const getRiskColor = (risk: RiskLevel) => {
 };
 
 export function formatAmount(amount: number, fixed: number = 2) {
+  if (isNaN(amount)) return "<0.01";
   if (amount === 0) return "0";
   if (amount < 0.01) {
     return "<0.01";
