@@ -210,6 +210,22 @@ interface StrategyTableProps {
   strategies: Array<StrategyMetadata>;
 }
 
+// Hook to fetch all live data for strategies
+function useAllStrategiesLiveData(strategies: StrategyMetadata[]) {
+  // Fetch live data for all strategies using individual hooks (maintains rules of hooks)
+  const liveDataResults = strategies.map(strategy => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { data } = useStrategyLiveData(strategy.id);
+    return data;
+  });
+
+  // Combine strategies with their live APY data
+  return strategies.map((strategy, index) => ({
+    strategy,
+    displayAPY: liveDataResults[index]?.apy ?? strategy.apy,
+  }));
+}
+
 export default function StrategyTable({ strategies }: StrategyTableProps) {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const { openChat, setMessages } = useChat();
@@ -218,12 +234,17 @@ export default function StrategyTable({ strategies }: StrategyTableProps) {
     strategies[0]
   );
 
-  // Sort strategies by APY using live data when available
-  const sortedStrategies = [...strategies].sort((a, b) => {
-    // For now, use hardcoded APY for sorting to avoid complexity
-    // TODO: Sort by live APY when all data is loaded
-    return sortOrder === "asc" ? a.apy - b.apy : b.apy - a.apy;
-  });
+  // Fetch all live data for strategies
+  const strategiesWithLiveData = useAllStrategiesLiveData(strategies);
+
+  // Sort by displayed APY (live data when available, otherwise hardcoded)
+  const sortedStrategies = [...strategiesWithLiveData]
+    .sort((a, b) => {
+      return sortOrder === "asc"
+        ? a.displayAPY - b.displayAPY
+        : b.displayAPY - a.displayAPY;
+    })
+    .map(item => item.strategy);
 
   // Toggle sort order
   const toggleSortOrder = () => {
