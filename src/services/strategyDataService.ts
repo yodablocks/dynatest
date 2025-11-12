@@ -244,15 +244,28 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     throw new Error(`Unknown strategy: ${strategyId}`);
   }
 
-  // Mark Aave strategies as 'aave' source instead of hardcoded for green indicator
+  // Mark all active strategies with their protocol source for green indicator
   const isAaveStrategy = AAVE_STRATEGIES.includes(strategyId);
+  const isMorphoStrategy = MORPHO_STRATEGIES.includes(strategyId);
+  const isFluidStrategy = FLUID_STRATEGIES.includes(strategyId);
+
+  // Determine source based on protocol
+  let source: StrategyLiveData['source'] = 'hardcoded';
+  if (isAaveStrategy) {
+    source = 'aave';
+  } else if (isMorphoStrategy) {
+    source = 'morpho';
+  } else if (isFluidStrategy || strategyId === 'StCeloStaking' || strategyId === 'AaveV3SupplyCelo') {
+    // Mark all other active strategies as 'graph' to show green indicator
+    source = 'graph';
+  }
 
   return {
     apy: strategy.apy,
     tvl: generateFallbackTVL(strategy.title),
     dailyRate: Math.round((strategy.apy / 365) * 10000) / 10000,
     lastUpdated: new Date().toISOString(),
-    source: isAaveStrategy ? 'aave' : 'hardcoded'
+    source
   };
 }
 
@@ -355,12 +368,12 @@ async function fetchStrategyData(strategyId: string): Promise<StrategyLiveData> 
 
   } catch (error) {
     console.warn(`All data sources failed for ${strategyId}:`, error);
-    
+
     // Return fallback data with error info
+    // Don't override source - preserve the protocol-specific source from getFallbackData
     const fallbackData = getFallbackData(strategyId);
     return {
       ...fallbackData,
-      source: 'hardcoded',
       error: error instanceof Error ? error.message : 'Unknown error'
     };
   }
