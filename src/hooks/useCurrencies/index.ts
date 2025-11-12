@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { wagmiConfig as config } from "@/providers/config";
 import { useSmartWallets } from "@privy-io/react-auth/smart-wallets";
 import { Token } from "@/types";
-import { getTokenAddress } from "@/utils/coins";
+import { getTokenAddress, isTokenSupportedOnChain } from "@/utils/coins";
 
 export interface TokenData {
   token: Token;
@@ -48,6 +48,13 @@ export default function useCurrencies(tokens: Token[] = []) {
 
       const balancePromises = tokensData.map(async (tokenData, index) => {
         const token = tokenData.token;
+
+        // Skip tokens not supported on this chain
+        if (!isTokenSupportedOnChain(token, chainId)) {
+          console.log(`Token ${token.name} not supported on chain ${chainId}, skipping balance fetch`);
+          tokensData[index].balance = BigInt(0);
+          return;
+        }
 
         try {
           const params = {
