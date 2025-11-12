@@ -66,7 +66,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
   {
     title: "Conservative Yield",
     id: "AaveV3Supply",
-    apy: 6.1,
+    apy: 4.5,
     risk: "medium",
     color: "#9896FF",
     protocol: AAVE,
@@ -105,7 +105,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
   {
     title: "Enhanced Returns",
     id: "AaveV3SupplyLeveraged",
-    apy: 10.1,
+    apy: 8.0,
     risk: "medium",
     color: "#9896FF",
     protocol: AAVE,
@@ -158,7 +158,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
   {
     title: "AAVE Lending (Celo)",
     id: "AaveV3SupplyCelo",
-    apy: 5.2,
+    apy: 2.5,
     risk: "medium",
     color: "#9896FF",
     protocol: AAVE,
@@ -175,7 +175,7 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
   {
     title: "AAVE BNB Lending",
     id: "AaveV3SupplyBSC",
-    apy: 4.5,
+    apy: 1.6,
     risk: "medium",
     color: "#9896FF",
     protocol: AAVE,
