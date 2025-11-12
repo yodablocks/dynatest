@@ -14,7 +14,9 @@ interface DynamicChainDisplayProps {
  * Get short chain name for display
  */
 function getShortChainName(chainName: string): string {
-  return chainName === 'BNB Smart Chain' ? 'BSC' : chainName;
+  if (chainName === 'BNB Smart Chain') return 'BSC';
+  if (chainName === 'Flow EVM Mainnet') return 'Flow';
+  return chainName;
 }
 
 /**

@@ -11,7 +11,7 @@ export const ANKR = {
   name: "Ankr",
   description:
     "Ankr is a liquid staking protocol that allows users to stake assets while maintaining liquidity.",
-  icon: "/crypto-icons/protocol/ankr.svg",
+  icon: "/crypto-icons/protocol/ankr.png",
   link: "https://www.ankr.com/",
   contracts: ANKR_CONTRACTS,
 } as const satisfies Protocol;
