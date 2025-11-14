@@ -69,7 +69,7 @@ class LiveAPYService {
     },
     'Re7Strategy': {
       chain: 'Base',
-      project: 'merkl', // Re7 rewards are tracked under merkl
+      project: 'morpho-v1', // Re7 vault on Morpho v1
       symbol: 'RE7USDC',
       fallbackAPY: 8.2,
     },
