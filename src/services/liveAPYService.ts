@@ -73,6 +73,12 @@ class LiveAPYService {
       symbol: 'RE7USDC',
       fallbackAPY: 8.2,
     },
+    'IporFusionSupply': {
+      chain: 'Base',
+      project: 'ipor-fusion', // yoUSD Loooper vault
+      symbol: 'USDC',
+      fallbackAPY: 18.9,
+    },
 
     // Other chains
     'StCeloStaking': {

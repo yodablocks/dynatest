@@ -2,7 +2,7 @@ import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/c
 
 import type { StrategyMetadata } from "@/types";
 import { USDC, CELO, FLOW, cEUR, BNB, WBNB } from "@/constants/coins";
-import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, ASTERDEX } from "./protocols";
+import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, ASTERDEX, IPOR } from "./protocols";
 
 export const STRATEGIES = [
   // Active strategies
@@ -11,6 +11,7 @@ export const STRATEGIES = [
   "MorphoSupply",
   "FluidSupply",
   "Re7Strategy", // Base Re7 USDC vault
+  "IporFusionSupply", // IPOR Fusion yoUSD Loooper on Base
   "MultiStrategy", // Composition pattern - combines multiple strategies
   "StCeloStaking", // Celo liquid staking
   "AaveV3SupplyCelo", // AAVE on Celo
@@ -135,6 +136,23 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
       "Supplying USDC to Fluid Lending Protocol enables earning interest and rewards, maximizing returns in DeFi.",
     externalLink: "https://fluid.io/",
     learnMoreLink: "https://fluid.io/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "Loooper",
+    id: "IporFusionSupply",
+    apy: 18.9,
+    risk: "high",
+    color: "#00D4AA",
+    protocol: IPOR,
+    description:
+      "Automated USDC looping strategy on IPOR Fusion delivering maximized yields through efficient leverage management.",
+    fullDescription:
+      "IPOR Fusion's yoUSD Loooper employs an automated looping strategy to maximize USDC yields on Base network. The protocol automatically manages leverage positions to optimize returns while maintaining risk parameters. Currently delivering 18.9% APY with $1.28M TVL.",
+    externalLink: "https://app.ipor.io/fusion/base/0x1166250d1d6b5a1dbb73526257f6bb2bbe235295",
+    learnMoreLink: "https://docs.ipor.io/",
     tokens: [USDC],
     chainId: base.id,
     status: "active",

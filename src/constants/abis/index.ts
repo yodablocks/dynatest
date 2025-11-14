@@ -14,3 +14,4 @@ export * from "./camelotStrategy";
 export * from "./ankrFlow";
 export * from "./asterdexBNBStaking";
 export * from "./fluid";
+export * from "./iporFusion";

@@ -6,6 +6,7 @@ import { LIDO } from "./lido";
 import { GMX } from "./gmx";
 import { CAMELOT } from "./camelot";
 import { ST_CELO } from "./stCelo";
+import { IPOR } from "./ipor";
 
 
 export * from "./aave";
@@ -18,10 +19,11 @@ export * from "./uniswap";
 export * from "./gmx";
 export * from "./lido";
 export * from "./fluid";
+export * from "./ipor";
 
 
 // Active protocols on Base network
-export const PROTOCOLS = [AAVE, UNISWAP, MORPHO, FLUID];
+export const PROTOCOLS = [AAVE, UNISWAP, MORPHO, FLUID, IPOR];
 
 // Coming soon protocols
 export const COMING_SOON_PROTOCOLS = [LIDO, GMX, CAMELOT, ST_CELO];

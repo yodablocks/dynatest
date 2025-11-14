@@ -27,11 +27,13 @@ import {
   StCeloStaking,
   AnkrFlowStaking,
   AsterdexBNBStaking,
+  IporFusionSupply,
 } from "@/classes/strategies";
 import { AAVE } from "@/constants/protocols/aave";
 import { ST_CELO } from "@/constants/protocols/stCelo";
 import { ANKR } from "@/constants/protocols/ankr";
 import { ASTERDEX } from "@/constants/protocols/asterdex";
+import { IPOR } from "@/constants/protocols/ipor";
 
 export function isChainSupported<T extends Protocol>(
   protocol: T,
@@ -59,6 +61,7 @@ const STRATEGY_CONFIGS: Record<
   | "AaveV3SupplyArbitrum"
   | "FluidSupply"
   | "Re7Strategy"
+  | "IporFusionSupply"
   | "StCeloStaking"
   | "AnkrFlowStaking"
   | "AsterdexBNBStaking"
@@ -118,6 +121,11 @@ const STRATEGY_CONFIGS: Record<
       console.log('🔧 Re7Strategy factory called with:', { chainId });
       return new Re7Strategy(chainId as GetProtocolChains<typeof MORPHO>);
     },
+  },
+  IporFusionSupply: {
+    protocol: IPOR,
+    factory: (chainId) =>
+      new IporFusionSupply(chainId as GetProtocolChains<typeof IPOR>),
   },
 
   // Celo strategies
