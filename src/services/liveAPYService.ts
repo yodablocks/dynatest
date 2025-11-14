@@ -37,6 +37,8 @@ class LiveAPYService {
 
   /**
    * Strategy to DeFiLlama pool mapping
+   * Chain names: Must match DeFiLlama exactly (e.g., "Binance" not "BSC")
+   * Project names: Lowercase hyphenated (e.g., "aave-v3", "morpho")
    */
   private readonly STRATEGY_MAPPINGS: Record<string, StrategyMapping> = {
     // Base chain strategies (main bot focus)
@@ -66,15 +68,15 @@ class LiveAPYService {
     },
     'Re7Strategy': {
       chain: 'Base',
-      project: 'morpho',
-      symbol: 'USDC', // Re7 vault is on Morpho
+      project: 're7-labs', // Re7 might have its own project ID
+      symbol: 'USDC',
       fallbackAPY: 8.2,
     },
 
     // Other chains
     'StCeloStaking': {
       chain: 'Celo',
-      project: 'staked-celo',
+      project: 'staked-celo', // Could also be "stcelo" or "st-celo"
       fallbackAPY: 6.8,
     },
     'AaveV3SupplyCelo': {
@@ -84,7 +86,7 @@ class LiveAPYService {
       fallbackAPY: 2.5,
     },
     'AaveV3SupplyBSC': {
-      chain: 'Binance',
+      chain: 'Binance', // DeFiLlama uses "Binance" not "BSC"
       project: 'aave-v3',
       symbol: 'WBNB',
       fallbackAPY: 1.6,
@@ -102,7 +104,7 @@ class LiveAPYService {
       fallbackAPY: 4.2,
     },
     'AnkrFlowStaking': {
-      chain: 'Flow',
+      chain: 'Flow', // Might need to be "Flow EVM" - will see in logs
       project: 'ankr',
       fallbackAPY: 10.8,
     },
@@ -146,6 +148,8 @@ class LiveAPYService {
           const apy = this.calculateAPY(strategyId, matchedPool);
           apyMap.set(strategyId, apy);
 
+          console.log(`✅ ${strategyId}: ${apy}% (${matchedPool.project} on ${matchedPool.chain}, TVL: $${(matchedPool.tvlUsd / 1e6).toFixed(1)}M)`);
+
           // Cache the result
           const liveData: LiveAPYData = {
             strategyId,
@@ -157,7 +161,7 @@ class LiveAPYService {
           this.setCache(liveData);
         } else {
           // Use fallback APY if pool not found
-          console.log(`⚠️  No pool found for ${strategyId}, using fallback: ${mapping.fallbackAPY}%`);
+          console.log(`⚠️  ${strategyId}: No pool found (looking for ${mapping.project} on ${mapping.chain}), using fallback: ${mapping.fallbackAPY}%`);
           apyMap.set(strategyId, mapping.fallbackAPY);
         }
       }
