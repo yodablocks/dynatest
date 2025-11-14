@@ -39,6 +39,7 @@ class LiveAPYService {
    * Strategy to DeFiLlama pool mapping
    * Chain names: Must match DeFiLlama exactly (e.g., "Binance" not "BSC")
    * Project names: Lowercase hyphenated (e.g., "aave-v3", "morpho")
+   * Note: Some strategies may not have good DeFiLlama coverage, will use fallback
    */
   private readonly STRATEGY_MAPPINGS: Record<string, StrategyMapping> = {
     // Base chain strategies (main bot focus)
@@ -56,7 +57,7 @@ class LiveAPYService {
     },
     'MorphoSupply': {
       chain: 'Base',
-      project: 'morpho',
+      project: 'morpho-blue', // Try morpho-blue instead of morpho
       symbol: 'USDC',
       fallbackAPY: 8.5,
     },
@@ -68,15 +69,15 @@ class LiveAPYService {
     },
     'Re7Strategy': {
       chain: 'Base',
-      project: 're7-labs', // Re7 might have its own project ID
-      symbol: 'USDC',
+      project: 'merkl', // Re7 rewards are tracked under merkl
+      symbol: 'RE7USDC',
       fallbackAPY: 8.2,
     },
 
     // Other chains
     'StCeloStaking': {
       chain: 'Celo',
-      project: 'staked-celo', // Could also be "stcelo" or "st-celo"
+      project: 'stcelo', // Try variations: stcelo, staked-celo, celo-reserve
       fallbackAPY: 6.8,
     },
     'AaveV3SupplyCelo': {
@@ -86,7 +87,7 @@ class LiveAPYService {
       fallbackAPY: 2.5,
     },
     'AaveV3SupplyBSC': {
-      chain: 'Binance', // DeFiLlama uses "Binance" not "BSC"
+      chain: 'Binance',
       project: 'aave-v3',
       symbol: 'WBNB',
       fallbackAPY: 1.6,
@@ -104,8 +105,8 @@ class LiveAPYService {
       fallbackAPY: 4.2,
     },
     'AnkrFlowStaking': {
-      chain: 'Flow', // Might need to be "Flow EVM" - will see in logs
-      project: 'ankr',
+      chain: 'Flow',
+      project: 'ankr-staking', // Try ankr-staking or ankr-liquid-staking
       fallbackAPY: 10.8,
     },
     'AsterdexBNBStaking': {
@@ -140,6 +141,9 @@ class LiveAPYService {
 
       console.log(`📊 Fetched ${pools.length} pools from DeFiLlama`);
 
+      // Debug: Log available projects on our chains
+      this.logAvailableProjects(pools);
+
       // Match pools to our strategies
       for (const [strategyId, mapping] of Object.entries(this.STRATEGY_MAPPINGS)) {
         const matchedPool = this.findMatchingPool(pools, mapping);
@@ -173,6 +177,25 @@ class LiveAPYService {
       console.error('❌ Error fetching live APYs:', error);
       return this.getFallbackAPYs();
     }
+  }
+
+  /**
+   * Debug helper: Log available projects on each chain
+   */
+  private logAvailableProjects(pools: DeFiLlamaPool[]): void {
+    const targetChains = ['Base', 'Celo', 'Binance', 'Flow', 'Polygon', 'Arbitrum'];
+
+    console.log('\n🔍 Available projects on target chains:');
+
+    for (const chain of targetChains) {
+      const chainPools = pools.filter(p => p.chain === chain);
+      const projects = new Set(chainPools.map(p => p.project));
+
+      if (projects.size > 0) {
+        console.log(`  ${chain}: ${Array.from(projects).sort().join(', ')}`);
+      }
+    }
+    console.log('');
   }
 
   /**
