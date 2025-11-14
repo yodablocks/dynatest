@@ -8,6 +8,7 @@ import {
 import { RISK_OPTIONS } from "@/constants/risk";
 import { base } from "viem/chains";
 import { portfolioAllocationService } from "@/services/portfolioAllocationService";
+import { liveAPYService } from "@/services/liveAPYService";
 
 export class InvestMessage extends Message {
   public amount: string = "0";
@@ -61,19 +62,34 @@ export class InvestMessage extends Message {
     return strategiesSet;
   }
 
-  next(): Message {
-    // TODO: Optionally fetch live APY data here
-    // For now, using hardcoded APY from STRATEGIES_METADATA
-    // In future: const liveAPYData = await fetchLiveAPYData();
+  async next(): Promise<Message> {
+    try {
+      // Fetch live APY data from protocols
+      console.log("📊 Fetching live APY data...");
+      const liveAPYData = await liveAPYService.fetchAllAPYs();
+      console.log(`✅ Fetched ${liveAPYData.size} live APY rates`);
 
-    // Get strategies filtered by chain with dynamic selection
-    const strategiesSet = this.getStrategiesSetByChain(this.chain);
+      // Get strategies filtered by chain with dynamic selection and live APY
+      const strategiesSet = this.getStrategiesSetByChain(this.chain, liveAPYData);
 
-    return new PortfolioMessage(
-      this.createDefaultMetadata(`Portfolio: ${this.amount} USDC`),
-      this.amount,
-      this.chain,
-      strategiesSet
-    );
+      return new PortfolioMessage(
+        this.createDefaultMetadata(`Portfolio: ${this.amount} USDC`),
+        this.amount,
+        this.chain,
+        strategiesSet
+      );
+    } catch (error) {
+      console.error("⚠️ Failed to fetch live APY, using fallback:", error);
+
+      // Fallback to hardcoded APY if live fetch fails
+      const strategiesSet = this.getStrategiesSetByChain(this.chain);
+
+      return new PortfolioMessage(
+        this.createDefaultMetadata(`Portfolio: ${this.amount} USDC`),
+        this.amount,
+        this.chain,
+        strategiesSet
+      );
+    }
   }
 }
