@@ -229,7 +229,7 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     'AaveV3SupplyLeveraged': { apy: 8.0, title: 'Enhanced' },
     'MorphoSupply': { apy: 8.5, title: 'OptLend' },
     'FluidSupply': { apy: 5.7, title: 'Dynamic' },
-    'StCeloStaking': { apy: 6.8, title: 'CELO LST' },
+    'StCeloStaking': { apy: 3.3, title: 'AAVE/USDC-Celo' },
     'AaveV3SupplyCelo': { apy: 2.5, title: 'AAVE/Celo' },
     'AaveV3SupplyBSC': { apy: 1.6, title: 'AAVE/BNB' },
     'AaveV3SupplyPolygon': { apy: 3.8, title: 'AAVE/USDC-Poly' },

@@ -122,9 +122,9 @@ const STRATEGY_CONFIGS: Record<
 
   // Celo strategies
   StCeloStaking: {
-    protocol: ST_CELO,
+    protocol: AAVE,
     factory: (chainId) =>
-      new StCeloStaking(chainId as GetProtocolChains<typeof ST_CELO>),
+      new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
   },
 
   // Flow strategies

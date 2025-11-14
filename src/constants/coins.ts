@@ -24,6 +24,7 @@ export const USDC = {
     [base.id]: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     [bsc.id]: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
     [polygon.id]: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+    [celo.id]: "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
   },
 } as const satisfies Token;
 
