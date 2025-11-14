@@ -77,8 +77,9 @@ class LiveAPYService {
     // Other chains
     'StCeloStaking': {
       chain: 'Celo',
-      project: 'stcelo', // Try variations: stcelo, staked-celo, celo-reserve
-      fallbackAPY: 6.8,
+      project: 'aave-v3', // Using AAVE V3 USDC on Celo instead of stCELO (better DeFiLlama coverage)
+      symbol: 'USDC',
+      fallbackAPY: 3.3,
     },
     'AaveV3SupplyCelo': {
       chain: 'Celo',
