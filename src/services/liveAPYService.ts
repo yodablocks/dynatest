@@ -79,6 +79,12 @@ class LiveAPYService {
       symbol: 'USDC',
       fallbackAPY: 18.9,
     },
+    'AvantisVaultSupply': {
+      chain: 'Base',
+      project: 'avantis', // Perpetuals vault
+      symbol: 'USDC',
+      fallbackAPY: 20.2,
+    },
 
     // Other chains
     'StCeloStaking': {

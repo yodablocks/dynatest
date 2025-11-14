@@ -2,7 +2,7 @@ import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/c
 
 import type { StrategyMetadata } from "@/types";
 import { USDC, CELO, FLOW, cEUR, BNB, WBNB } from "@/constants/coins";
-import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, ASTERDEX, IPOR } from "./protocols";
+import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, ASTERDEX, IPOR, AVANTIS } from "./protocols";
 
 export const STRATEGIES = [
   // Active strategies
@@ -12,6 +12,7 @@ export const STRATEGIES = [
   "FluidSupply",
   "Re7Strategy", // Base Re7 USDC vault
   "IporFusionSupply", // IPOR Fusion yoUSD Loooper on Base
+  "AvantisVaultSupply", // Avantis perpetuals vault on Base
   "MultiStrategy", // Composition pattern - combines multiple strategies
   "StCeloStaking", // Celo liquid staking
   "AaveV3SupplyCelo", // AAVE on Celo
@@ -153,6 +154,23 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
       "IPOR Fusion's yoUSD Loooper employs an automated looping strategy to maximize USDC yields on Base network. The protocol automatically manages leverage positions to optimize returns while maintaining risk parameters. Currently delivering 18.9% APY with $1.28M TVL.",
     externalLink: "https://app.ipor.io/fusion/base/0x1166250d1d6b5a1dbb73526257f6bb2bbe235295",
     learnMoreLink: "https://docs.ipor.io/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "Perps Vault",
+    id: "AvantisVaultSupply",
+    apy: 20.2,
+    risk: "high",
+    color: "#FF6B35",
+    protocol: AVANTIS,
+    description:
+      "Earn yield from perpetuals trading fees by providing liquidity to the Avantis vault. Vault acts as counterparty to traders.",
+    fullDescription:
+      "Supply USDC to the Avantis perpetuals vault and earn ~20% APY from trading fees. The vault acts as the counterparty to traders on the Avantis perpetuals platform. $106M TVL with battle-tested smart contracts. Note: 0.5% fee applies on withdrawals.",
+    externalLink: "https://www.avantisfi.com/earn/avantis-vault",
+    learnMoreLink: "https://docs.avantisfi.com/",
     tokens: [USDC],
     chainId: base.id,
     status: "active",

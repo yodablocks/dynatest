@@ -15,3 +15,4 @@ export * from "./ankrFlow";
 export * from "./asterdexBNBStaking";
 export * from "./fluid";
 export * from "./iporFusion";
+export * from "./avantisVault";
