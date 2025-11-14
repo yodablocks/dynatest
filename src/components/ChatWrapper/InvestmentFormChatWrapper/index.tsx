@@ -30,7 +30,8 @@ const InvestmentFormChatWrapper = ({
   const handlePortfolio = async (amount: string) => {
     message.amount = amount;
     // Chain is already set to Base by default
-    await addBotMessage(message.next());
+    const nextMessage = await message.next();
+    await addBotMessage(nextMessage);
   };
 
   return (
