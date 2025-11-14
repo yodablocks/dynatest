@@ -14,7 +14,7 @@ export const IPOR = {
   name: "IPOR Fusion",
   description:
     "IPOR Fusion is a DeFi yield optimization protocol offering automated looping strategies for maximized returns on USDC deposits.",
-  icon: "/crypto-icons/protocol/ipor.svg",
+  icon: "/crypto-icons/protocol/ipor.png",
   link: "https://app.ipor.io/",
   contracts: IPOR_CONTRACTS,
 } as const satisfies Protocol;
