@@ -26,7 +26,7 @@ export * from "./harvest";
 
 
 // Active protocols on Base network
-export const PROTOCOLS = [AAVE, UNISWAP, MORPHO, FLUID, IPOR, AVANTIS, HARVEST];
+export const PROTOCOLS = [AAVE, UNISWAP, MORPHO, FLUID, AVANTIS, HARVEST];
 
 // Coming soon protocols
 export const COMING_SOON_PROTOCOLS = [LIDO, GMX, CAMELOT, ST_CELO];

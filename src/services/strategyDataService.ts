@@ -229,7 +229,6 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     'AaveV3SupplyLeveraged': { apy: 8.0, title: 'Enhanced' },
     'MorphoSupply': { apy: 8.5, title: 'OptLend' },
     'FluidSupply': { apy: 5.7, title: 'Dynamic' },
-    'IporFusionSupply': { apy: 18.9, title: 'Loooper' },
     'AvantisVaultSupply': { apy: 20.2, title: 'Perps Vault' },
     'HarvestFortyAcresUSDC': { apy: 11.5, title: '40 Acres' },
     'HarvestAutopilotUSDC': { apy: 7.54, title: 'Autopilot' },
@@ -258,7 +257,7 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     source = 'aave';
   } else if (isMorphoStrategy) {
     source = 'morpho';
-  } else if (isFluidStrategy || strategyId === 'StCeloStaking' || strategyId === 'AaveV3SupplyCelo' || strategyId === 'AnkrFlowStaking' || strategyId === 'IporFusionSupply' || strategyId === 'AvantisVaultSupply' || strategyId === 'HarvestFortyAcresUSDC' || strategyId === 'HarvestAutopilotUSDC') {
+  } else if (isFluidStrategy || strategyId === 'StCeloStaking' || strategyId === 'AaveV3SupplyCelo' || strategyId === 'AnkrFlowStaking' || strategyId === 'AvantisVaultSupply' || strategyId === 'HarvestFortyAcresUSDC' || strategyId === 'HarvestAutopilotUSDC') {
     // Mark all other active strategies as 'graph' to show green indicator
     source = 'graph';
   }
