@@ -24,6 +24,8 @@ import {
   AaveV3Supply,
   FluidSupply,
   Re7Strategy,
+  BBQStrategy,
+  CSStrategy,
   StCeloStaking,
   AnkrFlowStaking,
   IporFusionSupply,
@@ -64,6 +66,8 @@ const STRATEGY_CONFIGS: Record<
   | "AaveV3SupplyArbitrum"
   | "FluidSupply"
   | "Re7Strategy"
+  | "BBQStrategy"
+  | "CSStrategy"
   | "IporFusionSupply"
   | "AvantisVaultSupply"
   | "HarvestFortyAcresUSDC"
@@ -131,6 +135,16 @@ const STRATEGY_CONFIGS: Record<
       console.log('🔧 Re7Strategy factory called with:', { chainId });
       return new Re7Strategy(chainId as GetProtocolChains<typeof MORPHO>);
     },
+  },
+  BBQStrategy: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new BBQStrategy(chainId as GetProtocolChains<typeof MORPHO>),
+  },
+  CSStrategy: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new CSStrategy(chainId as GetProtocolChains<typeof MORPHO>),
   },
   IporFusionSupply: {
     protocol: IPOR,

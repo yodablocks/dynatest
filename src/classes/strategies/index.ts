@@ -1,5 +1,7 @@
 export * from "./uniswap/swapLST";
 export * from "./morpho/supply";
+export * from "./morpho/bbqStrategy";
+export * from "./morpho/csStrategy";
 export * from "./baseStrategy";
 export * from "./aave/supply";
 export * from "./fluid/supply";

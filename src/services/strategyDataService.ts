@@ -52,7 +52,7 @@ const EXPAND_PROTOCOL_IDS = {
 };
 
 // Strategy categorization
-const MORPHO_STRATEGIES = ['SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy'];
+const MORPHO_STRATEGIES = ['SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy', 'BBQStrategy', 'CSStrategy'];
 const AAVE_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'AaveV3SupplyCelo', 'AaveV3SupplyUSDTCelo', 'AaveV3SupplyBSC', 'AaveV3SupplyPolygon', 'AaveV3SupplyArbitrum'];
 const EXPAND_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'MorphoSupply', 'SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy']; // All strategies using Expand Network API
 const FLUID_STRATEGIES = ['FluidSupply'];
@@ -224,6 +224,8 @@ function getFallbackData(strategyId: string): StrategyLiveData {
   const STRATEGIES_MAP = {
     'SmokehouseStrategy': { apy: 6.5, title: 'Institutional USDC' },
     'Re7Strategy': { apy: 8.2, title: 'Pro' },
+    'BBQStrategy': { apy: 7.14, title: 'High Yield' },
+    'CSStrategy': { apy: 7.27, title: 'Reactor' },
     'MevCapitalStrategy': { apy: 7.8, title: 'Alpha Generation' },
     'AaveV3Supply': { apy: 4.5, title: 'Conservative' },
     'AaveV3SupplyLeveraged': { apy: 8.0, title: 'Enhanced' },

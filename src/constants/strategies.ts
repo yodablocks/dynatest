@@ -11,6 +11,8 @@ export const STRATEGIES = [
   "MorphoSupply",
   "FluidSupply",
   "Re7Strategy", // Base Re7 USDC vault
+  "BBQStrategy", // Steakhouse High Yield USDC v11
+  "CSStrategy", // ClearStar USDC Reactor
   "AvantisVaultSupply", // Avantis perpetuals vault on Base
   "HarvestFortyAcresUSDC", // Harvest Finance 40 Acres USDC vault on Base
   "HarvestAutopilotUSDC", // Harvest Finance Autopilot USDC vault on Base
@@ -63,6 +65,44 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
       "https://app.morpho.org/base/vault/0x12AFDeFb2237a5963e7BAb3e2D46ad0eee70406e/re7-usdc",
     learnMoreLink:
       "https://re7.capital/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "High Yield",
+    id: "BBQStrategy",
+    apy: 7.14,
+    risk: "medium",
+    color: "#FF8C42",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to Steakhouse Financial's High Yield vault on Base. Institutional-grade MetaMorpho vault with $6.37M TVL.",
+    fullDescription:
+      "Access Steakhouse Financial's High Yield USDC vault through MetaMorpho on Base network. Steakhouse manages $6.37M TVL with professional curation and risk management. Earn competitive yields through optimized lending strategies.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0xBEEFA7B88064FeEF0cEe02AAeBBd95D30df3878F/steakhouse-high-yield-usdc-v11",
+    learnMoreLink:
+      "https://morpho.org/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "Reactor",
+    id: "CSStrategy",
+    apy: 7.27,
+    risk: "medium",
+    color: "#00D9FF",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to ClearStar's Reactor vault on Base. Optimized MetaMorpho vault with $1.04M TVL for maximum yield efficiency.",
+    fullDescription:
+      "Access ClearStar's USDC Reactor vault through MetaMorpho on Base network. ClearStar manages $1.04M TVL with algorithmic optimization and active rebalancing. Designed for yield-focused investors seeking competitive returns.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0x1D3b1Cd0a0f242d598834b3F2d126dC6bd774657/clearstar-usdc-reactor",
+    learnMoreLink:
+      "https://morpho.org/",
     tokens: [USDC],
     chainId: base.id,
     status: "active",
