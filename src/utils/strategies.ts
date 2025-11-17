@@ -26,12 +26,14 @@ import {
   Re7Strategy,
   StCeloStaking,
   AnkrFlowStaking,
+  IporFusionSupply,
   AvantisVaultSupply,
   HarvestVaultSupply,
 } from "@/classes/strategies";
 import { AAVE } from "@/constants/protocols/aave";
 import { ST_CELO } from "@/constants/protocols/stCelo";
 import { ANKR } from "@/constants/protocols/ankr";
+import { IPOR } from "@/constants/protocols/ipor";
 import { AVANTIS } from "@/constants/protocols/avantis";
 import { HARVEST } from "@/constants/protocols/harvest";
 
@@ -62,6 +64,7 @@ const STRATEGY_CONFIGS: Record<
   | "AaveV3SupplyArbitrum"
   | "FluidSupply"
   | "Re7Strategy"
+  | "IporFusionSupply"
   | "AvantisVaultSupply"
   | "HarvestFortyAcresUSDC"
   | "HarvestAutopilotUSDC"
@@ -128,6 +131,11 @@ const STRATEGY_CONFIGS: Record<
       console.log('🔧 Re7Strategy factory called with:', { chainId });
       return new Re7Strategy(chainId as GetProtocolChains<typeof MORPHO>);
     },
+  },
+  IporFusionSupply: {
+    protocol: IPOR,
+    factory: (chainId) =>
+      new IporFusionSupply(chainId as GetProtocolChains<typeof IPOR>),
   },
   AvantisVaultSupply: {
     protocol: AVANTIS,
