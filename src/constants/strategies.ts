@@ -1,8 +1,8 @@
 import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/chains";
 
 import type { StrategyMetadata } from "@/types";
-import { USDC, CELO, FLOW, cEUR, BNB, WBNB } from "@/constants/coins";
-import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, ASTERDEX, IPOR, AVANTIS } from "./protocols";
+import { USDC, USDT, CELO, FLOW, cEUR, WBNB } from "@/constants/coins";
+import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, AVANTIS, HARVEST } from "./protocols";
 
 export const STRATEGIES = [
   // Active strategies
@@ -11,16 +11,22 @@ export const STRATEGIES = [
   "MorphoSupply",
   "FluidSupply",
   "Re7Strategy", // Base Re7 USDC vault
-  "IporFusionSupply", // IPOR Fusion yoUSD Loooper on Base
+  "BBQStrategy", // Steakhouse High Yield USDC v11
+  "CSStrategy", // ClearStar USDC Reactor
+  "ExtraFiStrategy", // ExtraFi xLend USDC
+  "SteakhousePrimeStrategy", // Steakhouse Prime USDC
+  "HighYieldClearStarStrategy", // High Yield ClearStar USDC
   "AvantisVaultSupply", // Avantis perpetuals vault on Base
+  "HarvestFortyAcresUSDC", // Harvest Finance 40 Acres USDC vault on Base
+  "HarvestAutopilotUSDC", // Harvest Finance Autopilot USDC vault on Base
   "MultiStrategy", // Composition pattern - combines multiple strategies
   "StCeloStaking", // Celo liquid staking
   "AaveV3SupplyCelo", // AAVE on Celo
+  "AaveV3SupplyUSDTCelo", // AAVE USDT on Celo
   "AaveV3SupplyBSC", // AAVE on BSC
   "AaveV3SupplyPolygon", // AAVE on Polygon
   "AaveV3SupplyArbitrum", // AAVE on Arbitrum
   "AnkrFlowStaking", // Ankr Flow liquid staking
-  "AsterdexBNBStaking", // Asterdex BNB liquid staking on BSC
   // Coming soon strategies
   "CamelotStaking",
   "GMXDeposit",
@@ -62,6 +68,101 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
       "https://app.morpho.org/base/vault/0x12AFDeFb2237a5963e7BAb3e2D46ad0eee70406e/re7-usdc",
     learnMoreLink:
       "https://re7.capital/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "High Yield",
+    id: "BBQStrategy",
+    apy: 7.14,
+    risk: "medium",
+    color: "#FF8C42",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to Steakhouse Financial's High Yield vault on Base. Institutional-grade MetaMorpho vault with $6.37M TVL.",
+    fullDescription:
+      "Access Steakhouse Financial's High Yield USDC vault through MetaMorpho on Base network. Steakhouse manages $6.37M TVL with professional curation and risk management. Earn competitive yields through optimized lending strategies.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0xBEEFA7B88064FeEF0cEe02AAeBBd95D30df3878F/steakhouse-high-yield-usdc-v11",
+    learnMoreLink:
+      "https://morpho.org/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "Reactor",
+    id: "CSStrategy",
+    apy: 7.27,
+    risk: "medium",
+    color: "#00D9FF",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to ClearStar's Reactor vault on Base. Optimized MetaMorpho vault with $1.04M TVL for maximum yield efficiency.",
+    fullDescription:
+      "Access ClearStar's USDC Reactor vault through MetaMorpho on Base network. ClearStar manages $1.04M TVL with algorithmic optimization and active rebalancing. Designed for yield-focused investors seeking competitive returns.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0x1D3b1Cd0a0f242d598834b3F2d126dC6bd774657/clearstar-usdc-reactor",
+    learnMoreLink:
+      "https://morpho.org/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "xLend",
+    id: "ExtraFiStrategy",
+    apy: 7.23,
+    risk: "medium",
+    color: "#7B61FF",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to ExtraFi's xLend vault on Base. Optimized MetaMorpho vault with $9.59M TVL for high-efficiency lending.",
+    fullDescription:
+      "Access ExtraFi's xLend USDC vault through MetaMorpho on Base network. ExtraFi manages $9.59M TVL with sophisticated yield optimization strategies. Earn competitive returns through professionally curated lending positions.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0x23479229e52Ab6aaD312D0B03DF9F33B46753B5e/extrafi-xlend-usdc",
+    learnMoreLink:
+      "https://morpho.org/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "Prime",
+    id: "SteakhousePrimeStrategy",
+    apy: 7.16,
+    risk: "medium",
+    color: "#FF6B4A",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to Steakhouse Financial's Prime vault on Base. Flagship institutional MetaMorpho vault with $38.87M TVL.",
+    fullDescription:
+      "Access Steakhouse Financial's flagship Prime USDC vault through MetaMorpho on Base network. This institutional-grade vault manages $38.87M TVL with rigorous risk management and professional curation. The Prime vault represents Steakhouse's premier yield strategy.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0xBEEFE94c8aD530842bfE7d8B397938fFc1cb83b2/steakhouse-prime-usdc",
+    learnMoreLink:
+      "https://morpho.org/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "HY Clear",
+    id: "HighYieldClearStarStrategy",
+    apy: 7.21,
+    risk: "medium",
+    color: "#00BFFF",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to ClearStar's High Yield vault on Base. Aggressive MetaMorpho vault with $2.07M TVL optimized for maximum returns.",
+    fullDescription:
+      "Access ClearStar's High Yield USDC vault through MetaMorpho on Base network. This performance-focused vault manages $2.07M TVL with aggressive optimization targeting maximum sustainable yields. Designed for yield-maximizing investors comfortable with active rebalancing.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0xE74c499fA461AF1844fCa84204490877787cED56/high-yield-clearstar-usdc",
+    learnMoreLink:
+      "https://morpho.org/",
     tokens: [USDC],
     chainId: base.id,
     status: "active",
@@ -142,23 +243,6 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     status: "active",
   },
   {
-    title: "Loooper",
-    id: "IporFusionSupply",
-    apy: 18.9,
-    risk: "high",
-    color: "#00D4AA",
-    protocol: IPOR,
-    description:
-      "Automated USDC looping strategy on IPOR Fusion delivering maximized yields through efficient leverage management.",
-    fullDescription:
-      "IPOR Fusion's yoUSD Loooper employs an automated looping strategy to maximize USDC yields on Base network. The protocol automatically manages leverage positions to optimize returns while maintaining risk parameters. Currently delivering 18.9% APY with $1.28M TVL.",
-    externalLink: "https://app.ipor.io/fusion/base/0x1166250d1d6b5a1dbb73526257f6bb2bbe235295",
-    learnMoreLink: "https://docs.ipor.io/",
-    tokens: [USDC],
-    chainId: base.id,
-    status: "active",
-  },
-  {
     title: "Perps Vault",
     id: "AvantisVaultSupply",
     apy: 20.2,
@@ -171,6 +255,40 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
       "Supply USDC to the Avantis perpetuals vault and earn ~20% APY from trading fees. The vault acts as the counterparty to traders on the Avantis perpetuals platform. $106M TVL with battle-tested smart contracts. Note: 0.5% fee applies on withdrawals.",
     externalLink: "https://www.avantisfi.com/earn/avantis-vault",
     learnMoreLink: "https://docs.avantisfi.com/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "40 Acres",
+    id: "HarvestFortyAcresUSDC",
+    apy: 11.5,
+    risk: "medium",
+    color: "#FFAA00",
+    protocol: HARVEST,
+    description:
+      "Automated yield farming with Harvest Finance's flagship 40 Acres USDC vault. Instant withdrawals with no fees.",
+    fullDescription:
+      "Supply USDC to Harvest Finance's 40 Acres vault for automated yield optimization across Base DeFi protocols. The vault automatically compounds rewards and rebalances strategies to maximize returns. $2.85M TVL with proven track record. Features instant 1-step withdrawals with no deposit or withdrawal fees.",
+    externalLink: "https://app.harvest.finance/base/0xC777031D50F632083Be7080e51E390709062263E",
+    learnMoreLink: "https://docs.harvest.finance/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "Autopilot",
+    id: "HarvestAutopilotUSDC",
+    apy: 7.54,
+    risk: "low",
+    color: "#FFD700",
+    protocol: HARVEST,
+    description:
+      "Conservative yield farming with Harvest Finance's Autopilot USDC vault. Stable returns with instant liquidity.",
+    fullDescription:
+      "Supply USDC to Harvest Finance's Autopilot vault for steady, low-risk yields on Base network. This conservative strategy focuses on stable returns with minimal volatility. $1.82M TVL with consistent performance history. Features instant 1-step withdrawals with no deposit or withdrawal fees.",
+    externalLink: "https://app.harvest.finance/base/0x0d877Dc7C8Fa3aD980DfDb18B48eC9F8768359C4",
+    learnMoreLink: "https://docs.harvest.finance/",
     tokens: [USDC],
     chainId: base.id,
     status: "active",
@@ -206,6 +324,23 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     externalLink: "https://app.aave.com/markets/?marketName=proto_celo_v3",
     learnMoreLink: "https://docs.aave.com/",
     tokens: [CELO],
+    chainId: celo.id,
+    status: "active",
+  },
+  {
+    title: "AAVE/USDT-Celo",
+    id: "AaveV3SupplyUSDTCelo",
+    apy: 1.01,
+    risk: "low",
+    color: "#9896FF",
+    protocol: AAVE,
+    description:
+      "Supply USDT to AAVE V3 on Celo network to earn lending interest with minimal fees and fast finality.",
+    fullDescription:
+      "Supply USDT (Tether) to AAVE V3 lending protocol on Celo network. AAVE is a battle-tested DeFi protocol with over $10B in TVL. Earn stable yields on your USDT holdings with $6.97M TVL, 1-second transaction finality and sub-cent transaction costs.",
+    externalLink: "https://app.aave.com/reserve-overview/?underlyingAsset=0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e&marketName=proto_celo_v3",
+    learnMoreLink: "https://docs.aave.com/",
+    tokens: [USDT],
     chainId: celo.id,
     status: "active",
   },
@@ -275,23 +410,6 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     learnMoreLink: "https://www.ankr.com/docs/staking/liquid-staking/flow/",
     tokens: [FLOW],
     chainId: flowMainnet.id,
-    status: "active",
-  },
-  {
-    title: "BNB LST",
-    id: "AsterdexBNBStaking",
-    apy: 6.0,
-    risk: "low",
-    color: "#F3BA2F",
-    protocol: ASTERDEX,
-    description:
-      "Stake BNB tokens with Asterdex to earn staking rewards while maintaining liquidity through asBNB tokens.",
-    fullDescription:
-      "Stake BNB tokens through Asterdex's liquid staking protocol to earn 5-7% APY while receiving asBNB tokens that represent your staked position. asBNB tokens can be used across DeFi protocols while your BNB continues earning staking rewards.",
-    externalLink: "https://asterdex.com/earn",
-    learnMoreLink: "https://docs.asterdex.com/product/aster-earn/mint-asbnb",
-    tokens: [BNB],
-    chainId: bsc.id,
     status: "active",
   },
 ];

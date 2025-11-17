@@ -52,8 +52,8 @@ const EXPAND_PROTOCOL_IDS = {
 };
 
 // Strategy categorization
-const MORPHO_STRATEGIES = ['SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy'];
-const AAVE_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'AaveV3SupplyCelo', 'AaveV3SupplyBSC', 'AaveV3SupplyPolygon', 'AaveV3SupplyArbitrum'];
+const MORPHO_STRATEGIES = ['SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy', 'BBQStrategy', 'CSStrategy', 'ExtraFiStrategy', 'SteakhousePrimeStrategy', 'HighYieldClearStarStrategy'];
+const AAVE_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'AaveV3SupplyCelo', 'AaveV3SupplyUSDTCelo', 'AaveV3SupplyBSC', 'AaveV3SupplyPolygon', 'AaveV3SupplyArbitrum'];
 const EXPAND_STRATEGIES = ['AaveV3Supply', 'AaveV3SupplyLeveraged', 'MorphoSupply', 'SmokehouseStrategy', 'Re7Strategy', 'MevCapitalStrategy']; // All strategies using Expand Network API
 const FLUID_STRATEGIES = ['FluidSupply'];
 
@@ -224,20 +224,26 @@ function getFallbackData(strategyId: string): StrategyLiveData {
   const STRATEGIES_MAP = {
     'SmokehouseStrategy': { apy: 6.5, title: 'Institutional USDC' },
     'Re7Strategy': { apy: 8.2, title: 'Pro' },
+    'BBQStrategy': { apy: 7.14, title: 'High Yield' },
+    'CSStrategy': { apy: 7.27, title: 'Reactor' },
+    'ExtraFiStrategy': { apy: 7.23, title: 'xLend' },
+    'SteakhousePrimeStrategy': { apy: 7.16, title: 'Prime' },
+    'HighYieldClearStarStrategy': { apy: 7.21, title: 'HY Clear' },
     'MevCapitalStrategy': { apy: 7.8, title: 'Alpha Generation' },
     'AaveV3Supply': { apy: 4.5, title: 'Conservative' },
     'AaveV3SupplyLeveraged': { apy: 8.0, title: 'Enhanced' },
     'MorphoSupply': { apy: 8.5, title: 'OptLend' },
     'FluidSupply': { apy: 5.7, title: 'Dynamic' },
-    'IporFusionSupply': { apy: 18.9, title: 'Loooper' },
     'AvantisVaultSupply': { apy: 20.2, title: 'Perps Vault' },
+    'HarvestFortyAcresUSDC': { apy: 11.5, title: '40 Acres' },
+    'HarvestAutopilotUSDC': { apy: 7.54, title: 'Autopilot' },
     'StCeloStaking': { apy: 3.3, title: 'AAVE/USDC-Celo' },
     'AaveV3SupplyCelo': { apy: 2.5, title: 'AAVE/Celo' },
+    'AaveV3SupplyUSDTCelo': { apy: 1.01, title: 'AAVE/USDT-Celo' },
     'AaveV3SupplyBSC': { apy: 1.6, title: 'AAVE/BNB' },
     'AaveV3SupplyPolygon': { apy: 3.8, title: 'AAVE/USDC-Poly' },
     'AaveV3SupplyArbitrum': { apy: 4.2, title: 'AAVE/USDC-Arb' },
-    'AnkrFlowStaking': { apy: 10.8, title: 'Flow LST' },
-    'AsterdexBNBStaking': { apy: 6.0, title: 'BNB LST' }
+    'AnkrFlowStaking': { apy: 10.8, title: 'Flow LST' }
   };
 
   const strategy = STRATEGIES_MAP[strategyId as keyof typeof STRATEGIES_MAP];
@@ -256,7 +262,7 @@ function getFallbackData(strategyId: string): StrategyLiveData {
     source = 'aave';
   } else if (isMorphoStrategy) {
     source = 'morpho';
-  } else if (isFluidStrategy || strategyId === 'StCeloStaking' || strategyId === 'AaveV3SupplyCelo' || strategyId === 'AnkrFlowStaking' || strategyId === 'AsterdexBNBStaking' || strategyId === 'IporFusionSupply' || strategyId === 'AvantisVaultSupply') {
+  } else if (isFluidStrategy || strategyId === 'StCeloStaking' || strategyId === 'AaveV3SupplyCelo' || strategyId === 'AnkrFlowStaking' || strategyId === 'AvantisVaultSupply' || strategyId === 'HarvestFortyAcresUSDC' || strategyId === 'HarvestAutopilotUSDC') {
     // Mark all other active strategies as 'graph' to show green indicator
     source = 'graph';
   }

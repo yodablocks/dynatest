@@ -12,7 +12,7 @@ export * from "./gmxStrategy";
 export * from "./xGrail";
 export * from "./camelotStrategy";
 export * from "./ankrFlow";
-export * from "./asterdexBNBStaking";
 export * from "./fluid";
 export * from "./iporFusion";
 export * from "./avantisVault";
+export * from "./harvestVault";

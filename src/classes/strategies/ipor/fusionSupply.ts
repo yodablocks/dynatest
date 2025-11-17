@@ -10,6 +10,16 @@ import { IPOR } from "@/constants/protocols/ipor";
 import { coreWagmiConfig } from "@/providers/config";
 import { getTokenByName } from "@/utils/coins";
 
+/**
+ * DEPRECATED: IPOR Fusion Supply Strategy
+ *
+ * This strategy has been deprecated due to its complex 2-step withdrawal process
+ * requiring Alpha keeper intervention. New deposits are disabled.
+ *
+ * Existing positions can still be withdrawn using the standard redeem function.
+ * Note: IPOR's proper withdrawal flow requires requestShares() + Alpha intervention,
+ * but we're using the basic redeem() as a fallback for user convenience.
+ */
 export class IporFusionSupply extends BaseStrategy<typeof IPOR> {
   constructor(chainId: GetProtocolChains<typeof IPOR>) {
     super(chainId, IPOR, "IporFusionSupply");
@@ -20,30 +30,11 @@ export class IporFusionSupply extends BaseStrategy<typeof IPOR> {
     user: Address,
     asset?: Address
   ): Promise<StrategyCall[]> {
-    if (!asset) {
-      throw new Error("IporFusionSupply: asset address is required");
-    }
-
-    const vault = this.getAddress("yoUSDVault");
-
-    return [
-      {
-        to: asset,
-        data: encodeFunctionData({
-          abi: ERC20_ABI,
-          functionName: "approve",
-          args: [vault, amount],
-        }),
-      },
-      {
-        to: vault,
-        data: encodeFunctionData({
-          abi: IPOR_FUSION_ABI,
-          functionName: "deposit",
-          args: [amount, user],
-        }),
-      },
-    ];
+    throw new Error(
+      "IPOR Fusion strategy is deprecated. New deposits are not allowed. " +
+      "This strategy was removed due to its complex 2-step withdrawal process requiring Alpha keeper intervention. " +
+      "If you have existing positions, you can still withdraw them."
+    );
   }
 
   async redeemCalls(
@@ -67,6 +58,9 @@ export class IporFusionSupply extends BaseStrategy<typeof IPOR> {
         args: [user],
       });
 
+      // Use standard ERC-4626 redeem as fallback
+      // NOTE: This may not work if IPOR requires the 2-step process
+      // In that case, users will need to use IPOR's UI directly
       return [
         {
           to: vault,
@@ -80,7 +74,11 @@ export class IporFusionSupply extends BaseStrategy<typeof IPOR> {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
-      throw new Error(`IporFusionSupply redeemCalls failed: ${errorMessage}`);
+      throw new Error(
+        `IporFusionSupply withdrawal failed: ${errorMessage}. ` +
+        `Due to IPOR's complex withdrawal process, you may need to withdraw directly through ` +
+        `IPOR's interface at https://app.ipor.io/fusion/base/0x1166250d1d6b5a1dbb73526257f6bb2bbe235295`
+      );
     }
   }
 

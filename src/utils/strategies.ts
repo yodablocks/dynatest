@@ -24,18 +24,23 @@ import {
   AaveV3Supply,
   FluidSupply,
   Re7Strategy,
+  BBQStrategy,
+  CSStrategy,
+  ExtraFiStrategy,
+  SteakhousePrimeStrategy,
+  HighYieldClearStarStrategy,
   StCeloStaking,
   AnkrFlowStaking,
-  AsterdexBNBStaking,
   IporFusionSupply,
   AvantisVaultSupply,
+  HarvestVaultSupply,
 } from "@/classes/strategies";
 import { AAVE } from "@/constants/protocols/aave";
 import { ST_CELO } from "@/constants/protocols/stCelo";
 import { ANKR } from "@/constants/protocols/ankr";
-import { ASTERDEX } from "@/constants/protocols/asterdex";
 import { IPOR } from "@/constants/protocols/ipor";
 import { AVANTIS } from "@/constants/protocols/avantis";
+import { HARVEST } from "@/constants/protocols/harvest";
 
 export function isChainSupported<T extends Protocol>(
   protocol: T,
@@ -59,15 +64,22 @@ const STRATEGY_CONFIGS: Record<
   | "AaveV3SupplyLeveraged"
   | "AaveV3SupplyBSC"
   | "AaveV3SupplyCelo"
+  | "AaveV3SupplyUSDTCelo"
   | "AaveV3SupplyPolygon"
   | "AaveV3SupplyArbitrum"
   | "FluidSupply"
   | "Re7Strategy"
+  | "BBQStrategy"
+  | "CSStrategy"
+  | "ExtraFiStrategy"
+  | "SteakhousePrimeStrategy"
+  | "HighYieldClearStarStrategy"
   | "IporFusionSupply"
   | "AvantisVaultSupply"
+  | "HarvestFortyAcresUSDC"
+  | "HarvestAutopilotUSDC"
   | "StCeloStaking"
   | "AnkrFlowStaking"
-  | "AsterdexBNBStaking"
   | "UniswapV3AddLiquidity"
   | "CamelotStaking"
   | "GMXDeposit"
@@ -102,6 +114,11 @@ const STRATEGY_CONFIGS: Record<
     factory: (chainId) =>
       new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
   },
+  AaveV3SupplyUSDTCelo: {
+    protocol: AAVE,
+    factory: (chainId) =>
+      new AaveV3Supply(chainId as GetProtocolChains<typeof AAVE>),
+  },
   AaveV3SupplyPolygon: {
     protocol: AAVE,
     factory: (chainId) =>
@@ -125,6 +142,31 @@ const STRATEGY_CONFIGS: Record<
       return new Re7Strategy(chainId as GetProtocolChains<typeof MORPHO>);
     },
   },
+  BBQStrategy: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new BBQStrategy(chainId as GetProtocolChains<typeof MORPHO>),
+  },
+  CSStrategy: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new CSStrategy(chainId as GetProtocolChains<typeof MORPHO>),
+  },
+  ExtraFiStrategy: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new ExtraFiStrategy(chainId as GetProtocolChains<typeof MORPHO>),
+  },
+  SteakhousePrimeStrategy: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new SteakhousePrimeStrategy(chainId as GetProtocolChains<typeof MORPHO>),
+  },
+  HighYieldClearStarStrategy: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new HighYieldClearStarStrategy(chainId as GetProtocolChains<typeof MORPHO>),
+  },
   IporFusionSupply: {
     protocol: IPOR,
     factory: (chainId) =>
@@ -134,6 +176,22 @@ const STRATEGY_CONFIGS: Record<
     protocol: AVANTIS,
     factory: (chainId) =>
       new AvantisVaultSupply(chainId as GetProtocolChains<typeof AVANTIS>),
+  },
+  HarvestFortyAcresUSDC: {
+    protocol: HARVEST,
+    factory: (chainId) =>
+      new HarvestVaultSupply(
+        chainId as GetProtocolChains<typeof HARVEST>,
+        "fortyAcresUSDC"
+      ),
+  },
+  HarvestAutopilotUSDC: {
+    protocol: HARVEST,
+    factory: (chainId) =>
+      new HarvestVaultSupply(
+        chainId as GetProtocolChains<typeof HARVEST>,
+        "autopilotUSDC"
+      ),
   },
 
   // Celo strategies
@@ -148,13 +206,6 @@ const STRATEGY_CONFIGS: Record<
     protocol: ANKR,
     factory: (chainId) =>
       new AnkrFlowStaking(chainId as GetProtocolChains<typeof ANKR>),
-  },
-
-  // BSC strategies
-  AsterdexBNBStaking: {
-    protocol: ASTERDEX,
-    factory: (chainId) =>
-      new AsterdexBNBStaking(chainId as GetProtocolChains<typeof ASTERDEX>),
   },
 
   UniswapV3AddLiquidity: {
