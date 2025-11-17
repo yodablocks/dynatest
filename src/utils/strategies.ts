@@ -26,6 +26,9 @@ import {
   Re7Strategy,
   BBQStrategy,
   CSStrategy,
+  ExtraFiStrategy,
+  SteakhousePrimeStrategy,
+  HighYieldClearStarStrategy,
   StCeloStaking,
   AnkrFlowStaking,
   IporFusionSupply,
@@ -68,6 +71,9 @@ const STRATEGY_CONFIGS: Record<
   | "Re7Strategy"
   | "BBQStrategy"
   | "CSStrategy"
+  | "ExtraFiStrategy"
+  | "SteakhousePrimeStrategy"
+  | "HighYieldClearStarStrategy"
   | "IporFusionSupply"
   | "AvantisVaultSupply"
   | "HarvestFortyAcresUSDC"
@@ -145,6 +151,21 @@ const STRATEGY_CONFIGS: Record<
     protocol: MORPHO,
     factory: (chainId) =>
       new CSStrategy(chainId as GetProtocolChains<typeof MORPHO>),
+  },
+  ExtraFiStrategy: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new ExtraFiStrategy(chainId as GetProtocolChains<typeof MORPHO>),
+  },
+  SteakhousePrimeStrategy: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new SteakhousePrimeStrategy(chainId as GetProtocolChains<typeof MORPHO>),
+  },
+  HighYieldClearStarStrategy: {
+    protocol: MORPHO,
+    factory: (chainId) =>
+      new HighYieldClearStarStrategy(chainId as GetProtocolChains<typeof MORPHO>),
   },
   IporFusionSupply: {
     protocol: IPOR,

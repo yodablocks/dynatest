@@ -13,6 +13,9 @@ export const STRATEGIES = [
   "Re7Strategy", // Base Re7 USDC vault
   "BBQStrategy", // Steakhouse High Yield USDC v11
   "CSStrategy", // ClearStar USDC Reactor
+  "ExtraFiStrategy", // ExtraFi xLend USDC
+  "SteakhousePrimeStrategy", // Steakhouse Prime USDC
+  "HighYieldClearStarStrategy", // High Yield ClearStar USDC
   "AvantisVaultSupply", // Avantis perpetuals vault on Base
   "HarvestFortyAcresUSDC", // Harvest Finance 40 Acres USDC vault on Base
   "HarvestAutopilotUSDC", // Harvest Finance Autopilot USDC vault on Base
@@ -101,6 +104,63 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
       "Access ClearStar's USDC Reactor vault through MetaMorpho on Base network. ClearStar manages $1.04M TVL with algorithmic optimization and active rebalancing. Designed for yield-focused investors seeking competitive returns.",
     externalLink:
       "https://app.morpho.org/base/vault/0x1D3b1Cd0a0f242d598834b3F2d126dC6bd774657/clearstar-usdc-reactor",
+    learnMoreLink:
+      "https://morpho.org/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "xLend",
+    id: "ExtraFiStrategy",
+    apy: 7.23,
+    risk: "medium",
+    color: "#7B61FF",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to ExtraFi's xLend vault on Base. Optimized MetaMorpho vault with $9.59M TVL for high-efficiency lending.",
+    fullDescription:
+      "Access ExtraFi's xLend USDC vault through MetaMorpho on Base network. ExtraFi manages $9.59M TVL with sophisticated yield optimization strategies. Earn competitive returns through professionally curated lending positions.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0x23479229e52Ab6aaD312D0B03DF9F33B46753B5e/extrafi-xlend-usdc",
+    learnMoreLink:
+      "https://morpho.org/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "Prime",
+    id: "SteakhousePrimeStrategy",
+    apy: 7.16,
+    risk: "medium",
+    color: "#FF6B4A",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to Steakhouse Financial's Prime vault on Base. Flagship institutional MetaMorpho vault with $38.87M TVL.",
+    fullDescription:
+      "Access Steakhouse Financial's flagship Prime USDC vault through MetaMorpho on Base network. This institutional-grade vault manages $38.87M TVL with rigorous risk management and professional curation. The Prime vault represents Steakhouse's premier yield strategy.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0xBEEFE94c8aD530842bfE7d8B397938fFc1cb83b2/steakhouse-prime-usdc",
+    learnMoreLink:
+      "https://morpho.org/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "HY Clear",
+    id: "HighYieldClearStarStrategy",
+    apy: 7.21,
+    risk: "medium",
+    color: "#00BFFF",
+    protocol: MORPHO,
+    description:
+      "Supply USDC to ClearStar's High Yield vault on Base. Aggressive MetaMorpho vault with $2.07M TVL optimized for maximum returns.",
+    fullDescription:
+      "Access ClearStar's High Yield USDC vault through MetaMorpho on Base network. This performance-focused vault manages $2.07M TVL with aggressive optimization targeting maximum sustainable yields. Designed for yield-maximizing investors comfortable with active rebalancing.",
+    externalLink:
+      "https://app.morpho.org/base/vault/0xE74c499fA461AF1844fCa84204490877787cED56/high-yield-clearstar-usdc",
     learnMoreLink:
       "https://morpho.org/",
     tokens: [USDC],
