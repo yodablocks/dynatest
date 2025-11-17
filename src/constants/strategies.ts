@@ -1,7 +1,7 @@
 import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/chains";
 
 import type { StrategyMetadata } from "@/types";
-import { USDC, CELO, FLOW, cEUR, WBNB } from "@/constants/coins";
+import { USDC, USDT, CELO, FLOW, cEUR, WBNB } from "@/constants/coins";
 import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, IPOR, AVANTIS, HARVEST } from "./protocols";
 
 export const STRATEGIES = [
@@ -18,6 +18,7 @@ export const STRATEGIES = [
   "MultiStrategy", // Composition pattern - combines multiple strategies
   "StCeloStaking", // Celo liquid staking
   "AaveV3SupplyCelo", // AAVE on Celo
+  "AaveV3SupplyUSDTCelo", // AAVE USDT on Celo
   "AaveV3SupplyBSC", // AAVE on BSC
   "AaveV3SupplyPolygon", // AAVE on Polygon
   "AaveV3SupplyArbitrum", // AAVE on Arbitrum
@@ -241,6 +242,23 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     externalLink: "https://app.aave.com/markets/?marketName=proto_celo_v3",
     learnMoreLink: "https://docs.aave.com/",
     tokens: [CELO],
+    chainId: celo.id,
+    status: "active",
+  },
+  {
+    title: "AAVE/USDT-Celo",
+    id: "AaveV3SupplyUSDTCelo",
+    apy: 1.01,
+    risk: "low",
+    color: "#9896FF",
+    protocol: AAVE,
+    description:
+      "Supply USDT to AAVE V3 on Celo network to earn lending interest with minimal fees and fast finality.",
+    fullDescription:
+      "Supply USDT (Tether) to AAVE V3 lending protocol on Celo network. AAVE is a battle-tested DeFi protocol with over $10B in TVL. Earn stable yields on your USDT holdings with $6.97M TVL, 1-second transaction finality and sub-cent transaction costs.",
+    externalLink: "https://app.aave.com/reserve-overview/?underlyingAsset=0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e&marketName=proto_celo_v3",
+    learnMoreLink: "https://docs.aave.com/",
+    tokens: [USDT],
     chainId: celo.id,
     status: "active",
   },

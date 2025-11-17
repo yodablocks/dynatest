@@ -10,6 +10,7 @@ export const USDT = {
     [arbitrum.id]: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
     [base.id]: "0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2",
     [bsc.id]: "0x55d398326f99059fF775485246999027B3197955",
+    [celo.id]: "0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e",
   },
 } as const satisfies Token;
 
