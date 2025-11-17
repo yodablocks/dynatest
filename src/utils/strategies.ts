@@ -29,6 +29,7 @@ import {
   AsterdexBNBStaking,
   IporFusionSupply,
   AvantisVaultSupply,
+  HarvestVaultSupply,
 } from "@/classes/strategies";
 import { AAVE } from "@/constants/protocols/aave";
 import { ST_CELO } from "@/constants/protocols/stCelo";
@@ -36,6 +37,7 @@ import { ANKR } from "@/constants/protocols/ankr";
 import { ASTERDEX } from "@/constants/protocols/asterdex";
 import { IPOR } from "@/constants/protocols/ipor";
 import { AVANTIS } from "@/constants/protocols/avantis";
+import { HARVEST } from "@/constants/protocols/harvest";
 
 export function isChainSupported<T extends Protocol>(
   protocol: T,
@@ -65,6 +67,8 @@ const STRATEGY_CONFIGS: Record<
   | "Re7Strategy"
   | "IporFusionSupply"
   | "AvantisVaultSupply"
+  | "HarvestFortyAcresUSDC"
+  | "HarvestAutopilotUSDC"
   | "StCeloStaking"
   | "AnkrFlowStaking"
   | "AsterdexBNBStaking"
@@ -134,6 +138,22 @@ const STRATEGY_CONFIGS: Record<
     protocol: AVANTIS,
     factory: (chainId) =>
       new AvantisVaultSupply(chainId as GetProtocolChains<typeof AVANTIS>),
+  },
+  HarvestFortyAcresUSDC: {
+    protocol: HARVEST,
+    factory: (chainId) =>
+      new HarvestVaultSupply(
+        chainId as GetProtocolChains<typeof HARVEST>,
+        "fortyAcresUSDC"
+      ),
+  },
+  HarvestAutopilotUSDC: {
+    protocol: HARVEST,
+    factory: (chainId) =>
+      new HarvestVaultSupply(
+        chainId as GetProtocolChains<typeof HARVEST>,
+        "autopilotUSDC"
+      ),
   },
 
   // Celo strategies

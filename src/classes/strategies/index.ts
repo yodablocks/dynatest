@@ -10,5 +10,6 @@ export * from "./ankr/flowStaking";
 export * from "./asterdex/bnbStaking";
 export * from "./ipor/fusionSupply";
 export * from "./avantis/vaultSupply";
+export * from "./harvest/vaultSupply";
 
 export * from "./multiStrategy";

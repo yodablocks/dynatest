@@ -2,7 +2,7 @@ import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/c
 
 import type { StrategyMetadata } from "@/types";
 import { USDC, CELO, FLOW, cEUR, BNB, WBNB } from "@/constants/coins";
-import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, ASTERDEX, IPOR, AVANTIS } from "./protocols";
+import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, ASTERDEX, IPOR, AVANTIS, HARVEST } from "./protocols";
 
 export const STRATEGIES = [
   // Active strategies
@@ -13,6 +13,8 @@ export const STRATEGIES = [
   "Re7Strategy", // Base Re7 USDC vault
   "IporFusionSupply", // IPOR Fusion yoUSD Loooper on Base
   "AvantisVaultSupply", // Avantis perpetuals vault on Base
+  "HarvestFortyAcresUSDC", // Harvest Finance 40 Acres USDC vault on Base
+  "HarvestAutopilotUSDC", // Harvest Finance Autopilot USDC vault on Base
   "MultiStrategy", // Composition pattern - combines multiple strategies
   "StCeloStaking", // Celo liquid staking
   "AaveV3SupplyCelo", // AAVE on Celo
@@ -171,6 +173,40 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
       "Supply USDC to the Avantis perpetuals vault and earn ~20% APY from trading fees. The vault acts as the counterparty to traders on the Avantis perpetuals platform. $106M TVL with battle-tested smart contracts. Note: 0.5% fee applies on withdrawals.",
     externalLink: "https://www.avantisfi.com/earn/avantis-vault",
     learnMoreLink: "https://docs.avantisfi.com/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "40 Acres",
+    id: "HarvestFortyAcresUSDC",
+    apy: 11.5,
+    risk: "medium",
+    color: "#FFAA00",
+    protocol: HARVEST,
+    description:
+      "Automated yield farming with Harvest Finance's flagship 40 Acres USDC vault. Instant withdrawals with no fees.",
+    fullDescription:
+      "Supply USDC to Harvest Finance's 40 Acres vault for automated yield optimization across Base DeFi protocols. The vault automatically compounds rewards and rebalances strategies to maximize returns. $2.85M TVL with proven track record. Features instant 1-step withdrawals with no deposit or withdrawal fees.",
+    externalLink: "https://app.harvest.finance/base/0xC777031D50F632083Be7080e51E390709062263E",
+    learnMoreLink: "https://docs.harvest.finance/",
+    tokens: [USDC],
+    chainId: base.id,
+    status: "active",
+  },
+  {
+    title: "Autopilot",
+    id: "HarvestAutopilotUSDC",
+    apy: 7.54,
+    risk: "low",
+    color: "#FFD700",
+    protocol: HARVEST,
+    description:
+      "Conservative yield farming with Harvest Finance's Autopilot USDC vault. Stable returns with instant liquidity.",
+    fullDescription:
+      "Supply USDC to Harvest Finance's Autopilot vault for steady, low-risk yields on Base network. This conservative strategy focuses on stable returns with minimal volatility. $1.82M TVL with consistent performance history. Features instant 1-step withdrawals with no deposit or withdrawal fees.",
+    externalLink: "https://app.harvest.finance/base/0x0d877Dc7C8Fa3aD980DfDb18B48eC9F8768359C4",
+    learnMoreLink: "https://docs.harvest.finance/",
     tokens: [USDC],
     chainId: base.id,
     status: "active",
