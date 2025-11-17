@@ -1,8 +1,8 @@
 import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/chains";
 
 import type { StrategyMetadata } from "@/types";
-import { USDC, CELO, FLOW, cEUR, BNB, WBNB } from "@/constants/coins";
-import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, ASTERDEX, IPOR, AVANTIS, HARVEST } from "./protocols";
+import { USDC, CELO, FLOW, cEUR, WBNB } from "@/constants/coins";
+import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, IPOR, AVANTIS, HARVEST } from "./protocols";
 
 export const STRATEGIES = [
   // Active strategies
@@ -22,7 +22,6 @@ export const STRATEGIES = [
   "AaveV3SupplyPolygon", // AAVE on Polygon
   "AaveV3SupplyArbitrum", // AAVE on Arbitrum
   "AnkrFlowStaking", // Ankr Flow liquid staking
-  "AsterdexBNBStaking", // Asterdex BNB liquid staking on BSC
   // Coming soon strategies
   "CamelotStaking",
   "GMXDeposit",
@@ -311,23 +310,6 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     learnMoreLink: "https://www.ankr.com/docs/staking/liquid-staking/flow/",
     tokens: [FLOW],
     chainId: flowMainnet.id,
-    status: "active",
-  },
-  {
-    title: "BNB LST",
-    id: "AsterdexBNBStaking",
-    apy: 6.0,
-    risk: "low",
-    color: "#F3BA2F",
-    protocol: ASTERDEX,
-    description:
-      "Stake BNB tokens with Asterdex to earn staking rewards while maintaining liquidity through asBNB tokens.",
-    fullDescription:
-      "Stake BNB tokens through Asterdex's liquid staking protocol to earn 5-7% APY while receiving asBNB tokens that represent your staked position. asBNB tokens can be used across DeFi protocols while your BNB continues earning staking rewards.",
-    externalLink: "https://asterdex.com/earn",
-    learnMoreLink: "https://docs.asterdex.com/product/aster-earn/mint-asbnb",
-    tokens: [BNB],
-    chainId: bsc.id,
     status: "active",
   },
 ];

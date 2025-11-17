@@ -14,7 +14,6 @@ import { HARVEST } from "./harvest";
 export * from "./aave";
 export * from "./stCelo";
 export * from "./ankr";
-export * from "./asterdex";
 export * from "./morpho";
 export * from "./camelot";
 export * from "./uniswap";

@@ -26,7 +26,6 @@ import {
   Re7Strategy,
   StCeloStaking,
   AnkrFlowStaking,
-  AsterdexBNBStaking,
   IporFusionSupply,
   AvantisVaultSupply,
   HarvestVaultSupply,
@@ -34,7 +33,6 @@ import {
 import { AAVE } from "@/constants/protocols/aave";
 import { ST_CELO } from "@/constants/protocols/stCelo";
 import { ANKR } from "@/constants/protocols/ankr";
-import { ASTERDEX } from "@/constants/protocols/asterdex";
 import { IPOR } from "@/constants/protocols/ipor";
 import { AVANTIS } from "@/constants/protocols/avantis";
 import { HARVEST } from "@/constants/protocols/harvest";
@@ -71,7 +69,6 @@ const STRATEGY_CONFIGS: Record<
   | "HarvestAutopilotUSDC"
   | "StCeloStaking"
   | "AnkrFlowStaking"
-  | "AsterdexBNBStaking"
   | "UniswapV3AddLiquidity"
   | "CamelotStaking"
   | "GMXDeposit"
@@ -168,13 +165,6 @@ const STRATEGY_CONFIGS: Record<
     protocol: ANKR,
     factory: (chainId) =>
       new AnkrFlowStaking(chainId as GetProtocolChains<typeof ANKR>),
-  },
-
-  // BSC strategies
-  AsterdexBNBStaking: {
-    protocol: ASTERDEX,
-    factory: (chainId) =>
-      new AsterdexBNBStaking(chainId as GetProtocolChains<typeof ASTERDEX>),
   },
 
   UniswapV3AddLiquidity: {
