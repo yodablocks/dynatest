@@ -1,0 +1,57 @@
+export const LENDLE_POOL_ABI = [
+  {
+    inputs: [
+      { name: "asset", type: "address" },
+      { name: "amount", type: "uint256" },
+      { name: "onBehalfOf", type: "address" },
+      { name: "referralCode", type: "uint16" },
+    ],
+    name: "supply",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { name: "asset", type: "address" },
+      { name: "amount", type: "uint256" },
+      { name: "to", type: "address" },
+    ],
+    name: "withdraw",
+    outputs: [{ name: "", type: "uint256" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ name: "asset", type: "address" }],
+    name: "getReserveData",
+    outputs: [
+      {
+        components: [
+          { name: "configuration", type: "uint256" },
+          { name: "liquidityIndex", type: "uint128" },
+          { name: "currentLiquidityRate", type: "uint128" },
+          { name: "variableBorrowIndex", type: "uint128" },
+          { name: "currentVariableBorrowRate", type: "uint128" },
+          { name: "currentStableBorrowRate", type: "uint128" },
+          { name: "lastUpdateTimestamp", type: "uint40" },
+          { name: "id", type: "uint16" },
+          { name: "aTokenAddress", type: "address" },
+          { name: "stableDebtTokenAddress", type: "address" },
+          { name: "variableDebtTokenAddress", type: "address" },
+          { name: "interestRateStrategyAddress", type: "address" },
+          { name: "accrualIndexLastUpdatedAt", type: "uint40" },
+          { name: "isActive", type: "bool" },
+          { name: "isFrozen", type: "bool" },
+          { name: "borrowingEnabled", type: "bool" },
+          { name: "stableBorrowRateEnabled", type: "bool" },
+          { name: "isFlashloanEnabled", type: "bool" },
+        ],
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+] as const;  // ✅ THIS IS CRITICAL - must have "as const"

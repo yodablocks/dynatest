@@ -128,6 +128,13 @@ class LiveAPYService {
       symbol: 'BNB',
       fallbackAPY: 6.0,
     },
+    // Mantle chain strategies
+    'LendleSupply': {
+      chain: 'Mantle',
+      project: 'lendle',
+      symbol: 'USDC',
+      fallbackAPY: 4.72, // Current Lendle USDC APY on Mantle
+},
   };
 
   /**

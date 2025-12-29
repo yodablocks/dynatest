@@ -16,3 +16,4 @@ export * from "./fluid";
 export * from "./iporFusion";
 export * from "./avantisVault";
 export * from "./harvestVault";
+export * from "./lendle";
