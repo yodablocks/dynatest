@@ -23,6 +23,7 @@ function StrategyRow({ strategy, index, isDisabled, dynamicRisk, isComingSoon, o
       case 137: return "Polygon";
       case 42220: return "Celo";
       case 545: return "Flow";
+      case 5000: return "Mantle";
       default: return "Unknown";
     }
   };
@@ -40,7 +41,7 @@ function StrategyRow({ strategy, index, isDisabled, dynamicRisk, isComingSoon, o
       <td className="pr-2 py-4">
         <div className={`text-sm font-medium ${isDisabled ? 'text-gray-500' : 'text-gray-900'}`}>
           {strategy.title}
-          {isComingSoon && strategy.chainId !== base.id && strategy.chainId !== celo.id && strategy.chainId !== bsc.id && strategy.chainId !== polygon.id && strategy.chainId !== arbitrum.id && (
+          {isComingSoon && strategy.chainId !== base.id && strategy.chainId !== celo.id && strategy.chainId !== bsc.id && strategy.chainId !== polygon.id && strategy.chainId !== arbitrum.id && strategy.chainId !== mantle.id && (
             <span className="text-xs text-gray-400 block">
               ({getChainName(strategy.chainId)})
             </span>
@@ -193,7 +194,7 @@ function StrategyRow({ strategy, index, isDisabled, dynamicRisk, isComingSoon, o
 }import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { base, mainnet, celo, bsc, polygon, arbitrum, flowMainnet } from "viem/chains";
+import { base, mainnet, celo, bsc, polygon, arbitrum, flowMainnet, mantle } from "viem/chains";
 
 import { getRiskColor } from "@/utils";
 import { getDynamicRiskLevel } from "@/utils/dynamicRisk";
@@ -240,9 +241,9 @@ export default function StrategyTable({ strategies }: StrategyTableProps) {
   };
 
   // Check if strategy is coming soon
-  // Allow Base, Ethereum, Celo, BSC, Polygon, Arbitrum, and Flow as active networks
+  // Allow Base, Ethereum, Celo, BSC, Polygon, Arbitrum, Flow, and Mantle as active networks
   const isStrategyComingSoon = (strategy: StrategyMetadata) => {
-    return strategy.status === 'coming_soon' || (strategy.chainId !== base.id && strategy.chainId !== mainnet.id && strategy.chainId !== celo.id && strategy.chainId !== bsc.id && strategy.chainId !== polygon.id && strategy.chainId !== arbitrum.id && strategy.chainId !== flowMainnet.id);
+    return strategy.status === 'coming_soon' || (strategy.chainId !== base.id && strategy.chainId !== mainnet.id && strategy.chainId !== celo.id && strategy.chainId !== bsc.id && strategy.chainId !== polygon.id && strategy.chainId !== arbitrum.id && strategy.chainId !== flowMainnet.id && strategy.chainId !== mantle.id);
   };
 
   const getChainName = (chainId: number) => {
@@ -254,6 +255,7 @@ export default function StrategyTable({ strategies }: StrategyTableProps) {
       case 137: return "Polygon";
       case 42220: return "Celo";
       case 545: return "Flow";
+      case 5000: return "Mantle";
       default: return "Unknown";
     }
   };

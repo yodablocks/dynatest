@@ -1,8 +1,8 @@
-import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/chains";
+import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet, mantle } from "viem/chains";
 
 import type { StrategyMetadata } from "@/types";
 import { USDC, USDT, CELO, FLOW, cEUR, WBNB } from "@/constants/coins";
-import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, AVANTIS, HARVEST } from "./protocols";
+import { AAVE, UNISWAP, MORPHO, LIDO, FLUID, ST_CELO, ANKR, AVANTIS, HARVEST, LENDLE } from "./protocols";
 
 export const STRATEGIES = [
   // Active strategies
@@ -27,6 +27,7 @@ export const STRATEGIES = [
   "AaveV3SupplyPolygon", // AAVE on Polygon
   "AaveV3SupplyArbitrum", // AAVE on Arbitrum
   "AnkrFlowStaking", // Ankr Flow liquid staking
+  "LendleSupply", // Lendle USDC lending on Mantle
   // Coming soon strategies
   "CamelotStaking",
   "GMXDeposit",
@@ -410,6 +411,23 @@ export const ACTIVE_STRATEGIES: StrategyMetadata[] = [
     learnMoreLink: "https://www.ankr.com/docs/staking/liquid-staking/flow/",
     tokens: [FLOW],
     chainId: flowMainnet.id,
+    status: "active",
+  },
+  {
+    title: "Lendle/USDC-Mantle",
+    id: "LendleSupply",
+    apy: 5.5,
+    risk: "medium",
+    color: "#00C4B4",
+    protocol: LENDLE,
+    description:
+      "Supply USDC to Lendle lending protocol on Mantle network to earn competitive yields with low transaction costs.",
+    fullDescription:
+      "Supply USDC to Lendle, a leading lending protocol on Mantle network. Lendle is built on the battle-tested Aave V3 codebase, offering secure and efficient lending. Earn competitive yields on your USDC while benefiting from Mantle's low gas fees and fast finality.",
+    externalLink: "https://app.lendle.xyz/",
+    learnMoreLink: "https://docs.lendle.xyz/",
+    tokens: [USDC],
+    chainId: mantle.id,
     status: "active",
   },
 ];

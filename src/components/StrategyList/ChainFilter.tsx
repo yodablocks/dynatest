@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Dispatch, Fragment, SetStateAction } from "react";
-import { base, mainnet, celo, bsc, polygon, arbitrum, flowMainnet } from "viem/chains";
+import { base, mainnet, celo, bsc, polygon, arbitrum, flowMainnet, mantle } from "viem/chains";
 
 import { CHAINS } from "@/constants/chains";
 
@@ -21,8 +21,8 @@ export default function ChainFilter({
 }: ChainFilterProps) {
   
   const getChainStatus = (chainId: number) => {
-    // Base, Celo, BSC, Polygon, Arbitrum, and Flow are live
-    return (chainId === base.id || chainId === celo.id || chainId === bsc.id || chainId === polygon.id || chainId === arbitrum.id || chainId === flowMainnet.id) ? 'active' : 'coming_soon';
+    // Base, Celo, BSC, Polygon, Arbitrum, Flow, and Mantle are live
+    return (chainId === base.id || chainId === celo.id || chainId === bsc.id || chainId === polygon.id || chainId === arbitrum.id || chainId === flowMainnet.id || chainId === mantle.id) ? 'active' : 'coming_soon';
   };
 
   const getChainName = (chainId: number) => {

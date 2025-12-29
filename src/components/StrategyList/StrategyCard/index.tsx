@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { base, mainnet, celo, bsc, polygon, arbitrum, flowMainnet } from "viem/chains";
+import { base, mainnet, celo, bsc, polygon, arbitrum, flowMainnet, mantle } from "viem/chains";
 
 import { useState, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
@@ -58,8 +58,8 @@ export default function StrategyCard(strategy: StrategyMetadata) {
   const router = useRouter();
 
   // Check if strategy is coming soon
-  // Allow Base, Ethereum, Celo, BSC, Polygon, Arbitrum, and Flow as active networks
-  const isComingSoon = status === 'coming_soon' || (chainId !== base.id && chainId !== mainnet.id && chainId !== celo.id && chainId !== bsc.id && chainId !== polygon.id && chainId !== arbitrum.id && chainId !== flowMainnet.id);
+  // Allow Base, Ethereum, Celo, BSC, Polygon, Arbitrum, Flow, and Mantle as active networks
+  const isComingSoon = status === 'coming_soon' || (chainId !== base.id && chainId !== mainnet.id && chainId !== celo.id && chainId !== bsc.id && chainId !== polygon.id && chainId !== arbitrum.id && chainId !== flowMainnet.id && chainId !== mantle.id);
   const isDisabled = isComingSoon;
 
   const handleCardClick = (e: MouseEvent) => {
@@ -96,6 +96,7 @@ export default function StrategyCard(strategy: StrategyMetadata) {
       case 137: return "Polygon";
       case 42220: return "Celo";
       case 545: return "Flow";
+      case 5000: return "Mantle";
       default: return "Unknown";
     }
   };

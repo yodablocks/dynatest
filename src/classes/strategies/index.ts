@@ -15,5 +15,6 @@ export * from "./ankr/flowStaking";
 export * from "./ipor/fusionSupply";
 export * from "./avantis/vaultSupply";
 export * from "./harvest/vaultSupply";
+export * from "./lendle/supply";
 
 export * from "./multiStrategy";

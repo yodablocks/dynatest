@@ -9,6 +9,7 @@ import { ST_CELO } from "./stCelo";
 import { IPOR } from "./ipor";
 import { AVANTIS } from "./avantis";
 import { HARVEST } from "./harvest";
+import { LENDLE } from "./lendle";
 
 
 export * from "./aave";
@@ -23,10 +24,11 @@ export * from "./fluid";
 export * from "./ipor";
 export * from "./avantis";
 export * from "./harvest";
+export * from "./lendle";
 
 
 // Active protocols on Base network
-export const PROTOCOLS = [AAVE, UNISWAP, MORPHO, FLUID, AVANTIS, HARVEST];
+export const PROTOCOLS = [AAVE, UNISWAP, MORPHO, FLUID, AVANTIS, HARVEST, LENDLE];
 
 // Coming soon protocols
 export const COMING_SOON_PROTOCOLS = [LIDO, GMX, CAMELOT, ST_CELO];
