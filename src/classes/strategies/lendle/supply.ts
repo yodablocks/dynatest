@@ -60,7 +60,7 @@ export class LendleSupply extends BaseStrategy<typeof LENDLE> {
 
     try {
       const reserveData = await readContract(coreWagmiConfig, {
-        chainId: this.chainId,
+        chainId: this.chainId as any,
         abi: LENDLE_POOL_ABI,
         address: pool,
         functionName: "getReserveData",
@@ -70,7 +70,7 @@ export class LendleSupply extends BaseStrategy<typeof LENDLE> {
       const aTokenAddress = (reserveData as any)[8]; // aTokenAddress is at index 8
 
       const aTokenBalance = await readContract(coreWagmiConfig, {
-        chainId: this.chainId,
+        chainId: this.chainId as any,
         abi: ERC20_ABI,
         address: aTokenAddress as Address,
         functionName: "balanceOf",
@@ -99,10 +99,10 @@ export class LendleSupply extends BaseStrategy<typeof LENDLE> {
       const { amount, tokenName } = position;
       const token = getTokenByName(tokenName);
       const underlyingAsset = token.chains![this.chainId];
-      const pool = this.getAddress("pool");
+      const pool = this.getAddress("pool") as Address;
 
       const reserveData = await readContract(coreWagmiConfig, {
-        chainId: this.chainId,
+        chainId: this.chainId as any,
         abi: LENDLE_POOL_ABI,
         address: pool,
         functionName: "getReserveData",
@@ -112,7 +112,7 @@ export class LendleSupply extends BaseStrategy<typeof LENDLE> {
       const aTokenAddress = (reserveData as any)[8];
 
       const aTokenBalance = await readContract(coreWagmiConfig, {
-        chainId: this.chainId,
+        chainId: this.chainId as any,
         abi: ERC20_ABI,
         address: aTokenAddress as Address,
         functionName: "balanceOf",

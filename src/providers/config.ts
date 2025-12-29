@@ -1,6 +1,6 @@
 import { createConfig } from "@privy-io/wagmi";
 import { createConfig as createCoreConfig } from "@wagmi/core";
-import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet } from "viem/chains";
+import { celo, flowMainnet, base, bsc, arbitrum, polygon, mainnet, mantle } from "viem/chains";
 import { http } from "wagmi";
 
 export const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
@@ -30,6 +30,8 @@ const getHttpTransport = (chainId: number, alchemyUrl?: string) => {
       return http("https://forno.celo.org");
     case flowMainnet.id:
       return http("https://access-mainnet-beta.onflow.org");
+    case mantle.id:
+      return http("https://rpc.mantle.xyz");
     default:
       return http();
   }
@@ -37,7 +39,7 @@ const getHttpTransport = (chainId: number, alchemyUrl?: string) => {
 
 // Privy wagmi config (for WagmiProvider)
 export const wagmiConfig = createConfig({
-  chains: [base, mainnet, arbitrum, celo, flowMainnet, bsc, polygon],
+  chains: [base, mainnet, arbitrum, celo, flowMainnet, bsc, polygon, mantle],
   transports: {
     [mainnet.id]: getHttpTransport(mainnet.id, "https://eth-mainnet.g.alchemy.com/v2"),
     [celo.id]: getHttpTransport(celo.id, "https://celo-mainnet.g.alchemy.com/v2"),
@@ -46,12 +48,13 @@ export const wagmiConfig = createConfig({
     [bsc.id]: getHttpTransport(bsc.id, "https://bnb-mainnet.g.alchemy.com/v2"),
     [arbitrum.id]: getHttpTransport(arbitrum.id, "https://arb-mainnet.g.alchemy.com/v2"),
     [polygon.id]: getHttpTransport(polygon.id, "https://polygon-mainnet.g.alchemy.com/v2"),
+    [mantle.id]: getHttpTransport(mantle.id),
   },
 });
 
 // Regular wagmi config (for @wagmi/core functions like readContract)
 export const coreWagmiConfig = createCoreConfig({
-  chains: [base, mainnet, arbitrum, celo, flowMainnet, bsc, polygon],
+  chains: [base, mainnet, arbitrum, celo, flowMainnet, bsc, polygon, mantle],
   transports: {
     [mainnet.id]: getHttpTransport(mainnet.id, "https://eth-mainnet.g.alchemy.com/v2"),
     [celo.id]: getHttpTransport(celo.id, "https://celo-mainnet.g.alchemy.com/v2"),
@@ -60,6 +63,7 @@ export const coreWagmiConfig = createCoreConfig({
     [bsc.id]: getHttpTransport(bsc.id, "https://bnb-mainnet.g.alchemy.com/v2"),
     [arbitrum.id]: getHttpTransport(arbitrum.id, "https://arb-mainnet.g.alchemy.com/v2"),
     [polygon.id]: getHttpTransport(polygon.id, "https://polygon-mainnet.g.alchemy.com/v2"),
+    [mantle.id]: getHttpTransport(mantle.id),
   },
 });
 
